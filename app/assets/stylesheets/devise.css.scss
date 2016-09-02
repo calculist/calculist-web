@@ -1,0 +1,35 @@
+/*
+ *= require_self
+ */
+
+@import 'variables.css.scss';
+@import 'mixins.css.scss';
+
+.devise-form {
+  display: block;
+  width: 256px;
+  margin: 0 auto;
+  // margin-top: 10vh;
+  text-align: center;
+  input {
+    width: 100%;
+    background-color: #f7f7f7;
+    border: $default-input-border;
+  }
+  a {
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 100px;
+  }
+  .form-inputs {
+    outline: $default-outline;
+    text-align: left;
+    padding: 10px;
+    background: #fff;
+    @include c-box-shadow;
+  }
+  .field {
+    margin-top: 3px;
+  }
+}

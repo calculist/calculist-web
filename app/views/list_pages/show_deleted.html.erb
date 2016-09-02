@@ -1,0 +1,25 @@
+<header id="header">
+  <img id="logo" src="/logo-blue-black.svg">
+  <div class="header-right">
+    <span id="sign-out">sign out</span>
+  </div>
+</header>
+
+<div class="page main-page">
+  <% @recently_deleted_items.each do |update_object| %>
+    <div class="page">
+      <h2>[<%= update_object[:luid] %>] <%= update_object[:updated_at] %></h2>
+      <ul>
+        <% update_object[:items].each do |item| %>
+          <li>
+            <span><%= item['text'] %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>
+
+<script>
+
+</script>

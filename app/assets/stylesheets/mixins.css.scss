@@ -1,0 +1,7 @@
+@mixin c-box-shadow($top: 0, $left: 0, $blur: 8px, $spread: 0px, $color: rgba(0,0,0,0.3), $inset: false) {
+  @if $inset {
+    box-shadow:inset $top $left $blur $spread $color;
+  } @else {
+    box-shadow: $top $left $blur $spread $color;
+  }
+}

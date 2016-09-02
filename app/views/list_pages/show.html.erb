@@ -1,0 +1,23 @@
+<header id="header">
+  <img id="logo" src="/logo-blue-black.svg">
+  <div class="header-right">
+    <span id="save-status">saved</span>&nbsp;|&nbsp;<span id="username"><%= current_user.username %></span>&nbsp;|&nbsp;<span id="sign-out">sign out</span>
+  </div>
+</header>
+
+<div class="page main-page">
+  <ul id="top-level"></ul>
+</div>
+
+<textarea id="export-display"></textarea>
+<input type="file" style="display:none;">
+
+<script>
+  var LIST_TITLE = "<%= raw(@list.title) %>",
+      LIST_DATA = <%= raw(@list.content.to_json) %>,
+      LIST_ID = <%= @list.id %>,
+      INITIAL_LAST_SAVE = <%= @list.update_count || 0 %>,
+      USER_PREFERENCES = <%= @list.list_type == 'user_preferences' ? 'null' : raw(@list_owner.preferences.content.to_json) %>;
+</script>
+
+<%= javascript_include_tag "application", 'data-turbolinks-track': 'reload' %>

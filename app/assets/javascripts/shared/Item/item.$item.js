@@ -1,0 +1,35 @@
+lm.register('item.$item', ['_'], function (_) {
+
+  return function(key, attributeName) {
+    attributeName || (attributeName = 'key');
+    var condition;
+    if (_.isNumber(key)) {
+      var i = key;
+      if (i < 0) i += this.$items.length;
+      return this.$items[i];
+    } else if (_.isFunction(key)) {
+      condition = key;
+    } else {
+      condition = function (child) { return child[attributeName] === key; };
+    }
+    var item = null,
+        children,
+        nextChildren = this.$items;
+    while (!(item || nextChildren.length === 0)) {
+      children = nextChildren;
+      if (children.length) {
+        nextChildren = [];
+        item = _.find(children, function(child) {
+          if (condition(child)) {
+            return true;
+          } else {
+            nextChildren.push.apply(nextChildren, child.$items);
+            return false;
+          }
+        });
+      }
+    }
+    return item;
+  };
+
+});

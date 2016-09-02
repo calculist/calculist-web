@@ -1,0 +1,14 @@
+$dark-color: #333;
+$light-color: #eee;
+$computed-color: rgba(0,191,255,1);
+$computed-error-color: rgb(255, 5, 5);
+
+// TODO make defaults for everything
+$default-font: 'Ubuntu Mono', courier, monospace;
+$default-outline: 1px solid rgba(0,0,0,0.2);
+$default-background-color: $light-color;
+$default-text-color: rgb(0,0,0);
+$default-input-border: 1px solid #ccc;
+
+//
+$main-page-width: 800px;
