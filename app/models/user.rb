@@ -31,11 +31,13 @@ class User < ApplicationRecord
                   update_count: 0,
                   handle: 'preferences',
                   list_type: 'user_preferences')
+      upm = UserPreferencesManager.new(id)
+      upm.create_preference_items
     end
   end
 
   def preferences
-    lists.where(list_type: 'user_preferences').first
+    @preferences ||= lists.where(list_type: 'user_preferences').first
   end
 
   def default_theme

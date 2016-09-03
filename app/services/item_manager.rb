@@ -79,8 +79,37 @@ class ItemManager
     end
   end
 
+  def create_items_from_tree(tree)
+    if list.items.pluck('count(*)')[0] > 0
+      raise "list #{@list_id} already has items" # TODO be smarter and check for parent_guid on tree
+    end
+    data_columns = [:list_id, :guid, :parent_guid, :sort_order, :text, :is_collapsed, :is_top_item, :is_deleted]
+    list_update_id_columns = [:initial_list_update_id, :list_update_id]
+    time_stamp_columns = [:created_at, :updated_at]
+
+    item_data = parse_json(tree)
+    list_update_id = (list.update_count || 0) + 1
+    time_stamp = Item::sanitize(DateTime.now)
+
+    inserts = item_data.map do |data|
+      values = data_columns.map {|c| Item::sanitize(data[c]) }
+      values += [list_update_id, list_update_id]
+      values += [time_stamp, time_stamp]
+      "(#{values.join(',')})"
+    end
+
+    columns = data_columns + list_update_id_columns + time_stamp_columns
+    # Using one big sql insert for perf
+    sql = "INSERT INTO items (`#{columns.join('`,`')}`) VALUES #{inserts.join(',')}"
+    Item.transaction do
+      Item.connection.execute(sql)
+      list.update_count = list_update_id
+      list.save!
+    end
+  end
+
   def parse_json(json)
-    tree = JSON.parse(json)
+    tree = json.is_a?(Hash) ? json : JSON.parse(json)
     items = []
     items << parse_tree(tree, items)
     items
@@ -119,18 +148,22 @@ class ItemManager
 
   private
 
+  def list
+    @list ||= List.find(@list_id)
+  end
+
   def parse_tree(tree, items, parent_guid = nil, sort_order = nil)
     item = {
       list_id: @list_id,
-      guid: tree['guid'] || SecureRandom.uuid,
+      guid: tree['guid'] || tree[:guid] || SecureRandom.uuid,
       parent_guid: parent_guid,
       sort_order: sort_order || 100,
-      text: tree['text'] || '',
-      is_collapsed: tree['collapsed'],
+      text: tree['text'] || tree[:text] || '',
+      is_collapsed: tree['collapsed'] || tree[:collapsed],
       is_top_item: parent_guid.nil?,
       is_deleted: false
     }
-    item_items = tree['$items']
+    item_items = tree['$items'] || tree[:items]
     if item_items
       item_items.each_with_index do |_item, i|
         items << parse_tree(_item, items, item[:guid], (i + 1) * 100)
