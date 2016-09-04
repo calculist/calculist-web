@@ -1,5 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-# before_action :configure_sign_up_params, only: [:create]
+before_action :configure_sign_up_params, only: [:create]
 # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
@@ -8,9 +8,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    invite_code = params[:user][:invite_code]
+    beta_access = invite_code ? BetaAccess.where(claimed_by: nil, code: invite_code).first : nil
+    return redirect_to('') unless beta_access
+    params[:user].delete(:invite_code)
+    super
+    beta_access.claimed_by = current_user.id
+    beta_access.claimed_at = DateTime.now
+    beta_access.save!
+  end
 
   # GET /resource/edit
   # def edit
@@ -36,12 +43,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_up_params
-  #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
-  # end
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:invite_code])
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params

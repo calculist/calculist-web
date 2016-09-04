@@ -16,6 +16,10 @@ class User < ApplicationRecord
             }
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
 
+  def invite_code
+    nil # TODO remove this method after beta
+  end
+
   def login=(login)
     @login = login
   end
@@ -26,7 +30,7 @@ class User < ApplicationRecord
 
   def create_preferences
     unless preferences
-      List.create(title: "#{username}'s preferences",
+      List.create(title: 'my preferences',
                   user_id: id,
                   update_count: 0,
                   handle: 'preferences',

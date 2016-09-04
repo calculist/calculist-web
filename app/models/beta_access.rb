@@ -1,0 +1,2 @@
+class BetaAccess < ApplicationRecord
+end

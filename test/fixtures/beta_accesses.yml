@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  claimed_at: 2016-09-04 14:27:10
+  claimed_by: 1
+  notes: MyString
+
+two:
+  code: MyString
+  claimed_at: 2016-09-04 14:27:10
+  claimed_by: 1
+  notes: MyString
