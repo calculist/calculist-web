@@ -1,3 +1,4 @@
+*.ds_store
 *.rbc
 capybara-*.html
 .rspec
