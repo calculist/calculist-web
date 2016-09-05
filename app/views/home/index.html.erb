@@ -1,11 +1,24 @@
 <div id="homepage-container">
+  <header id="header">
+    <img id="logo" src="/logo-blue-black.svg">
+    <div class="header-right">
+      <% if current_user %>
+        <span id="username"><a href="/<%= current_user.username %>"><%= current_user.username %></a></span>&nbsp;|&nbsp;<span id="sign-out">sign out</span>
+      <% else %>
+        <span><a href="/login">Sign in</a></span>
+      <% end %>
+    </div>
+  </header>
 
   <div class="logo-container">
     <img class="logo" src="/logo-blue-black.svg">
   </div>
 
-  <div class="message"><a href="https://www.kickstarter.com/projects/524190637/calculist">Kickstarter happening now!</a> <br/> Follow us on <a href="https://twitter.com/calculist_io">twitter</a> and <a href="https://www.facebook.com/calculist/">facebook</a>.</div>
+  <% unless current_user %>
+    <div class="join-link"><a href="/join">Join</a></div>
+  <% end %>
 
-  <% # <div class="join-link"><a href="/join">Join</a></div> %>
-
+  <footer>
+    <div class="message">Follow us on <a href="https://twitter.com/calculist_io">twitter</a> and <a href="https://www.facebook.com/calculist/">facebook</a>.</div>
+  </footer>
 </div>

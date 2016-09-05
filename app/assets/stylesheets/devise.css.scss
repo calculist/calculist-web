@@ -15,6 +15,18 @@
     width: 100%;
     background-color: #f7f7f7;
     border: $default-input-border;
+    &[type="submit"] {
+      color: #fff;
+      background-color: $computed-color;
+      font-family: $default-font;
+      font-size: 16px;
+      padding: 8px;
+      margin: 12px 0 0 0;
+      cursor: pointer;
+      outline: none;
+      border: none;
+      border-radius: 3px;
+    }
   }
   a {
     text-decoration: none;
@@ -30,6 +42,8 @@
     @include c-box-shadow;
   }
   .field {
-    margin-top: 3px;
+    width: 256px - (20px + 4px); // TODO figure out a cleaner way to fix this
+    margin: 8px 0 0 0;
+    padding: 0;
   }
 }
