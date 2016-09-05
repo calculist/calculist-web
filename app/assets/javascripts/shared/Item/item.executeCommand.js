@@ -8,6 +8,15 @@ lm.register('item.executeCommand', ['_','$','transaction','computeItemValue','cu
       openFile: function () {
 
       },
+      newList: function (title, handle) {
+        if (!title) return alert('New lists need titles.');
+        handle || (handle = _.lowerCase(title).replace(/\s/g,''));
+        window.topItem.saveNow().then(function () {
+          window.location.assign('/list/new?title=' + encodeURIComponent(title) + '&handle=' + handle);
+        }).catch(function () {
+          alert('saving failed');
+        })
+      },
       goto: function (item) {
         if (!isItem(item)) item = _this.$item(item) || _this.$$item(item);
         item.$parent ? item.$parent.expand(true).then(function () {

@@ -52,53 +52,60 @@ lm.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndAppl
     window.topItem.collapse = _.noop;
     window.topItem.zoomOut = _.noop;
     window.topItem.saveNow = function() {
-      ++saveCount;
-      if (window.FILE_PATH) {
-        var fs = require('fs');
-        fs.writeFileSync(window.FILE_PATH, window.topItem.toText(0, false), 'utf8');
-        saveButton.changeStatus('saved');
-        return window.topItem.waitingBeforeSave = false;
-      }
-      window.topItem.ensureGuidsAreUnique();
-      window.topItem.refreshDepth();
-      var newContent = JSON.stringify(window.topItem);
-      var newFlatContent = _.keyBy(window.topItem.flatten_v2(), 'guid');
-      window.topItem.waitingBeforeSave = false;
-      if (newContent === previousContent) {
-        saveButton.changeStatus('saved');
-      } else {
-        var changes = lmDiff.flatItemsByGuidDiff(previousFlatContent, newFlatContent);
-        // console.log(changes);
-        var list = new Backbone.Model({
-          title: window.topItem.key,
-          // content: newContent,
-          changes: changes,
-          id: LIST_ID
-        });
-        list.url = '/lists/' + LIST_ID;
-        saveButton.changeStatus('saving');
-        // localStorage.tabsOpen = '';
-        // localStorage.$items = newContent;
-        // localStorage.tabsOpen = +(localStorage.tabsOpen || '0') + 1;
-        getAndApplyChangesFromServer(window.topItem.last_save).then(function (response) {
-          // TODO Need to get previous content before getting changes from server, then
-          // somehow excluding those changes from the next diff.
-          // As it stands now, this can result in bad data.
-          var pendingPreviousContent = JSON.stringify(window.topItem);
-          var pendingPreviousFlatContent = _.keyBy(window.topItem.flatten_v2(), 'guid');
-          list.save(null, {
-            success: function(m, response) {
-              saveButton.changeStatus('saved');
-              previousContent = pendingPreviousContent;
-              previousFlatContent = pendingPreviousFlatContent;
-              window.topItem.last_save = response.last_save;
-            },
-            error: function() {
-              saveButton.changeStatus('saving failed');
-            }
+      return new Promise(function (resolve, reject) {
+        ++saveCount;
+        if (window.FILE_PATH) {
+          var fs = require('fs');
+          fs.writeFileSync(window.FILE_PATH, window.topItem.toText(0, false), 'utf8');
+          saveButton.changeStatus('saved');
+          return window.topItem.waitingBeforeSave = false;
+        }
+        window.topItem.ensureGuidsAreUnique();
+        window.topItem.refreshDepth();
+        var newContent = JSON.stringify(window.topItem);
+        var newFlatContent = _.keyBy(window.topItem.flatten_v2(), 'guid');
+        window.topItem.waitingBeforeSave = false;
+        if (newContent === previousContent) {
+          saveButton.changeStatus('saved');
+          resolve();
+        } else {
+          var changes = lmDiff.flatItemsByGuidDiff(previousFlatContent, newFlatContent);
+          // console.log(changes);
+          var list = new Backbone.Model({
+            title: window.topItem.key,
+            // content: newContent,
+            changes: changes,
+            id: LIST_ID
           });
-        });
-      }
+          list.url = '/lists/' + LIST_ID;
+          saveButton.changeStatus('saving');
+          // localStorage.tabsOpen = '';
+          // localStorage.$items = newContent;
+          // localStorage.tabsOpen = +(localStorage.tabsOpen || '0') + 1;
+          getAndApplyChangesFromServer(window.topItem.last_save).then(function (response) {
+            // TODO Need to get previous content before getting changes from server, then
+            // somehow excluding those changes from the next diff.
+            // As it stands now, this can result in bad data.
+            var pendingPreviousContent = JSON.stringify(window.topItem);
+            var pendingPreviousFlatContent = _.keyBy(window.topItem.flatten_v2(), 'guid');
+            list.save(null, {
+              success: function(m, response) {
+                saveButton.changeStatus('saved');
+                previousContent = pendingPreviousContent;
+                previousFlatContent = pendingPreviousFlatContent;
+                window.topItem.last_save = response.last_save;
+                window.topItem.waitingBeforeSave = false;
+                resolve();
+              },
+              error: function() {
+                saveButton.changeStatus('saving failed');
+                reject();
+              }
+            });
+          });
+        }
+
+      });
     };
     (function() {
       var debouncedSave;
