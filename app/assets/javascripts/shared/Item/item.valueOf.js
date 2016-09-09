@@ -51,11 +51,6 @@ lm.require(['Item','_','parseItemText','computeItemValue','somethingHasChanged',
             if (this.val !== '' && !_.isNaN(+this.val)) this.val = +this.val;
             this._valueOf = this.val;
             break;
-          case ('[#]'):
-            this.hasVal = false;
-            this.val = null;
-            this._valueOf = this.key;
-            break;
           default:
             throw new Error('Unexpected separator ' + parsedText.separator);
         }

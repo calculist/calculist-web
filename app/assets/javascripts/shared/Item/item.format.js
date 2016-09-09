@@ -21,8 +21,7 @@ lm.require(['Item','replaceTeX','_','userIsTyping'], function (Item, replaceTeX,
     return replaceTeX(_.escape(key))
               .replace('\\[=]', '[=]')
               .replace('\\[=&gt;]', '[=&gt;]')
-              .replace('\\[:]', '[:]')
-              .replace('\\[#]', '[#]');
+              .replace('\\[:]', '[:]');
   };
 
 });
