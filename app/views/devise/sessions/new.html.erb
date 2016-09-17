@@ -5,7 +5,7 @@
   <div class="form-inputs">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="field">
-        <%= f.label :login %><br />
+        <%= f.label :login, "Username or email" %><br />
         <%= f.text_field :login, autofocus: true %>
       </div>
 

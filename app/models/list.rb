@@ -13,6 +13,10 @@ class List < ActiveRecord::Base
     self.update_count ||= 0
   end
 
+  def content=(_content)
+    @content = _content
+  end
+
   def content
     return @content if @content
     im = ItemManager.new(id)

@@ -88,10 +88,13 @@ lm.register('item.executeCommand', ['_','$','transaction','computeItemValue','cu
         if (!_this.hasFocus) _this.render();
         _this.save();
       },
+      changeTextOf: function (item, text) {
+        item.text = text;
+        item.render();
+        item.save();
+      },
       changeText: function (text) {
-        _this.text = text;
-        _this.render();
-        _this.save();
+        this.changeTextOf(_this, text);
       },
       freezeComputedValue: function () {
         if (_this.valIsComputed) {
