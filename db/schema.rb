@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160904212710) do
+ActiveRecord::Schema.define(version: 20160917205248) do
 
   create_table "beta_accesses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "code"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20160904212710) do
     t.datetime "updated_at",                           null: false
     t.index ["guid"], name: "index_items_on_guid", unique: true, using: :btree
     t.index ["initial_list_update_id"], name: "index_items_on_initial_list_update_id", using: :btree
+    t.index ["list_id", "is_deleted", "sort_order"], name: "index_items_on_list_id_and_is_deleted_and_sort_order", using: :btree
     t.index ["list_id"], name: "index_items_on_list_id", using: :btree
     t.index ["list_update_id"], name: "index_items_on_list_update_id", using: :btree
     t.index ["parent_guid"], name: "index_items_on_parent_guid", using: :btree
