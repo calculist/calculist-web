@@ -6,7 +6,7 @@ class ItemManager
 
   def get_tree
     children_by_parent_guid = {}
-    items = Item.where(list_id: @list_id, is_deleted: [false, nil]).order(:sort_order)
+    items = Item.where(list_id: @list_id, is_deleted: false).order(:sort_order)
     top_item = nil
     if items.length == 0 && Item.where(list_id: @list_id).pluck('count(*)') == [0]
       top_item = Item.create!(guid: SecureRandom.uuid,
@@ -83,12 +83,17 @@ class ItemManager
     if list.items.pluck('count(*)')[0] > 0
       raise "list #{@list_id} already has items" # TODO be smarter and check for parent_guid on tree
     end
+    item_data = parse_json(tree)
+    list_update_id = (list.update_count || 0) + 1
+    bulk_create_items(item_data, list_update_id)
+  end
+
+  def bulk_create_items(item_data, list_update_id)
+    return if item_data.empty?
     data_columns = [:list_id, :guid, :parent_guid, :sort_order, :text, :is_collapsed, :is_top_item, :is_deleted]
     list_update_id_columns = [:initial_list_update_id, :list_update_id]
     time_stamp_columns = [:created_at, :updated_at]
 
-    item_data = parse_json(tree)
-    list_update_id = (list.update_count || 0) + 1
     time_stamp = Item::sanitize(DateTime.now)
 
     inserts = item_data.map do |data|
@@ -117,20 +122,36 @@ class ItemManager
 
   def update_items(items_data, list_update_id = nil)
     # TODO Add detailed logging and assumption checks
+    guids = items_data.pluck(:guid)
+    existing_guids = Item.where(guid: guids).pluck(:guid)
+    new_guids = guids - existing_guids
+    if existing_guids.empty?
+      is_new_item = -> (guid) { true }
+    elsif new_guids.empty?
+      is_new_item = -> (guid) { false }
+    elsif new_guids.length > existing_guids.length
+      is_new_item = -> (guid) { !existing_guids.include?(guid) }
+    else
+      is_new_item = -> (guid) { new_guids.include?(guid) }
+    end
     Item.transaction do
+      new_item_data = []
       items_data.each do |item_data|
-        item = Item.find_by_list_id_and_guid(@list_id, item_data[:guid])
-        if item.nil?
-          item = Item.create!(guid: item_data[:guid],
-                              list_id: @list_id,
-                              initial_list_update_id: list_update_id,
-                              list_update_id: list_update_id,
-                              parent_guid: item_data[:parent_guid],
-                              sort_order: item_data[:sort_order],
-                              text: item_data[:text],
-                              is_collapsed: item_data[:collapsed],
-                              is_deleted: false )
+        if is_new_item.call(item_data[:guid])
+          new_item_data << {
+            guid: item_data[:guid],
+            list_id: @list_id,
+            initial_list_update_id: list_update_id,
+            list_update_id: list_update_id,
+            parent_guid: item_data[:parent_guid],
+            sort_order: item_data[:sort_order],
+            text: item_data[:text],
+            is_collapsed: item_data[:collapsed],
+            is_deleted: false
+          }
         else
+          # TODO Find a more efficient way to bulk update
+          item = Item.where(list_id: @list_id, guid: item_data[:guid]).first
           item.text = item_data[:text] if item_data[:text]
           item.is_collapsed = item_data[:is_collapsed] if item_data.has_key?(:is_collapsed)
           item.is_deleted = item_data[:is_deleted] if item_data.has_key?(:is_deleted)
@@ -141,8 +162,7 @@ class ItemManager
           item.save!
         end
       end
-      # tree = get_tree
-
+      bulk_create_items(new_item_data, list_update_id) unless new_item_data.empty?
     end
   end
 
