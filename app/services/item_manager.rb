@@ -97,6 +97,8 @@ class ItemManager
     time_stamp = Item::sanitize(DateTime.now)
 
     inserts = item_data.map do |data|
+      # TODO Add validations here. We are currently assuming that
+      # these values have already been validated.
       values = data_columns.map {|c| Item::sanitize(data[c]) }
       values += [list_update_id, list_update_id]
       values += [time_stamp, time_stamp]
@@ -122,8 +124,10 @@ class ItemManager
 
   def update_items(items_data, list_update_id = nil)
     # TODO Add detailed logging and assumption checks
+    items_data.sort_by!{|item_data| item_data[:guid]}
     guids = items_data.pluck(:guid)
-    existing_guids = Item.where(guid: guids).pluck(:guid)
+    existing_items = Item.where(list_id: @list_id, guid: guids).order(:guid).to_a
+    existing_guids = existing_items.pluck(:guid)
     new_guids = guids - existing_guids
     if existing_guids.empty?
       is_new_item = -> (guid) { true }
@@ -134,35 +138,47 @@ class ItemManager
     else
       is_new_item = -> (guid) { new_guids.include?(guid) }
     end
+    new_items_data = []
+    updated_items = []
+    items_data.each do |item_data|
+      if is_new_item.call(item_data[:guid])
+        new_items_data << {
+          guid: item_data[:guid],
+          list_id: @list_id,
+          initial_list_update_id: list_update_id,
+          list_update_id: list_update_id,
+          parent_guid: item_data[:parent_guid],
+          sort_order: item_data[:sort_order],
+          text: item_data[:text],
+          is_collapsed: item_data[:collapsed],
+          is_deleted: false
+        }
+      else
+        # NOTE Because existing_items and items_data are both sorted by guid,
+        # we know that the next item in existing_items will match item_data.
+        item = existing_items.shift
+        raise 'unexpected item' if item.guid != item_data[:guid]
+        item.text = item_data[:text] if item_data[:text]
+        item.is_collapsed = item_data[:is_collapsed] if item_data.has_key?(:is_collapsed)
+        item.is_deleted = item_data[:is_deleted] if item_data.has_key?(:is_deleted)
+        item.parent_guid = item_data[:parent_guid] if item_data[:parent_guid]
+        item.sort_order = item_data[:sort_order] if item_data[:sort_order]
+        item.initial_list_update_id = list_update_id if item.initial_list_update_id.nil? && list_update_id
+        item.list_update_id = list_update_id if list_update_id
+        updated_items << item
+      end
+    end
+    # TODO Determine if using a transaction is actually a good idea or not.
+    # Need a better understanding of what the tradeoffs are.
     Item.transaction do
-      new_item_data = []
-      items_data.each do |item_data|
-        if is_new_item.call(item_data[:guid])
-          new_item_data << {
-            guid: item_data[:guid],
-            list_id: @list_id,
-            initial_list_update_id: list_update_id,
-            list_update_id: list_update_id,
-            parent_guid: item_data[:parent_guid],
-            sort_order: item_data[:sort_order],
-            text: item_data[:text],
-            is_collapsed: item_data[:collapsed],
-            is_deleted: false
-          }
+      bulk_create_items(new_items_data, list_update_id)
+      updated_items.each do |item|
+        if item.looks_valid?
+          item.save!(validate: false) # Skipping full validation for perf
         else
-          # TODO Find a more efficient way to bulk update
-          item = Item.where(list_id: @list_id, guid: item_data[:guid]).first
-          item.text = item_data[:text] if item_data[:text]
-          item.is_collapsed = item_data[:is_collapsed] if item_data.has_key?(:is_collapsed)
-          item.is_deleted = item_data[:is_deleted] if item_data.has_key?(:is_deleted)
-          item.parent_guid = item_data[:parent_guid] if item_data[:parent_guid]
-          item.sort_order = item_data[:sort_order] if item_data[:sort_order]
-          item.initial_list_update_id = list_update_id if item.initial_list_update_id.nil? && list_update_id
-          item.list_update_id = list_update_id if list_update_id
           item.save!
         end
       end
-      bulk_create_items(new_item_data, list_update_id) unless new_item_data.empty?
     end
   end
 

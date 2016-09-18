@@ -16,6 +16,20 @@ class Item < ActiveRecord::Base
     end
   end
 
+  def looks_valid?
+    # This method is used to speed up bulk updates by preventing
+    # ActiveRecord from repeatedly loading up the same list
+    # after each save.
+    # TODO Find a better/faster way to do bulk updates.
+    list_id.is_a?(Integer) &&
+    list_update_id.is_a?(Integer) &&
+    initial_list_update_id.is_a?(Integer) &&
+    guid.is_a?(String) &&
+    ((!is_top_item && parent_guid.is_a?(String)) ||
+    (is_top_item == true && parent_guid.nil?)) &&
+    sort_order.is_a?(Float)
+  end
+
   def parent
     is_top_item ? nil : find_by_guid(parent_guid)
   end
