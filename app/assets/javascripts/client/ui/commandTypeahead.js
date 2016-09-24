@@ -164,6 +164,9 @@ lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
     getTopMatch: function () {
       return matches[0];
     },
+    getLastCommand: function () {
+      return _.last(commandStack);
+    },
     end: function (command) {
       // console.log(command);
       if (command && command !== _.last(commandStack)) {

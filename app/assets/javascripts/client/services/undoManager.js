@@ -1,7 +1,7 @@
 lm.register('undoManager', ['UndoManager','_','eventHub','getItemByGuid','lmDiff'], function (UndoManager, _, eventHub, getItemByGuid, lmDiff) {
 
   var undoManager = new UndoManager(),
-      previousData, focusGuid;
+      previousData, focusGuid, undoIndex;
 
   var reverseDelta = function (delta) {
     var rDelta = {};
@@ -24,11 +24,15 @@ lm.register('undoManager', ['UndoManager','_','eventHub','getItemByGuid','lmDiff
   eventHub.on('transactionstart', function () {
     previousData = window.topItem.flatten();
     focusGuid = sessionStorage.focusGuid;
+    undoIndex = undoManager.getIndex();
   });
 
   eventHub.on('transactionend', function () {
     // TODO figure out how previousData can be null sometimes
     if (previousData == null) return;
+    // If the index has changed, that means an undo or redo happened
+    // in the transaction, and we should ignore the event
+    if (undoIndex !== undoManager.getIndex()) return;
     var newData = window.topItem.flatten();
     lmDiff.plainDiff(previousData, newData).then(function (delta) {
 

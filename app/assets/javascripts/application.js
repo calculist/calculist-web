@@ -23,6 +23,7 @@
 //= require katex/katex.min
 //= require_tree ./shared/lm
 //= require_tree ./shared/utility
+//= require_tree ./shared/commands
 //= require_tree ./shared/Item
 //= require_tree ./client/services
 //= require_tree ./client/ui
