@@ -1,6 +1,6 @@
 lm.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','Item','commands.executePreviousCommand'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, Item, executePreviousCommand) {
 
-  var cli = {
+  var commands = {
     openFile: function (_this) {
 
     },
@@ -8,7 +8,7 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
       if (!title) return alert('New lists need titles.');
       handle || (handle = _.lowerCase(title).replace(/\s/g,''));
       window.topItem.saveNow().then(function () {
-        window.location.assign('/list/new?title=' + encodeURIComponent(title) + '&handle=' + handle);
+        window.location.assign('/list/new?title=' + encodeURIComponent(title) + '&handle=' + encodeURIComponent(handle));
       }).catch(function () {
         alert('saving failed');
       })
@@ -20,7 +20,9 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
       }) : item.focus();
     },
     changeTheme: function (_this, theme) {
-      $('#main-container').removeClass().addClass('theme-' + theme);
+      if (_.includes(['light','dark','sandcastle'], theme)) {
+        $('#main-container').removeClass().addClass('theme-' + theme);
+      }
     },
     enterCommandMode: function (_this) {
       if (_this.mode !== 'command') {
@@ -269,30 +271,36 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
         $('#export-display').focus().select();
       });
     },
-    copyToClipboard: function (_this) {
-      var el = $(_this.toHTML())[0];
-      $(document.body).append(el);
-      copyToClipboard(el).then(function () {
-        $(el).remove();
-        _this.focus();
-      });
-    },
-    copyItemsToClipboard: function (_this) {
-      this.copyItemsToClipboardAsText(); // TODO include formatting info
-    },
-    copyItemsToClipboardAsText: function (_this) {
-      var text = _.map(_this.$items, _.method('toText', 0)).join('');
+    copyToClipboard: _.rest(function (_this, options) {
+      if (_.includes(options, 'formatted')) return this.copyToClipboardFormatted(_this, options);
+      var computed = _.includes(options, 'computed');
+      var hideCollapsed = _.includes(options, 'hide collapsed');
+      var itemsOnly = _.includes(options, 'items only');
+      var text;
+      if (itemsOnly) {
+        text = _.map(_this.$items, _.method('toText', 0, computed, hideCollapsed)).join('');
+      } else {
+        text = _this.toText(0, computed, hideCollapsed);
+      }
       copyToClipboard(text).then(function () {
         _this.focus();
       });
-    },
-    copyToClipboardAsText: function (_this) {
-      copyToClipboard(_this.toText(0)).then(function () {
-        _this.focus();
-      });
-    },
-    copyToClipboardAsUncomputedText: function (_this) {
-      copyToClipboard(_this.toText(0, false)).then(function () {
+    }),
+    copyToClipboardFormatted: function (_this, options) {
+      var computed = _.includes(options, 'computed');
+      var hideCollapsed = _.includes(options, 'hide collapsed');
+      var itemsOnly = _.includes(options, 'items only');
+      var el;
+      if (itemsOnly) {
+        el =  $('<ul>' +
+                  _.map(_this.$items, _.method('toHTML', !computed, hideCollapsed)).join('') +
+                '</ul>')[0];
+      } else {
+        el = $(_this.toHTML(!computed, hideCollapsed))[0];
+      }
+      $(document.body).append(el);
+      copyToClipboard(el).then(function () {
+        $(el).remove();
         _this.focus();
       });
     },
@@ -354,6 +362,13 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
       });
       var csv = Papa.unparse(rows);
       downloadFile(csv, 'text/csv', _this.text + '.csv');
+    },
+    downloadAsTxt: function (_this, filename, computed) {
+      filename || (filename =  _this.text);
+      downloadFile(_this.toText(0, computed), 'text/txt', filename + '.txt');
+    },
+    downloadAsComputedTxt: function (_this, filename) {
+      this.downloadAsTxt(_this, filename, true);
     },
     // exportAsPDF: ,
     // exportAsHTML: ,
@@ -641,7 +656,7 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
     'indent','outdent','expand','collapse',
   ];
   _.each(itemMethods, function (methodName) {
-    cli[methodName] = _.method(methodName);
+    commands[methodName] = _.method(methodName);
   });
-  return cli;
+  return commands;
 });

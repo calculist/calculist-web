@@ -1,10 +1,9 @@
 lm.register('item.toHTML', ['_'], function (_) {
 
-    return function() {
-      // TODO Add option for uncomputed or ignore collapsed
+    return function (uncomputed, hideCollapsed) {
       return '<li>' +
-        '<span>' + this.getComputedHTML() + '</span>' +
-        (this.$items.length ?
+        '<span>' + (uncomputed ? _.escape(this.text) : this.getComputedHTML()) + '</span>' +
+        ((this.$items.length && (hideCollapsed ? !this.collapsed : true)) ?
           '<ul>' + _.map(this.$items, _.method('toHTML')).join('') + '</ul>'
           : '') +
       '</li>';

@@ -1,10 +1,10 @@
-lm.register('item.executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead'], function (_, cli, transaction, computeItemValue, commandTypeahead) {
+lm.register('item.executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead'], function (_, commands, transaction, computeItemValue, commandTypeahead) {
 
   return function (commandString) {
     var commandStringPieces = commandString.split(/([^\w\s]|\d)/);
     commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
     if (commandStringPieces[0] === 'delete') commandStringPieces[0] = '_delete';
-    if (this.mode === 'command' && !_.isFunction(cli[commandStringPieces[0]]) ) {
+    if (this.mode === 'command' && !_.isFunction(commands[commandStringPieces[0]]) ) {
       commandString = commandTypeahead.getTopMatch() || 'noop';
       commandStringPieces = commandString.split(/([^\w\s]|\d)/);
       commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
@@ -17,12 +17,12 @@ lm.register('item.executeCommand', ['_', 'commands', 'transaction', 'computeItem
     } else {
       commandArgumentsString = commandStringPieces.slice(1).join('');
     }
-    var commandFunction = cli[commandStringPieces[0]];
+    var commandFunction = commands[commandStringPieces[0]];
     var commandArguments = commandArgumentsString ? computeItemValue('[' + commandArgumentsString + ']', this) : [];
     commandArguments.unshift(this);
     var mode = this.mode;
     transaction(function () {
-      commandFunction.apply(cli, commandArguments);
+      commandFunction.apply(commands, commandArguments);
     });
     if (mode === 'command' && commandStringPieces[0] !== 'executePreviousCommand') commandTypeahead.end(commandString);
   };
