@@ -14,7 +14,7 @@ before_action :configure_sign_up_params, only: [:create]
     return redirect_to('') unless beta_access
     params[:user].delete(:invite_code)
     super
-    beta_access.claimed_by = current_user.id
+    beta_access.claimed_by = User.where(username: params[:user][:username]).first.id
     beta_access.claimed_at = DateTime.now
     beta_access.save!
   end
