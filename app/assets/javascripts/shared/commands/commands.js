@@ -1,4 +1,4 @@
-lm.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','Item','commands.executePreviousCommand'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, Item, executePreviousCommand) {
+lm.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, Item, executePreviousCommand, gotoList, goHome) {
 
   var commands = {
     openFile: function (_this) {
@@ -19,6 +19,11 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
         item.focus();
       }) : item.focus();
     },
+    gotoItem: function (_this, item) {
+      this.goto(_this, item);
+    },
+    gotoList: gotoList,
+    goHome: goHome,
     changeTheme: function (_this, theme) {
       if (_.includes(['light','dark','sandcastle'], theme)) {
         $('#main-container').removeClass().addClass('theme-' + theme);
@@ -286,7 +291,11 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
         _this.focus();
       });
     }),
-    copyToClipboardFormatted: function (_this, options) {
+    copyItemsToClipboard: _.rest(function (_this, options) {
+      options.push('items only');
+      this.copyToClipboard(options);
+    }),
+    copyToClipboardFormatted: _.rest(function (_this, options) {
       var computed = _.includes(options, 'computed');
       var hideCollapsed = _.includes(options, 'hide collapsed');
       var itemsOnly = _.includes(options, 'items only');
@@ -303,7 +312,7 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
         $(el).remove();
         _this.focus();
       });
-    },
+    }),
     copyToClipboardAsMarkdown: function (_this) {
       copyToClipboard(_this.toMarkdown(0)).then(function () {
         _this.focus();

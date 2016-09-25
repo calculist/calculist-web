@@ -54,6 +54,7 @@ lm.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndAppl
     window.topItem.saveNow = function() {
       return new Promise(function (resolve, reject) {
         ++saveCount;
+        if (window.READ_ONLY) return resolve();
         if (window.FILE_PATH) {
           var fs = require('fs');
           fs.writeFileSync(window.FILE_PATH, window.topItem.toText(0, false), 'utf8');
@@ -170,27 +171,29 @@ lm.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndAppl
         }
       });
     };
-    var throttledGetChanges = _.throttle(getAndApplyChangesFromServer, 1 * 1000);
-    document.addEventListener('visibilitychange', function(e) {
-      if (document.hidden) {
-        if (window.topItem.waitingBeforeSave) window.topItem.saveNow();
-      } else {
-        refocus();
-        throttledGetChanges(window.topItem.last_save).then(refocus);
+    if (!window.READ_ONLY) {
+      var throttledGetChanges = _.throttle(getAndApplyChangesFromServer, 1 * 1000);
+      document.addEventListener('visibilitychange', function(e) {
+        if (document.hidden) {
+          if (window.topItem.waitingBeforeSave) window.topItem.saveNow();
+        } else {
+          refocus();
+          throttledGetChanges(window.topItem.last_save).then(refocus);
+        }
+      });
+      if (window.FILE_PATH) {
+        window.addEventListener('blur', function (e) {
+          window.topItem.saveNow();
+        });
       }
-    });
-    if (window.FILE_PATH) {
-      window.addEventListener('blur', function (e) {
-        window.topItem.saveNow();
+      window.addEventListener('beforeunload', function(e) {
+        if (window.topItem.waitingBeforeSave) {
+          _.delay(_.bind(window.topItem.saveNow, window.topItem), 200);
+          e.returnValue = 'Not all changes have saved.';
+          return e.returnValue;
+        }
       });
     }
-    window.addEventListener('beforeunload', function(e) {
-      if (window.topItem.waitingBeforeSave) {
-        _.delay(_.bind(window.topItem.saveNow, window.topItem), 200);
-        e.returnValue = 'Not all changes have saved.';
-        return e.returnValue;
-      }
-    });
     // window.addEventListener('storage', function(storageEvent) {
     //   var data, item, key, newValue, oldValue, zoomGuid;
     //   key = storageEvent.key, newValue = storageEvent.newValue, oldValue = storageEvent.oldValue;

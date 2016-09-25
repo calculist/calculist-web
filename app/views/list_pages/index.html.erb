@@ -6,27 +6,21 @@
 </header>
 
 <div class="page main-page">
-  <ul id="top-level">
-    <% if @user == current_user %>
-      <li>
-        <input id="new-list-handle-input" type="text" name="handle" placeholder="new list handle">
-        <span id="new-list-button">Create New List</span>
-        <script>
-          (function (newListButton) {
-            newListButton.addEventListener('click', function () {
-              var handle = document.getElementById('new-list-handle-input').value;
-              if (!handle) {
-                alert('New lists need handles.');
-              } else {
-                window.location.assign('/list/new?handle=' + handle);
-              }
-            });
-          })(document.getElementById('new-list-button'));
-        </script>
-      </li>
-    <% end %>
-    <% @lists.each do |list| %>
-      <li><a href="<%= list_page_path(username: @user.username, handle: list.handle) %>"><%= list.title %></a></li>
-    <% end %>
-  </ul>
+  <ul id="top-level"></ul>
 </div>
+
+<textarea id="export-display"></textarea>
+<input type="file" style="display:none;">
+
+<script>
+  var LIST_TITLE = "<%= raw(@list.title) %>",
+      LIST_DATA = <%= raw(@list.content.to_json) %>,
+      LIST_ID = <%= @list.id %>,
+      INITIAL_LAST_SAVE = <%= @list.update_count || 0 %>,
+      USER_PREFERENCES = <%= @list.list_type == 'user_preferences' ? 'null' : raw(current_user.preferences.content.to_json) %>,
+      WORKER_FILE_PATH = '<%= asset_path('worker.js') %>',
+      READ_ONLY = true,
+      OTHER_LISTS = <%= raw(@other_lists.to_json) %>;
+</script>
+
+<%= javascript_include_tag "application", 'data-turbolinks-track': 'reload' %>

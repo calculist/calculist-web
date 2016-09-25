@@ -18,7 +18,9 @@
       LIST_ID = <%= @list.id %>,
       INITIAL_LAST_SAVE = <%= @list.update_count || 0 %>,
       USER_PREFERENCES = <%= @list.list_type == 'user_preferences' ? 'null' : raw(@list_owner.preferences.content.to_json) %>,
-      WORKER_FILE_PATH = '<%= asset_path('worker.js') %>';
+      WORKER_FILE_PATH = '<%= asset_path('worker.js') %>',
+      READ_ONLY = false,
+      OTHER_LISTS = <%= raw(@other_lists.to_json) %>;
 </script>
 
 <%= javascript_include_tag "application", 'data-turbolinks-track': 'reload' %>

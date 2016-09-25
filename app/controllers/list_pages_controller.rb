@@ -9,6 +9,32 @@ class ListPagesController < ApplicationController
       return
     end
     @lists = @user.lists.order('updated_at desc')
+    @list = List.new(title: @user.username, id: 0)
+    @list.content = {
+      guid: '0',
+      text: "#{@user.username}",
+      '$items': @lists.map { |list| {
+        text: list.title,
+        collapsed: true,
+        '$items': [
+          {
+            text: "handle [:] #{list.handle}"
+          },{
+            text: "created_at [:] #{list.created_at}"
+          },{
+            text: "updated_at [:] #{list.updated_at}"
+          },{
+            text: "update_count [:] #{list.update_count}"
+          },{
+            text: "item_count [:] #{list.items.where(is_deleted: false).pluck('count(*)')[0]}"
+          },{
+            text: "shared_with [=] count($items)",
+            '$items': list.list_shares.map { |ls| { text: "#{ls.user.username} [:] #{ls.access_type}" } }
+          }
+        ]
+      } }
+    }
+    @other_lists = get_title_handle_and_path(@lists, @user)
   end
 
   def show
@@ -20,6 +46,7 @@ class ListPagesController < ApplicationController
       render_404 unless @list.id == 1 # TODO get rid of list.id == 1 hack
     end
     @lists = current_user.lists
+    @other_lists = get_title_handle_and_path(@lists, current_user)
     @theme = @list_owner.default_theme
   end
 
@@ -60,6 +87,10 @@ private
 
   def current_user_can_write?
     current_user_can(['read_write'])
+  end
+
+  def get_title_handle_and_path(lists, user)
+    lists.map { |list| { title: list.title, handle: list.handle, path: list_page_path(username: user.username, handle: list.handle) } }
   end
 
 end

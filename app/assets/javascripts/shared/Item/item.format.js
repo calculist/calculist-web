@@ -8,7 +8,7 @@ lm.require(['Item','replaceTeX','_','userIsTyping'], function (Item, replaceTeX,
     } else if (_.isFunction(val)) {
       val = val.toString() || '[Function]';
     } else if (_.isArray(val)) {
-      val = '[List] ' + val.length;
+      val = '[Array] ' + val.length;
     } else if (val !== '' && !_.isNaN(+val)) {
       val = this.formatNumber(+val);
     } else if (val && _.isString(val)) {

@@ -82,7 +82,7 @@ lm.register('createComputationContextObject', ['_','ss','cParse','isItem'], func
 
   var proto = ContextObject.prototype;
 
-  var mathKeys = ['E','LN2','LN10','LOG2E','LOG10E','PI','SQRT1_2','SQRT2','abs','acos','asin','atan','atan2','ceil','cos','exp','floor','log','max','min','pow','random','round','sin','sqrt','tan'];
+  var mathKeys = ['E','LN2','LN10','LOG2E','LOG10E','PI','SQRT1_2','SQRT2','abs','acos','acosh','asin','asinh','atan','atan2','atanh','cbrt','ceil','clz32','cos','cosh','exp','expm1','floor','fround','hypot','imul','log','log1p','log2','log10','max','min','pow','random','round','sign','sin','sinh','sqrt','tan','tanh','trunc'];
 
   _.each(mathKeys, function(key) { proto[key] = Math[key]; });
   _.extend(proto, ss);
