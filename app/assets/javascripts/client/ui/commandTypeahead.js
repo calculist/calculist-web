@@ -26,6 +26,10 @@ lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
       selectedCommandIndex = -1,
       $el = null;
 
+  _.each(window.OTHER_LISTS, function (otherList) {
+    availableCommands.push('goto list "' + otherList.title + '"');
+  });
+
   availableCommandsWithForEachPrefix = [
     'template ""', 'add text ""', 'remove text ""',
     'parse json', 'duplicate', 'sort items by ""',
