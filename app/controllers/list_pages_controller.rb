@@ -10,30 +10,7 @@ class ListPagesController < ApplicationController
     end
     @lists = @user.lists.order('updated_at desc')
     @list = List.new(title: @user.username, id: 0)
-    @list.content = {
-      guid: '0',
-      text: "#{@user.username}",
-      '$items': @lists.map { |list| {
-        text: list.title,
-        collapsed: true,
-        '$items': [
-          {
-            text: "handle [:] #{list.handle}"
-          },{
-            text: "created_at [:] #{list.created_at}"
-          },{
-            text: "updated_at [:] #{list.updated_at}"
-          },{
-            text: "update_count [:] #{list.update_count}"
-          },{
-            text: "item_count [:] #{list.items.where(is_deleted: false).pluck('count(*)')[0]}"
-          },{
-            text: "shared_with [=] count($items)",
-            '$items': list.list_shares.map { |ls| { text: "#{ls.user.username} [:] #{ls.access_type}" } }
-          }
-        ]
-      } }
-    }
+    @list.content = get_profile_page_list_content
     @other_lists = get_title_handle_and_path(@lists, @user)
   end
 
@@ -91,6 +68,73 @@ private
 
   def get_title_handle_and_path(lists, user)
     lists.map { |list| { title: list.title, handle: list.handle, path: list_page_path(username: user.username, handle: list.handle) } }
+  end
+
+  def get_profile_page_list_content
+    {
+      text: "#{@user.username}",
+      '$items': [
+        {
+          text: 'lists',
+          '$items': @lists.map do |list| {
+            text: list.title,
+            collapsed: true,
+            '$items': [
+              {
+                text: "handle [:] #{list.handle}"
+              },{
+                text: "created_at [:] #{list.created_at}"
+              },{
+                text: "updated_at [:] #{list.updated_at}"
+              },{
+                text: "update_count [:] #{list.update_count}"
+              },{
+                text: "item_count [:] #{list.items.where(is_deleted: false).pluck('count(*)')[0]}"
+              },{
+                text: "shared_with [=] count($items)",
+                '$items': list.list_shares.map { |ls| { text: "#{ls.user.username} [:] #{ls.access_type}" } }
+              }
+            ]
+          } end
+        },{
+          text: 'Welcome to Calculist!',
+          '$items': [
+            {
+              text: 'This is your home page, where you can find all of your lists',
+            },{
+              text: 'You can find help topics on the GitHub wiki',
+              '$items': [
+                {
+                  text: 'https://github.com/calculist/calculist/wiki'
+                }
+              ]
+            },{
+              text: 'To create a new list ...',
+              '$items': [
+                {
+                  text: 'enter command mode by double clicking on any item'
+                },{
+                  text: 'type "new list \'Title\'" (where "Title" is the title of your new list)'
+                },{
+                  text: 'hit enter'
+                }
+              ]
+            },{
+              text: 'To open one of your existing lists ...',
+              '$items': [
+                {
+                  text: 'enter command mode by double clicking on the list you want to go to'
+                },{
+                  text: 'then type "goto list"'
+                },{
+                  text: 'hit enter'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   end
 
 end
