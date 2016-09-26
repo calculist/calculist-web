@@ -43,3 +43,11 @@
   <%= render "devise/shared/links" %>
 
 </div>
+
+<script>
+  var inviteCode = window.location.search.split('?invite_code=')[1];
+  if (inviteCode) {
+    var el = document.getElementById('user_invite_code');
+    if (el) el.value = inviteCode;
+  }
+</script>
