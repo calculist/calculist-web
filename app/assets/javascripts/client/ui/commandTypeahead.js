@@ -7,7 +7,7 @@ lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
       availableCommands = [
         'template ""','make template ""',
         'add text ""','add prefix ""','remove text ""','replace text "", ""','change text ""',
-        'import from csv',//'parse json','export as text','export as markdown',
+        'import from csv','import from json','import from txt',
         'duplicate','expand all','collapse all','expand siblings',
         'collapse siblings','indent siblings','outdent items','outdent straight',
         'sort items by ""','group items by ""','ungroup items ""','ungroup',

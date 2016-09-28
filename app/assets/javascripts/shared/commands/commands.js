@@ -1,4 +1,4 @@
-lm.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, Item, executePreviousCommand, gotoList, goHome) {
+lm.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, Item, executePreviousCommand, gotoList, goHome) {
 
   var commands = {
     openFile: function (_this) {
@@ -210,56 +210,55 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
     copy: function() {},
     // TODO abstract file import into service
     importFromCsv: function(_this, labelKey) {
-      var input, onchange;
-      input = $('input[type="file"]')[0];
-      onchange = function(evnt) {
-        var file, reader;
-        file = input.files[0];
-        input.removeEventListener('change', onchange);
-        if (!file) {
-          return;
-        }
-        reader = new FileReader();
-        reader.onload = function(e) {
-          // TODO wrap in transaction
-          var data, headerRow, labelIndex;
-          data = Papa.parse(e.target.result).data;
-          headerRow = _.map(data.shift(), _.trim);
-          labelIndex = labelKey ? headerRow.indexOf(labelKey) : 0;
-          _this.$items = _.map(data, function(row) {
-            var item;
-            item = new Item({
-              guid: getNewGuid(),
-              text: row[labelIndex],
-              $parent: _this,
-              collapsed: true
-            });
-            item.$items = _.map(row, function(val, i) {
-              return new Item({
-                guid: getNewGuid(),
-                text: "" + headerRow[i] + " [:] " + val,
-                $parent: item
-              });
-            });
-            return item;
+      importFile(function (file) {
+        var data = Papa.parse(file).data;
+        var headerRow = _.map(data.shift(), _.trim);
+        var labelIndex = labelKey ? headerRow.indexOf(labelKey) : 0;
+        _this.$items = _.map(data, function(row) {
+          var item;
+          item = new Item({
+            guid: getNewGuid(),
+            text: row[labelIndex],
+            $parent: _this,
+            collapsed: true
           });
-          _this.save();
-          _this.renderChildren();
-        };
-        reader.readAsText(file);
-      };
-      input.addEventListener('change', onchange);
-      input.click();
+          item.$items = _.map(row, function(val, i) {
+            return new Item({
+              guid: getNewGuid(),
+              text: "" + headerRow[i] + " [:] " + val,
+              $parent: item
+            });
+          });
+          return item;
+        });
+        _this.save();
+        _this.renderChildren();
+      });
     },
-    // importFromJson: ,
+    importFromTxt: function (_this) {
+      // TODO fix the empty line bug
+      importFile(function (file) {
+        _this.handlePaste(file);
+      });
+    },
+    importFromJson: function (_this) {
+      var parseJson = _.bind(this.parseJson, this);
+      importFile(function (file) {
+        parseJson(_this, file);
+      });
+    },
     parseJson: function (_this, json) {
       var text;
       if (json) text = _this.text;
       var tree = jsonToItemTree(json || _this.text, text);
       _this.text = tree.text;
       _this.$items = _.map(tree.$items, function (itemData) {
-        return new Item(itemData);
+        var item = new Item(itemData);
+        item.$parent = _this;
+        return item;
       });
+      _this.refreshDepth();
+      _this.refreshSortOrder()
       _this.renderChildren();
     },
     exportAsText: function(_this, options) {
