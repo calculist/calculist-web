@@ -429,9 +429,9 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
     },
     toggleCollapseSiblings: function (_this) {
       if (_this.collapsed) {
-        this.expandSiblings();
+        this.expandSiblings(_this);
       } else {
-        this.collapseSiblings();
+        this.collapseSiblings(_this);
       }
     },
     expandSiblings: function (_this) {
