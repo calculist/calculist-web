@@ -210,7 +210,7 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
     copy: function() {},
     // TODO abstract file import into service
     importFromCsv: function(_this, labelKey) {
-      importFile(function (file) {
+      importFile().then(function (file) {
         var data = Papa.parse(file).data;
         var headerRow = _.map(data.shift(), _.trim);
         var labelIndex = labelKey ? headerRow.indexOf(labelKey) : 0;
@@ -237,13 +237,13 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
     },
     importFromTxt: function (_this) {
       // TODO fix the empty line bug
-      importFile(function (file) {
+      importFile().then(function (file) {
         _this.handlePaste(file);
       });
     },
     importFromJson: function (_this) {
       var parseJson = _.bind(this.parseJson, this);
-      importFile(function (file) {
+      importFile().then(function (file) {
         parseJson(_this, file);
       });
     },
