@@ -18,7 +18,7 @@ lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
         'toggle collapse','indent','outdent','select parent',
         'expand','collapse','heads or tails','freeze computed value',
         'goto ""','goto list','go home',
-        'download as txt','download as computed txt','download as csv',
+        'download as txt','download as computed txt','download as csv','download backup',
         'new list ""','copy to clipboard','copy items to clipboard',
       ],
       availableCommandsWithForEachPrefix,

@@ -1,7 +1,14 @@
 class ItemManager
 
   def initialize(list_id)
-    @list_id = list_id.to_i
+    if list_id.is_a?(List)
+      @list = list_id
+      @list_id = @list.id
+    elsif list_id.is_a?(Integer)
+      @list_id = list_id
+    else
+      raise "unexpected input: #{list_id}"
+    end
   end
 
   def get_tree
@@ -13,7 +20,7 @@ class ItemManager
                               list_id: @list_id,
                               parent_guid: nil,
                               sort_order: 100,
-                              text: List.find(@list_id).title || 'Untitled Document',
+                              text: list.title || 'Untitled Document',
                               is_collapsed: false,
                               is_deleted: false,
                               is_top_item: true,

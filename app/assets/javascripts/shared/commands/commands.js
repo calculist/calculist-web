@@ -293,7 +293,7 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
     }),
     copyItemsToClipboard: _.rest(function (_this, options) {
       options.push('items only');
-      this.copyToClipboard(options);
+      this.copyToClipboard(_this, options);
     }),
     copyToClipboardFormatted: _.rest(function (_this, options) {
       var computed = _.includes(options, 'computed');
@@ -378,6 +378,10 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
     },
     downloadAsComputedTxt: function (_this, filename) {
       this.downloadAsTxt(_this, filename, true);
+    },
+    downloadBackup: function (_this, filename) {
+      filename || (filename =  window.topItem.text + '_' + (new Date()).toJSON().substring(0, 10));
+      downloadFile(window.topItem.toText(0, false), 'text/txt', filename + '.txt');
     },
     // exportAsPDF: ,
     // exportAsHTML: ,

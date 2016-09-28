@@ -14,6 +14,7 @@ lm.register('lmDiff', ['_','Promise','Worker','jsondiffpatch','getItemByGuid'], 
     flatItemsByGuidDiff: function (flatItemsByGuid_Before, flatItemsByGuid_After) {
       var diff = jsondiffpatch.diff(flatItemsByGuid_Before, flatItemsByGuid_After);
       return _.map(diff, function (changedAttrs, guid) {
+        // TODO fix the bug where item can sometimes be undefined
         var item = getItemByGuid(guid);
         var json = item.toFlatJSON_v2();
         if (_.isArray(changedAttrs)) {

@@ -97,7 +97,8 @@ private
             ]
           } end
         },{
-          text: 'Welcome to Calculist!',
+          text: 'Welcome to Calculist! Click the dot on the left to expand this item.',
+          collapsed: true,
           '$items': [
             {
               text: 'This is your home page, where you can find all of your lists',

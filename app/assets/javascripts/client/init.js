@@ -103,9 +103,13 @@ lm.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndAppl
                 reject();
               }
             });
-          });
+          }).catch(function () {
+            saveButton.changeStatus('saving failed');
+          });;
         }
 
+      }).catch(function () {
+        saveButton.changeStatus('saving failed');
       });
     };
     (function() {

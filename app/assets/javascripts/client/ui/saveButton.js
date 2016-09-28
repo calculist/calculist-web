@@ -7,15 +7,24 @@ lm.register('saveButton', ['_','$'], function (_, $) {
   var render = function () {
     if (currentStatus === 'saved') {
       $el.text('saved').css({
-        cursor: 'default'
+        cursor: 'default',
+        backgroundColor: 'transparent',
+        color: ''
       });
     } else if (currentStatus === 'save') {
       $el.text('save').css({
-        cursor: 'pointer'
+        cursor: 'pointer',
+        backgroundColor: 'transparent',
+        color: ''
       });
     } else if (currentStatus === 'saving failed') {
       $el.text('saving failed').css({
-        cursor: 'pointer'
+        cursor: 'pointer',
+        backgroundColor: 'red',
+        color: '#fff'
+      });
+      _.times(3, function () {
+        $el.fadeTo(100, 0).fadeTo(100, 1.0);
       });
     }
   };
