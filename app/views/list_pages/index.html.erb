@@ -1,7 +1,7 @@
 <header id="header">
   <img id="logo" src="/logo-blue-black.svg">
   <div class="header-right">
-    <span id="username"><%= current_user.username %></span>&nbsp;|&nbsp;<span id="sign-out">sign out</span>
+    <span id="save-status">saved</span>&nbsp;|&nbsp;<span id="username"><%= current_user.username %></span>&nbsp;|&nbsp;<span id="sign-out">sign out</span>
   </div>
 </header>
 
@@ -19,7 +19,7 @@
       INITIAL_LAST_SAVE = <%= @list.update_count || 0 %>,
       USER_PREFERENCES = <%= @list.list_type == 'user_preferences' ? 'null' : raw(current_user.preferences.content.to_json) %>,
       WORKER_FILE_PATH = '<%= asset_path('worker.js') %>',
-      READ_ONLY = true,
+      READ_ONLY = false,
       OTHER_LISTS = <%= raw(@other_lists.to_json) %>;
 </script>
 

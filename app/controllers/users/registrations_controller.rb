@@ -14,7 +14,8 @@ before_action :configure_sign_up_params, only: [:create]
     return redirect_to('') unless beta_access
     params[:user].delete(:invite_code)
     super
-    beta_access.claimed_by = User.where(username: params[:user][:username]).first.id
+    return unless resource.id
+    beta_access.claimed_by = resource.id
     beta_access.claimed_at = DateTime.now
     beta_access.save!
   end
@@ -56,9 +57,9 @@ before_action :configure_sign_up_params, only: [:create]
   # end
 
   # The path used after sign up.
-  # def after_sign_up_path_for(resource)
-  #   super(resource)
-  # end
+  def after_sign_up_path_for(resource)
+    profile_page_path(username: resource.username)
+  end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)

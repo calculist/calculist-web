@@ -130,7 +130,11 @@ class ItemManager
   end
 
   def update_items(items_data, list_update_id = nil)
-    # TODO Add detailed logging and assumption checks
+    items_data = items_data.select do |item_data|
+      # FIXME This is hacky. Fix this.
+      !item_data[:guid].starts_with?('do_not_save') &&
+      !item_data[:parent_guid].starts_with?('do_not_save')
+    end
     items_data.sort_by!{|item_data| item_data[:guid]}
     guids = items_data.pluck(:guid)
     existing_items = Item.where(list_id: @list_id, guid: guids).order(:guid).to_a

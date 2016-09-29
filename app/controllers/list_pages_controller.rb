@@ -8,9 +8,9 @@ class ListPagesController < ApplicationController
       render_404
       return
     end
-    @lists = @user.lists.order('updated_at desc')
-    @list = List.new(title: @user.username, id: 0)
-    @list.content = get_profile_page_list_content
+    @lists = @user.lists.where(list_type: ['user_preferences', nil]).order('updated_at desc')
+    @list = @user.primary_list
+    @list.content['$items'].unshift(get_profile_page_list_of_lists)
     @other_lists = get_title_handle_and_path(@lists, @user)
   end
 
@@ -70,71 +70,38 @@ private
     lists.map { |list| { title: list.title, handle: list.handle, path: list_page_path(username: user.username, handle: list.handle) } }
   end
 
-  def get_profile_page_list_content
+  def get_profile_page_list_of_lists
+    inc = 0
     {
-      text: "#{@user.username}",
-      '$items': [
-        {
-          text: 'lists',
-          '$items': @lists.map do |list| {
-            text: list.title,
-            collapsed: true,
-            '$items': [
-              {
-                text: "handle [:] #{list.handle}"
-              },{
-                text: "created_at [:] #{list.created_at}"
-              },{
-                text: "updated_at [:] #{list.updated_at}"
-              },{
-                text: "update_count [:] #{list.update_count}"
-              },{
-                text: "item_count [:] #{list.items.where(is_deleted: false).pluck('count(*)')[0]}"
-              },{
-                text: "shared_with [=] count($items)",
-                '$items': list.list_shares.map { |ls| { text: "#{ls.user.username} [:] #{ls.access_type}" } }
-              }
-            ]
-          } end
-        },{
-          text: 'Welcome to Calculist! Click the dot on the left to expand this item.',
-          collapsed: true,
-          '$items': [
-            {
-              text: 'This is your home page, where you can find all of your lists',
-            },{
-              text: 'You can find help topics on the GitHub wiki',
-              '$items': [
-                {
-                  text: 'https://github.com/calculist/calculist/wiki'
-                }
-              ]
-            },{
-              text: 'To create a new list ...',
-              '$items': [
-                {
-                  text: 'enter command mode by double clicking on any item'
-                },{
-                  text: 'type "new list \'Title\'" (where "Title" is the title of your new list)'
-                },{
-                  text: 'hit enter'
-                }
-              ]
-            },{
-              text: 'To open one of your existing lists ...',
-              '$items': [
-                {
-                  text: 'enter command mode by double clicking on the list you want to go to'
-                },{
-                  text: 'then type "goto list"'
-                },{
-                  text: 'hit enter'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      text: 'lists [=] count($items)',
+      guid: "do_not_save#{inc += 1}",
+      '$items': @lists.map do |list| {
+        text: list.title,
+        collapsed: true,
+        guid: "do_not_save#{inc += 1}",
+        '$items': [
+          {
+            text: "handle [:] #{list.handle}",
+            guid: "do_not_save#{inc += 1}"
+          },{
+            text: "created_at [:] #{list.created_at}",
+            guid: "do_not_save#{inc += 1}"
+          },{
+            text: "updated_at [:] #{list.updated_at}",
+            guid: "do_not_save#{inc += 1}",
+          },{
+            text: "update_count [:] #{list.update_count}",
+            guid: "do_not_save#{inc += 1}"
+          },{
+            text: "item_count [:] #{list.items.where(is_deleted: false).pluck('count(*)')[0]}",
+            guid: "do_not_save#{inc += 1}",
+          },{
+            text: "shared_with [=] count($items)",
+            guid: "do_not_save#{inc += 1}",
+            '$items': list.list_shares.map { |ls| { text: "#{ls.user.username} [:] #{ls.access_type}" } }
+          }
+        ]
+      } end
     }
   end
 

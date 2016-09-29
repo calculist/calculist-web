@@ -178,8 +178,47 @@ class UserPreferencesManager
     }]
   }
 
+  OOBE_WELCOME_MESSAGE = {
+    text: 'Welcome to Calculist! Click the dot on the left to expand this item.',
+    collapsed: true,
+    items: [{
+      text: 'This is your home page, where you can find all of your lists',
+    },{
+      text: 'You can find help topics on the GitHub wiki',
+      items: [{
+        text: 'https://github.com/calculist/calculist/wiki'
+      }]
+    },{
+      text: 'To create a new list ...',
+      items: [{
+        text: 'enter command mode by double clicking on any item'
+      },{
+        text: 'type "new list \'Title\'" (where "Title" is the title of your new list)'
+      },{
+        text: 'hit enter'
+      }]
+    },{
+      text: 'To open one of your existing lists ...',
+      items: [{
+        text: 'enter command mode by double clicking on the list you want to go to'
+      },{
+        text: 'then type "goto list"'
+      },{
+        text: 'hit enter'
+      }]
+    }]
+  }
+
   def initialize(user_id)
     @user_id = user_id
+  end
+
+  def create_primary_list_items
+    im = ItemManager.new(user.primary_list.id)
+    im.create_items_from_tree({
+      text: user.primary_list.title,
+      items: [OOBE_WELCOME_MESSAGE]
+    })
   end
 
   def create_preference_items

@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :lists
   has_many :list_shares
 
-  after_create :create_preferences
+  after_create :create_initial_lists
 
   validates :username,
             :presence => true,
@@ -28,20 +28,35 @@ class User < ApplicationRecord
     @login || self.username || self.email
   end
 
-  def create_preferences
-    unless preferences
-      List.create(title: 'my preferences',
-                  user_id: id,
-                  update_count: 0,
-                  handle: 'preferences',
-                  list_type: 'user_preferences')
-      upm = UserPreferencesManager.new(id)
-      upm.create_preference_items
+  def create_initial_lists
+    primary_list
+    preferences
+  end
+
+  def primary_list
+    @primary_list ||= lists.where(list_type: 'user_primary').first
+    unless @primary_list
+      @primary_list = List.create(title: username,
+                                  user_id: id,
+                                  update_count: 0,
+                                  handle: username,
+                                  list_type: 'user_primary')
+      upm.create_primary_list_items
     end
+    @primary_list
   end
 
   def preferences
     @preferences ||= lists.where(list_type: 'user_preferences').first
+    unless @preferences
+      @preferences = List.create(title: 'my preferences',
+                                  user_id: id,
+                                  update_count: 0,
+                                  handle: 'preferences',
+                                  list_type: 'user_preferences')
+      upm.create_preference_items
+    end
+    @preferences
   end
 
   def default_theme
@@ -66,6 +81,12 @@ class User < ApplicationRecord
       conditions[:email].downcase! if conditions[:email]
       where(conditions.to_h).first
     end
+  end
+
+  private
+
+  def upm
+    @upm ||= UserPreferencesManager.new(id)
   end
 
 end

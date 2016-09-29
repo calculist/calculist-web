@@ -6,7 +6,7 @@ class List < ActiveRecord::Base
   before_save :default_values
 
   validates :handle, presence: true
-  validates :list_type, :inclusion => { :in => %w(user_preferences) }, :allow_nil => true
+  validates :list_type, :inclusion => { :in => %w(user_preferences user_primary) }, :allow_nil => true
 
   def default_values
     self.title ||= 'Untitled List'
