@@ -1,4 +1,4 @@
-lm.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, Item, executePreviousCommand, gotoList, goHome) {
+lm.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, executePreviousCommand, gotoList, goHome) {
 
   var commands = {
     openFile: function (_this) {
@@ -261,21 +261,25 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
       _this.refreshSortOrder()
       _this.renderChildren();
     },
-    exportAsText: function(_this, options) {
-      var computed, hideCollapsed;
-      if (options == null) {
-        options = {};
+    followLink: function (_this, link) {
+      if (!link) {
+        var val = _this.valueOf();
+        if (_.isString(val) && urlFinder.hasUrl(val)) {
+          link = urlFinder.getUrls(val)[0];
+        } else if (urlFinder.hasUrl(_this.text)) {
+          link = urlFinder.getUrls(_this.text)[0];
+        } else {
+          return;
+        }
       }
-      computed = options.computed, hideCollapsed = options.hideCollapsed;
-      $('#export-display')
-        .val(_this.toText(0, computed, hideCollapsed))
-        .show();
-
-      _.defer(function () {
-        $('#export-display').focus().select();
+      if (urlFinder.isUrl(link)) window.topItem.saveNow().then(function () {
+        window.location.assign(link);
+      }).catch(function () {
+        alert('saving failed');
       });
     },
     copyToClipboard: _.rest(function (_this, options) {
+      options = _.flatten(options);
       if (_.includes(options, 'formatted')) return this.copyToClipboardFormatted(_this, options);
       var computed = _.includes(options, 'computed');
       var hideCollapsed = _.includes(options, 'hide collapsed');
@@ -295,6 +299,7 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
       this.copyToClipboard(_this, options);
     }),
     copyToClipboardFormatted: _.rest(function (_this, options) {
+      options = _.flatten(options);
       var computed = _.includes(options, 'computed');
       var hideCollapsed = _.includes(options, 'hide collapsed');
       var itemsOnly = _.includes(options, 'items only');

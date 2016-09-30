@@ -17,7 +17,7 @@ lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
         'zoom in','zoom out','move up','move down','up','down',
         'toggle collapse','indent','outdent','select parent',
         'expand','collapse','heads or tails','freeze computed value',
-        'goto ""','goto list','go home',
+        'goto list','go home','goto ""','follow link',
         'download as txt','download as computed txt','download as csv','download backup',
         'new list ""','copy to clipboard','copy items to clipboard',
       ],
