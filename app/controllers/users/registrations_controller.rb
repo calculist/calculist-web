@@ -8,17 +8,9 @@ before_action :configure_sign_up_params, only: [:create]
   # end
 
   # POST /resource
-  def create
-    invite_code = params[:user][:invite_code]
-    beta_access = invite_code ? BetaAccess.where(claimed_by: nil, code: invite_code).first : nil
-    return redirect_to('') unless beta_access
-    params[:user].delete(:invite_code)
-    super
-    return unless resource.id
-    beta_access.claimed_by = resource.id
-    beta_access.claimed_at = DateTime.now
-    beta_access.save!
-  end
+  # def create
+  #   super
+  # end
 
   # GET /resource/edit
   # def edit

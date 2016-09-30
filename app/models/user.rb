@@ -7,17 +7,47 @@ class User < ApplicationRecord
   has_many :lists
   has_many :list_shares
 
-  after_create :create_initial_lists
+  after_create :setup_account
 
   validates :username,
-            :presence => true,
-            :uniqueness => {
-              :case_sensitive => false
+            presence: true,
+            uniqueness: {
+              case_sensitive: false
             }
-  validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
+  validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, multiline: true
+  validates :invite_code, with: :validate_invite_code
+
+  def setup_account
+    save_invite_code
+    create_initial_lists
+  end
+
+  def invite_code=(code)
+    @invite_code = code
+  end
 
   def invite_code
-    nil # TODO remove this method after beta
+    return @invite_code if @invite_code || !id
+    ba = BetaAccess.where(claimed_by: id)
+    return @invite_code = ba.code if ba
+  end
+
+  def validate_invite_code
+    @beta_access = BetaAccess.where(code: @invite_code).first
+    if @beta_access && @beta_access.claimed_by && @beta_access.claimed_by != id
+      errors.add :invite_code, 'has already been claimed'
+    elsif !@beta_access
+      errors.add :invite_code, 'is not valid'
+    end
+  end
+
+  def save_invite_code
+    @beta_access ||= BetaAccess.where(code: @invite_code).first
+    if @beta_access && @beta_access.claimed_by.nil?
+      @beta_access.claimed_by = id
+      @beta_access.claimed_at = DateTime.now
+      @beta_access.save!
+    end
   end
 
   def login=(login)
