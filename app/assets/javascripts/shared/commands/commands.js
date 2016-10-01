@@ -97,7 +97,7 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
       item.save();
     },
     changeText: function (_this, text) {
-      this.changeTextOf(_this, text);
+      this.changeTextOf(_this, _this, text);
     },
     freezeComputedValue: function (_this) {
       if (_this.valIsComputed) {
