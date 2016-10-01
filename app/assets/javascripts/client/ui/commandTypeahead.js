@@ -20,6 +20,7 @@ lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
         'goto list','go home','goto ""','follow link',
         'download as txt','download as computed txt','download as csv','download backup',
         'new list ""','copy to clipboard','copy items to clipboard',
+        'change theme ""',
       ],
       availableCommandsWithForEachPrefix,
       matches = [],

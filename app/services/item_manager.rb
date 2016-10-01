@@ -133,7 +133,7 @@ class ItemManager
     items_data = items_data.select do |item_data|
       # FIXME This is hacky. Fix this.
       !item_data[:guid].starts_with?('do_not_save') &&
-      !item_data[:parent_guid].starts_with?('do_not_save')
+      (item_data[:parent_guid] ? !item_data[:parent_guid].starts_with?('do_not_save') : true)
     end
     items_data.sort_by!{|item_data| item_data[:guid]}
     guids = items_data.pluck(:guid)

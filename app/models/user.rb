@@ -28,7 +28,7 @@ class User < ApplicationRecord
 
   def invite_code
     return @invite_code if @invite_code || !id
-    ba = BetaAccess.where(claimed_by: id)
+    ba = BetaAccess.where(claimed_by: id).first
     return @invite_code = ba.code if ba
   end
 
