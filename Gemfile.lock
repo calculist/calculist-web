@@ -90,6 +90,8 @@ GEM
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
+    non-stupid-digest-assets (1.0.8)
+      sprockets (>= 2.0)
     orm_adapter (0.5.0)
     pkg-config (1.1.7)
     puma (3.6.0)
@@ -192,6 +194,7 @@ DEPENDENCIES
   jquery-rails
   listen (~> 3.0.5)
   mysql2 (>= 0.3.18, < 0.5)
+  non-stupid-digest-assets
   puma (~> 3.0)
   rails (~> 5.0.0, >= 5.0.0.1)
   rspec-rails (~> 3.5)
