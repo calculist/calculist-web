@@ -68,6 +68,18 @@ lm.register('item.handleKeydown', ['_','$','cursorPosition','transaction','comma
       if (!this.text) {
         e.preventDefault();
         transaction(this.deleteItem, this);
+      } else if (e.altKey && anchorOffset === 0) {
+        e.preventDefault();
+        transaction(function () {
+          if (!this.$parent) return;
+          var i = _.indexOf(this.$parent.$items, this);
+          var itemAbove = this.$parent.$items[i - 1] || this.$parent;
+          var newText = itemAbove.text + this.text;
+          var newCursorOffset = itemAbove.text.length;
+          itemAbove.changeText(newText);
+          cursorPosition.set(newText, itemAbove.depth, newCursorOffset);
+          this.deleteItem();
+        }, this);
       }
     } else if (e.which === 27) { // 27 = esc
       if (this.mode === 'command') {
