@@ -2,7 +2,7 @@ lm.register('parseTextDoc', ['_'], function (_) {
 
   return function (textDoc) {
     var flatDoc, flatDocById, flatListsByDepth, justData, lines;
-    lines = textDoc.split('\n');
+    lines = _.compact(textDoc.split('\n'));
     flatDoc = [];
     flatDocById = {};
     flatListsByDepth = {};
