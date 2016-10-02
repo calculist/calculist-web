@@ -179,7 +179,7 @@ class UserPreferencesManager
   }
 
   OOBE_WELCOME_MESSAGE = {
-    text: 'Welcome to Calculist! Select this item and press ctrl + spacebar to expand this item.',
+    text: 'Welcome to Calculist! Select this item and press ctrl + spacebar to expand.',
     collapsed: true,
     items: [{
       text: 'This is your home page, where you can find all of your lists',

@@ -18,4 +18,12 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
     devise_parameter_sanitizer.permit :account_update, keys: added_attrs
   end
+
+  def after_sign_in_path_for(resource_or_scope)
+    if current_user
+      profile_page_path(username: current_user.username)
+    else
+      stored_location_for(resource_or_scope) || signed_in_root_path(resource_or_scope)
+    end
+  end
 end
