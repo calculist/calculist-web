@@ -179,7 +179,7 @@ class UserPreferencesManager
   }
 
   OOBE_WELCOME_MESSAGE = {
-    text: 'Welcome to Calculist! Click the dot on the left to expand this item.',
+    text: 'Welcome to Calculist! Select this item and press ctrl + spacebar to expand this item.',
     collapsed: true,
     items: [{
       text: 'This is your home page, where you can find all of your lists',
@@ -191,7 +191,7 @@ class UserPreferencesManager
     },{
       text: 'To create a new list ...',
       items: [{
-        text: 'enter command mode by double clicking on any item'
+        text: 'enter command mode by pressing ctrl + enter'
       },{
         text: 'type "new list \'Title\'" (where "Title" is the title of your new list)'
       },{
@@ -200,7 +200,9 @@ class UserPreferencesManager
     },{
       text: 'To open one of your existing lists ...',
       items: [{
-        text: 'enter command mode by double clicking on the list you want to go to'
+        text: 'select the item with the name of the list you want to go to'
+      },{
+        text: 'enter command mode by pressing ctrl + enter'
       },{
         text: 'then type "goto list"'
       },{

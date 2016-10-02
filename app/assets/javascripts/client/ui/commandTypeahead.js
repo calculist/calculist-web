@@ -15,7 +15,7 @@ lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
         'shuffle items', 'for each item,','for each item recursively,','reverse items','delete items',
         'move to list ""','split to list ""','delete',
         'zoom in','zoom out','move up','move down','up','down',
-        'toggle collapse','indent','outdent','select parent',
+        'toggle collapse','indent','outdent',
         'expand','collapse','freeze computed value',
         'goto list','go home','goto item ""','follow link',
         'download as txt','download as computed txt','download as csv','download backup',
@@ -23,7 +23,11 @@ lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
         'copy to clipboard "hide collapsed"','copy items to clipboard',
         'change theme "dark"','change theme "light"','change theme "sandcastle"',
       ],
-      availableCommandsWithForEachPrefix,
+      availableCommandsWithForEachPrefix = [
+        'template ""','add text ""','add prefix ""','remove text ""','replace text "", ""','change text ""',
+        'duplicate','sort items by ""','group items by ""','shuffle items','reverse items','delete items',
+        'pivot items','move to list ""', 'split to list ""','freeze computed value',
+      ].map(function (c) { return 'for each item, ' + c; }),
       matches = [],
       selectedCommandIndex = -1,
       $el = null;
@@ -31,13 +35,6 @@ lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
   _.each(window.OTHER_LISTS, function (otherList) {
     availableCommands.push('goto list "' + otherList.title + '"');
   });
-
-  availableCommandsWithForEachPrefix = [
-    'template ""', 'add text ""', 'remove text ""',
-    'parse json', 'duplicate', 'sort items by ""',
-    'group items by ""', 'shuffle items', 'reverse items',
-    'move to list ""', 'split to list ""'
-  ].map(function (c) { return 'for each item, ' + c; });
 
   var getEl = function () {
     if ($el) return $el;
