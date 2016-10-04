@@ -9,6 +9,8 @@ lm.register('item.$item', ['_'], function (_) {
       return this.$items[i];
     } else if (_.isFunction(key)) {
       condition = key;
+    } else if (_.isRegExp(key)) {
+      condition = function (child) { return key.test(child[attributeName]); };
     } else {
       condition = function (child) { return child[attributeName] === key; };
     }

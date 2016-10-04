@@ -13,6 +13,13 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
         alert('saving failed');
       })
     },
+    searchFor: function (_this, item, caseSensitive) {
+      if (_.isString(item)) {
+        if (caseSensitive) item = new RegExp(_.escapeRegExp(item));
+        if (!caseSensitive) item = new RegExp(_.escapeRegExp(item), 'i');
+      }
+      this.goto(_this, item);
+    },
     goto: function (_this, item) {
       if (!isItem(item)) item = _this.$item(item) || _this.$$item(item);
       item.$parent ? item.$parent.expand(true).then(function () {
