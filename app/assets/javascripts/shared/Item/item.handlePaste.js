@@ -1,4 +1,3 @@
-// TODO Fix bug where only two top level items get added
 lm.require(['Item','_','parseTextDoc','getNewGuid','transaction'], function (Item, _, parseTextDoc, getNewGuid, transaction) {
 
   Item.prototype.handlePaste = function(e) {

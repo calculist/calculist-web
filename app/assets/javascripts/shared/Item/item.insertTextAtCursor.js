@@ -22,7 +22,7 @@ lm.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorPosition
     transaction(function () {
       this.text = textArray.join('');
       if (!skipRender) {
-        cursorPosition.set(this.text, this.depth, end + insertingText.length);
+        cursorPosition.set(this.text, this.depth, start + insertingText.length);
         this.render();
         this.focus();
       }
