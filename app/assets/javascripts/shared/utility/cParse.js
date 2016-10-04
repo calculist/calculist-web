@@ -10,7 +10,7 @@ lm.register('cParse', [], function () {
     .split(/(".*?")/g).map(function (dqChunk) {
       return dqChunk.split(/('.*?')/g).map(function (sqChunk) {
         var isStr = sqChunk[0]  == '"' || sqChunk[0] == "'";
-        return isStr ? sqChunk : sqChunk.replace(/[a-zA-Z_\$]+\d*/g, function(a,b){return 'c("' + a + '")';});
+        return isStr ? sqChunk : sqChunk.replace(/[a-zA-Z_\$][a-zA-Z0-9_\$]*/g, function(a,b){return 'c("' + a + '")';});
       }).join('');
     }).join('')
     .replace(/c\("((?:\w|\$)+)"\)\[(.+?)\]/g, function(s, variableName, attributeName) {
