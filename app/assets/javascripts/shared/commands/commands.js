@@ -1,4 +1,4 @@
-lm.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, executePreviousCommand, gotoList, goHome) {
+lm.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome','commands.permanentlyDeleteList'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, executePreviousCommand, gotoList, goHome, permanentlyDeleteList) {
 
   var commands = {
     openFile: function (_this) {
@@ -13,6 +13,7 @@ lm.register('commands', ['_','$','transaction','computeItemValue','cursorPositio
         alert('saving failed');
       })
     },
+    permanentlyDeleteList: permanentlyDeleteList,
     searchFor: function (_this, item, caseSensitive) {
       if (_.isString(item)) {
         if (caseSensitive) item = new RegExp(_.escapeRegExp(item));

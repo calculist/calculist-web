@@ -35,6 +35,7 @@ lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
 
   _.each(window.OTHER_LISTS, function (otherList) {
     availableCommands.push('goto list "' + otherList.title + '"');
+    if (otherList.handle !== 'preferences') availableCommands.push('permanently delete list "' + otherList.title  + '"');
   });
 
   var getEl = function () {

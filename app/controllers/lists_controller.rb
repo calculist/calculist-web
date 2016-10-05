@@ -41,6 +41,18 @@ class ListsController < ApplicationController
     }
   end
 
+  def destroy
+    @list = List.find(params[:id])
+    if @list.user_id != current_user.id
+      render status: :forbidden, json: {message: 'only list owners can delete lists'}
+    elsif @list.list_type != nil
+      render status: :forbidden, json: {message: "lists of type '#{@list.list_type}' cannot be deleted"}
+    else
+      @list.destroy!
+      render status: :ok, json: {message: "list '#{@list.title}' has been successfully deleted"}
+    end
+  end
+
   private
 
   # NOTE Should these methods be User model methods?

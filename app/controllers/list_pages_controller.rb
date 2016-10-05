@@ -11,7 +11,7 @@ class ListPagesController < ApplicationController
     @lists = @user.lists.where(list_type: ['user_preferences', nil]).order('updated_at desc')
     @list = @user.primary_list
     @list.content['$items'].unshift(get_profile_page_list_of_lists)
-    @other_lists = get_title_handle_and_path(@lists, @user)
+    @other_lists = get_title_handle_path_id(@lists, @user)
   end
 
   def show
@@ -23,7 +23,7 @@ class ListPagesController < ApplicationController
       render_404 unless @list.id == 1 # TODO get rid of list.id == 1 hack
     end
     @lists = current_user.lists
-    @other_lists = get_title_handle_and_path(@lists, current_user)
+    @other_lists = get_title_handle_path_id(@lists, current_user)
     @theme = @list_owner.default_theme
   end
 
@@ -66,8 +66,8 @@ private
     current_user_can(['read_write'])
   end
 
-  def get_title_handle_and_path(lists, user)
-    lists.map { |list| { title: list.title, handle: list.handle, path: list_page_path(username: user.username, handle: list.handle) } }
+  def get_title_handle_path_id(lists, user)
+    lists.map { |list| { title: list.title, handle: list.handle, path: list_page_path(username: user.username, handle: list.handle), id: list.id } }
   end
 
   def get_profile_page_list_of_lists
