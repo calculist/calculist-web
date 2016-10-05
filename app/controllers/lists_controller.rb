@@ -6,8 +6,12 @@ class ListsController < ApplicationController
     return render_403 unless current_user_can_read?
     if params[:last_save]
       last_save = params[:last_save].to_i
-      new_items = @list.items.where('initial_list_update_id > ?', last_save)
-      updated_items = @list.items.where('list_update_id > ? and (initial_list_update_id <= ? or initial_list_update_id is null)', last_save, last_save)
+      new_items = @list.items
+                        .where(is_deleted: false)
+                        .where('initial_list_update_id > ?', last_save)
+      updated_items = @list.items
+                        .where(is_deleted: false)
+                        .where('list_update_id > ? and (initial_list_update_id <= ? or initial_list_update_id is null)', last_save, last_save)
       render json: {
         last_save: @list.update_count,
         new_items: new_items.map(&:main_attributes_hash),
