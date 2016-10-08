@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require lodash/lodash
 //= require backbone/backbone
 //= require papaparse/papaparse
