@@ -2,7 +2,7 @@
 //= require simple_statistics/simple_statistics
 //= require_tree ./shared/lm
 //= require ./shared/utility/vendors
-//= require ./shared/utility/cParse
+//= require ./shared/utility/evalculist
 //= require ./shared/Item/parseItemText
 //= require ./shared/Item/isItem
 //= require ./shared/Item/item.findVar

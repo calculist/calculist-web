@@ -1,4 +1,4 @@
-lm.register('computeItemValue', ['_','createComputationContextObject','cParse','item.findVar'], function (_, createComputationContextObject, cParse, findVar) {
+lm.register('computeItemValue', ['_','createComputationContextObject','evalculist','item.findVar'], function (_, createComputationContextObject, evalculist, findVar) {
 
   'use strict';
 
@@ -16,7 +16,7 @@ lm.register('computeItemValue', ['_','createComputationContextObject','cParse','
       if (item.isComputingValue) throw 'infinite loop';
       item.isComputingValue = true;
       var valueContext, variables;
-      var val = cParse(string, {
+      var val = evalculist(string, {
         variable: function (v) {
           if (!variables) variables = {};
           if (variables[v] == null) {

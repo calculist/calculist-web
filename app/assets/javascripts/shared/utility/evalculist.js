@@ -1,11 +1,11 @@
-lm.register('cParse', [], function () {
+lm.register('evalculist', [], function () {
   // FIXME Do proper lexical analysis.
   var ESCAPED_DOUBLE_QUOTES_PLACEHOLDER = "______adsfasdfrtrssgoivdfoijwpdfoijdfg_______";
   var ESCAPED_DOUBLE_QUOTES_PATTERN = new RegExp(ESCAPED_DOUBLE_QUOTES_PLACEHOLDER, 'g');
   var ESCAPED_SINGLE_QUOTES_PLACEHOLDER = "______oiwjefoijfviojdfhweoiufhoihsdfoi_______";
   var ESCAPED_SINGLE_QUOTES_PATTERN = new RegExp(ESCAPED_SINGLE_QUOTES_PLACEHOLDER, 'g');
   var isDigit = function (s) { return /\d/.test(s); };
-  return function cParse (code, handlers) {
+  return function evalculist (code, handlers) {
     var string = code.replace(/\\"/g , ESCAPED_DOUBLE_QUOTES_PLACEHOLDER)
     .replace(/\\'/g , ESCAPED_SINGLE_QUOTES_PLACEHOLDER)
     .split(/(".*?")/g).map(function (dqChunk) {

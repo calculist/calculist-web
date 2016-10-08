@@ -1,4 +1,4 @@
-lm.register('createComputationContextObject', ['_','ss','cParse','isItem'], function (_, ss, cParse, isItem) {
+lm.register('createComputationContextObject', ['_','ss','evalculist','isItem'], function (_, ss, evalculist, isItem) {
 
   'use strict';
 
@@ -23,7 +23,7 @@ lm.register('createComputationContextObject', ['_','ss','cParse','isItem'], func
       // if (fns && fns.$items.length) {
       //   _.each(fns.$items, function (fn) {
       //     _this[fn.key] = function () {
-      //       return cParse(fn.val)(_this);
+      //       return evalculist(fn.val)(_this);
       //     };
       //     _this[fn.key].toString = fnToString;
       //   });
@@ -290,7 +290,7 @@ lm.register('createComputationContextObject', ['_','ss','cParse','isItem'], func
     return window.topItem.$item(key);
   };
 
-  // cParse adds a special "accessor" function for things like a['b']
+  // evalculist adds a special "accessor" function for things like a['b']
   // so it becomes accessor(a, 'b')
   proto.accessor = function (obj, key) {
     if (_.isNumber(key) && !isItem(obj[key])) return obj[key];
