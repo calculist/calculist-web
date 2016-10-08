@@ -4,13 +4,14 @@ lm.register('cParse', [], function () {
   var ESCAPED_DOUBLE_QUOTES_PATTERN = new RegExp(ESCAPED_DOUBLE_QUOTES_PLACEHOLDER, 'g');
   var ESCAPED_SINGLE_QUOTES_PLACEHOLDER = "______oiwjefoijfviojdfhweoiufhoihsdfoi_______";
   var ESCAPED_SINGLE_QUOTES_PATTERN = new RegExp(ESCAPED_SINGLE_QUOTES_PLACEHOLDER, 'g');
+  var isDigit = function (s) { return /\d/.test(s); };
   return function cParse (code, handlers) {
     var string = code.replace(/\\"/g , ESCAPED_DOUBLE_QUOTES_PLACEHOLDER)
     .replace(/\\'/g , ESCAPED_SINGLE_QUOTES_PLACEHOLDER)
     .split(/(".*?")/g).map(function (dqChunk) {
       return dqChunk.split(/('.*?')/g).map(function (sqChunk) {
         var isStr = sqChunk[0]  == '"' || sqChunk[0] == "'";
-        return isStr ? sqChunk : sqChunk.replace(/[a-zA-Z_\$][a-zA-Z0-9_\$]*/g, function(a,b){return 'c("' + a + '")';});
+        return isStr ? sqChunk : sqChunk.replace(/[a-zA-Z\d_\$]+/g, function(a,b){return isDigit(a[0]) ? a : 'c("' + a + '")';});
       }).join('');
     }).join('')
     .replace(/c\("((?:\w|\$)+)"\)\[(.+?)\]/g, function(s, variableName, attributeName) {
