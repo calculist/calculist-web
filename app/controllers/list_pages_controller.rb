@@ -2,7 +2,7 @@ class ListPagesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @user = User.find_by_username(params[:username])
+    @user = User.where(username: params[:username]).first
     if @user.nil? || @user != current_user
       # TODO make a public profile page instead of 404
       render_404
@@ -12,33 +12,39 @@ class ListPagesController < ApplicationController
     @list = @user.primary_list
     @list.content['$items'].unshift(get_profile_page_list_of_lists)
     @other_lists = get_title_handle_path_id(@lists, @user)
+    @theme = @user.default_theme
   end
 
   def show
-    @list_owner = User.find_by_username(params[:username])
-    render_404 if @list_owner.nil?
-    @list = List.find_by_handle_and_user_id(params[:handle], @list_owner.id)
-    render_404 if @list.nil?
+    @list_owner = User.where(username: params[:username]).first
+    return render_404 if @list_owner.nil?
+    @list = List.where(handle: params[:handle], user_id: @list_owner.id).first
+    return show_non_existent if @list.nil?
     unless current_user_can_read?
-      render_404 unless @list.id == 1 # TODO get rid of list.id == 1 hack
+      return show_non_existent
     end
     @lists = current_user.lists
     @other_lists = get_title_handle_path_id(@lists, current_user)
     @theme = @list_owner.default_theme
   end
 
+  def show_non_existent
+    @error_message = "This list does not exist."
+    render_404
+  end
+
   def show_deleted
     # TODO Make this page actionable, i.e. allow the user to
     # do something with the deleted items on this page.
-    @list_owner = User.find_by_username(params[:username])
-    render_404 if @list_owner.nil?
-    @list = List.find_by_handle_and_user_id(params[:handle], @list_owner.id)
+    @list_owner = User.where(username: params[:username]).first
+    return render_404 if @list_owner.nil?
+    @list = List.where(handle: params[:handle], user_id: @list_owner.id).first
     if @list && current_user_can_write?
       im = ItemManager.new(@list.id)
       days_ago = [params[:days_ago].to_i, 1].max
       @recently_deleted_items = im.get_recently_deleted(days_ago)
     else
-      render_404
+      return render_404
     end
     @lists = current_user.lists
   end

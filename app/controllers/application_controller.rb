@@ -4,11 +4,11 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def render_403(message = 'forbidden')
-    render :status => 403, :message => message
+    render status: 403, message: message
   end
 
   def render_404
-    render :template => 'error_pages/404', :layout => false, :status => :not_found
+    render template: 'error_pages/404', status: :not_found
   end
 
   protected
