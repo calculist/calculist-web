@@ -1,4 +1,4 @@
-calculist.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome','commands.permanentlyDeleteList'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, executePreviousCommand, gotoList, goHome, permanentlyDeleteList) {
+calculist.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome','commands.permanentlyDeleteList','commands.changeFont'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, executePreviousCommand, gotoList, goHome, permanentlyDeleteList, changeFont) {
 
   var commands = {
     openFile: function (_this) {
@@ -37,6 +37,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
         $('#main-container').removeClass().addClass('theme-' + theme);
       }
     },
+    changeFont: changeFont,
     enterCommandMode: function (_this) {
       if (_this.mode !== 'command') {
         _this.enterCommandMode();
