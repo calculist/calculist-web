@@ -1,4 +1,4 @@
-lm.register('item.enterCommandMode', ['_'], function (_) {
+calculist.register('item.enterCommandMode', ['_'], function (_) {
 
   return function(startingText, cursorIndex, highlightWidth) {
     this.mode = 'command';

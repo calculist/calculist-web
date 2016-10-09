@@ -1,4 +1,4 @@
-lm.register('keydownToString', ['_'], function (_) {
+calculist.register('keydownToString', ['_'], function (_) {
 
   var specialKeys = ['ctrl','alt','shift'];
 

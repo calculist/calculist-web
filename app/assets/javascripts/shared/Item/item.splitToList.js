@@ -1,4 +1,4 @@
-lm.register('item.splitToList', ['_','getNewGuid'], function (_, getNewGuid) {
+calculist.register('item.splitToList', ['_','getNewGuid'], function (_, getNewGuid) {
   return function (splitter, replacer) {
     replacer || (replacer = '');
     var splitText = this.text.split(splitter),

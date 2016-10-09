@@ -1,5 +1,5 @@
 // Based on https://gist.github.com/dperini/729294
-lm.register('urlFinder', [], function () {
+calculist.register('urlFinder', [], function () {
   var basePatternString = '' +
     // protocol identifier
     "(?:(?:https?|ftp)://)" +

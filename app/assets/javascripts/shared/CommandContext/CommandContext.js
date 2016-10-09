@@ -1,4 +1,4 @@
-lm.register('CommandContext', [], function () {
+calculist.register('CommandContext', [], function () {
 
   return function CommandContext(item) {
     this.item = item;

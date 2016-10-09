@@ -1,4 +1,4 @@
-lm.register('item.handleKeydown', ['_','$','cursorPosition','transaction','commandTypeahead','zoomPage'],function (_, $, cursorPosition, transaction, commandTypeahead, zoomPage) {
+calculist.register('item.handleKeydown', ['_','$','cursorPosition','transaction','commandTypeahead','zoomPage'],function (_, $, cursorPosition, transaction, commandTypeahead, zoomPage) {
 
   return function(e) {
     var anchorOffset, baseOffset, expandOrCollapse, extentOffset, focusOffset, rangeCount, _ref, _ref1;

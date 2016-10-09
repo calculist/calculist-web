@@ -1,4 +1,4 @@
-// lm.register('defaultKeyboardShortcuts', [], function () {
+// calculist.register('defaultKeyboardShortcuts', [], function () {
 //   return {
 //     'ctrl + ~':                 'enter command mode',
 //     'ctrl + spacebar':          'toggle collapse',

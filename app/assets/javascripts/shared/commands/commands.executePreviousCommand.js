@@ -1,4 +1,4 @@
-lm.register('commands.executePreviousCommand', ['commandTypeahead'], function (commandTypeahead) {
+calculist.register('commands.executePreviousCommand', ['commandTypeahead'], function (commandTypeahead) {
 
   var isExecuting = false;
 

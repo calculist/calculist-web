@@ -1,4 +1,4 @@
-lm.register('item.applySyntaxHighlighting',[], function () {
+calculist.register('item.applySyntaxHighlighting',[], function () {
 
   var specialItems = {
     'templates': true,

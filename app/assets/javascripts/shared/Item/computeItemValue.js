@@ -1,4 +1,4 @@
-lm.register('computeItemValue', ['_','createComputationContextObject','evalculist','item.findVar'], function (_, createComputationContextObject, evalculist, findVar) {
+calculist.register('computeItemValue', ['_','createComputationContextObject','evalculist','item.findVar'], function (_, createComputationContextObject, evalculist, findVar) {
 
   'use strict';
 

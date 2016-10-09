@@ -1,4 +1,4 @@
-lm.register('http', ['Promise','_','$'], function (Promise, _, $) {
+calculist.register('http', ['Promise','_','$'], function (Promise, _, $) {
 
   'use strict';
 

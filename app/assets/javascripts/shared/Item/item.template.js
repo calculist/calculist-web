@@ -1,4 +1,4 @@
-lm.register('item.template', ['_','isReadOnly'], function (_, isReadOnly) {
+calculist.register('item.template', ['_','isReadOnly'], function (_, isReadOnly) {
 
   return _.template(
     '<div class="computed-display" id="computed-display<%= id %>"></div>' +

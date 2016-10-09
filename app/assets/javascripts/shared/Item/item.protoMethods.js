@@ -1,4 +1,4 @@
-lm.register('item.protoMethods', [], function () {
+calculist.register('item.protoMethods', [], function () {
 
   // TODO Add all proto methods here
   return [

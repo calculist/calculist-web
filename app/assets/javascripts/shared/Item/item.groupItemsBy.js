@@ -1,4 +1,4 @@
-lm.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
+calculist.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
 
   Item.prototype.groupItemsBy = function(grouper, options) {
     var groupedItems, key;

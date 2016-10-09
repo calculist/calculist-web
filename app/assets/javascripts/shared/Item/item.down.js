@@ -1,4 +1,4 @@
-lm.register('item.down',['_','lmSessionStorage'], function (_, lmSessionStorage) {
+calculist.register('item.down',['_','lmSessionStorage'], function (_, lmSessionStorage) {
 
   return function(skipChildren, maintainDepth) {
     var i, item, nextItem, nextSibling, _ref;

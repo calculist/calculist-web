@@ -1,4 +1,4 @@
-lm.register('lmSessionStorage', ['_'], function (_) {
+calculist.register('lmSessionStorage', ['_'], function (_) {
 
   var allowedKeys = ['zoomGuid','focusGuid'];
 

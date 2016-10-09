@@ -1,4 +1,4 @@
-lm.register('item.flatten', ['_'], function (_) {
+calculist.register('item.flatten', ['_'], function (_) {
 
   var flatten = _.method('flatten');
 
@@ -8,7 +8,7 @@ lm.register('item.flatten', ['_'], function (_) {
 
 });
 
-lm.register('item.flatten_v2', ['_'], function (_) {
+calculist.register('item.flatten_v2', ['_'], function (_) {
 
   var flatten_v2 = _.method('flatten_v2');
 
@@ -19,7 +19,7 @@ lm.register('item.flatten_v2', ['_'], function (_) {
 });
 
 // TODO make this the default `flatten` method
-lm.register('item._flatten', ['_'], function (_) {
+calculist.register('item._flatten', ['_'], function (_) {
 
   var flatten = _.method('_flatten');
 

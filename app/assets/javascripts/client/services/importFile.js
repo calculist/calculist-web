@@ -1,4 +1,4 @@
-lm.register('importFile', ['$', 'Promise'], function ($, Promise) {
+calculist.register('importFile', ['$', 'Promise'], function ($, Promise) {
   return function () {
     return new Promise(function (resolve, reject) {
       var input = $('input[type="file"]')[0];

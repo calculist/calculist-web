@@ -1,4 +1,4 @@
-lm.require(['Item','removeHTML','_'], function (Item, removeHTML, _) {
+calculist.require(['Item','removeHTML','_'], function (Item, removeHTML, _) {
 
   Item.prototype.getComputedText = function() {
     this.valueOf();

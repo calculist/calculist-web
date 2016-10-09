@@ -1,4 +1,4 @@
-lm.require(['Item','_'], function (Item, _) {
+calculist.require(['Item','_'], function (Item, _) {
 
   Item.prototype.sortItemsBy = function(sorter) {
     if (_.isString(sorter)) {

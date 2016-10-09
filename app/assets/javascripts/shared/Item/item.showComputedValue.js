@@ -1,4 +1,4 @@
-lm.require(['Item'], function (Item) {
+calculist.require(['Item'], function (Item) {
 
   // TODO Make a constants service
   var ERROR_VAL = '#ERROR!';

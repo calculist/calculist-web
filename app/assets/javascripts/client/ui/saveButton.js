@@ -1,4 +1,4 @@
-lm.register('saveButton', ['_','$'], function (_, $) {
+calculist.register('saveButton', ['_','$'], function (_, $) {
 
   var $el = $('#save-status');
 

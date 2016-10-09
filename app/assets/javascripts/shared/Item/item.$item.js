@@ -1,4 +1,4 @@
-lm.register('item.$item', ['_'], function (_) {
+calculist.register('item.$item', ['_'], function (_) {
 
   return function(key, attributeName) {
     attributeName || (attributeName = 'key');

@@ -1,4 +1,4 @@
-lm.register('item.findVar',['_','isItem'], function (_, isItem) {
+calculist.register('item.findVar',['_','isItem'], function (_, isItem) {
   var varVal = function (item) {
     var val;
     if (item.hasVal) {

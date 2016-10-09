@@ -1,4 +1,4 @@
-lm.require(['Item','_','$','lmSessionStorage','zoomPage'], function (Item, _, $, lmSessionStorage, zoomPage) {
+calculist.require(['Item','_','$','lmSessionStorage','zoomPage'], function (Item, _, $, lmSessionStorage, zoomPage) {
 
   Item.prototype.zoomIn = function(options) {
     options || (options = {});

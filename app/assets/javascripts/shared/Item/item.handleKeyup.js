@@ -1,4 +1,4 @@
-lm.register('item.handleKeyup',['cursorPosition','commandTypeahead'], function (cursorPosition, commandTypeahead) {
+calculist.register('item.handleKeyup',['cursorPosition','commandTypeahead'], function (cursorPosition, commandTypeahead) {
 
   return function(e) {
     var previousText, previousVal, text;

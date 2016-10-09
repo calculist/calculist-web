@@ -1,4 +1,4 @@
-lm.register('commands.gotoList', ['_'], function (_) {
+calculist.register('commands.gotoList', ['_'], function (_) {
   return function (_this, listTitle) {
     listTitle || (listTitle = _this.valueOf());
     var list = _.find(window.OTHER_LISTS, function (list) {

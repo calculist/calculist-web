@@ -1,4 +1,4 @@
-lm.register('item.getLineCount', [], function () {
+calculist.register('item.getLineCount', [], function () {
 
   return function () {
     this.$input || (this.$input = this.$('#input' + this.id));

@@ -1,4 +1,4 @@
-lm.register('cursorPosition', ['_'], function (_) {
+calculist.register('cursorPosition', ['_'], function (_) {
 
   var DEPTH_UNIT = 5;
 

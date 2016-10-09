@@ -1,4 +1,4 @@
-lm.require(['Item','_','parseTextDoc','getNewGuid','transaction'], function (Item, _, parseTextDoc, getNewGuid, transaction) {
+calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction'], function (Item, _, parseTextDoc, getNewGuid, transaction) {
 
   Item.prototype.handlePaste = function(e) {
     if (this.mode === 'command') return;

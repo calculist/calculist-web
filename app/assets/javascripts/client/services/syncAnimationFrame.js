@@ -1,4 +1,4 @@
-lm.register('syncAnimationFrame', [], function () {
+calculist.register('syncAnimationFrame', [], function () {
 
   var animationFrame, isRefeshing;
 

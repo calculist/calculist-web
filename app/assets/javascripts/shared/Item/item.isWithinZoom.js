@@ -1,4 +1,4 @@
-lm.register('item.isWithinZoom', ['lmSessionStorage'], function (lmSessionStorage) {
+calculist.register('item.isWithinZoom', ['lmSessionStorage'], function (lmSessionStorage) {
 
   return function () {
     var zoomGuid = lmSessionStorage.get('zoomGuid');

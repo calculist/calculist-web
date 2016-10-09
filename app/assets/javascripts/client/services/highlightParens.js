@@ -1,4 +1,4 @@
-lm.register('highlightParens', ['_','$'], function (_, $) {
+calculist.register('highlightParens', ['_','$'], function (_, $) {
   return function (el, anchorOffset) {
     var $el = $(el),
         text = $el.text(),

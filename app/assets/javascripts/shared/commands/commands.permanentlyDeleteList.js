@@ -1,4 +1,4 @@
-lm.register('commands.permanentlyDeleteList', ['http'], function (http) {
+calculist.register('commands.permanentlyDeleteList', ['http'], function (http) {
   return function (_this, listTitle) {
     listTitle || (listTitle = _this.valueOf());
     var list = _.find(window.OTHER_LISTS, function (list) {

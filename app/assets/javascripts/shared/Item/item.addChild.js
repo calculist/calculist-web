@@ -1,4 +1,4 @@
-lm.register('item.addChild',['_','getNewGuid'], function (_, getNewGuid) {
+calculist.register('item.addChild',['_','getNewGuid'], function (_, getNewGuid) {
 
   return function(text) {
     var child;
@@ -14,7 +14,7 @@ lm.register('item.addChild',['_','getNewGuid'], function (_, getNewGuid) {
 
 });
 
-lm.register('item.addNewChildBefore',['_','getNewGuid'], function (_, getNewGuid) {
+calculist.register('item.addNewChildBefore',['_','getNewGuid'], function (_, getNewGuid) {
 
   return function(beforeChild, text) {
     var newChild;
@@ -33,7 +33,7 @@ lm.register('item.addNewChildBefore',['_','getNewGuid'], function (_, getNewGuid
 
 });
 
-lm.register('item.addNewChildAfter',['_','getNewGuid'], function (_, getNewGuid) {
+calculist.register('item.addNewChildAfter',['_','getNewGuid'], function (_, getNewGuid) {
 
   return function(afterChild, text) {
     var newChild;

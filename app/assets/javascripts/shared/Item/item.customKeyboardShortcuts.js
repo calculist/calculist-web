@@ -1,4 +1,4 @@
-lm.register('item.customKeyboardShortcuts', ['_','keydownToString','transaction','userPreferences'], function (_, keydownToString, transaction, userPreferences) {
+calculist.register('item.customKeyboardShortcuts', ['_','keydownToString','transaction','userPreferences'], function (_, keydownToString, transaction, userPreferences) {
 
   var globalShortcuts;
   var $shortcutsDisplay;

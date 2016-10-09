@@ -1,4 +1,4 @@
-lm.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
+calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) {
 
   var UP = 38, DOWN = 40;
 

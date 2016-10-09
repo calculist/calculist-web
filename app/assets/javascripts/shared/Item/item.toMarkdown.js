@@ -1,4 +1,4 @@
-lm.register('item.toMarkdown', ['_'], function (_) {
+calculist.register('item.toMarkdown', ['_'], function (_) {
 
     return function(depth, computed, hideCollapsed) {
       var nestedText, text;

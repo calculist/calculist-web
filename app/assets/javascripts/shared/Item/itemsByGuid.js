@@ -1,3 +1,3 @@
-lm.register('itemsByGuid', [], function () {
+calculist.register('itemsByGuid', [], function () {
   return {};
 });

@@ -1,4 +1,4 @@
-lm.require(['Item','Promise','_','transaction'], function (Item, Promise, _, transaction) {
+calculist.require(['Item','Promise','_','transaction'], function (Item, Promise, _, transaction) {
 
   Item.prototype.expand = function (expandParents, skipRender) {
     var _this = this;

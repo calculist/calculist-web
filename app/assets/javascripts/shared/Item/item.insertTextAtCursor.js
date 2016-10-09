@@ -1,4 +1,4 @@
-lm.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorPosition'], function (Item, _, parseTextDoc, getNewGuid, transaction, cursorPosition) {
+calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorPosition'], function (Item, _, parseTextDoc, getNewGuid, transaction, cursorPosition) {
 
   Item.prototype.insertTextAtCursor = function(insertingText, skipRender) {
     if (!this.hasFocus) return;

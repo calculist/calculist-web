@@ -1,4 +1,4 @@
-lm.register('userPreferences',['_','Item'], function (_, Item) {
+calculist.register('userPreferences',['_','Item'], function (_, Item) {
 
   if (!window.USER_PREFERENCES) {
     return new Item({

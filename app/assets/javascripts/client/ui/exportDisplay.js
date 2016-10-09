@@ -1,4 +1,4 @@
-lm.register('exportDisplay', ['_','$'], function (_, $) {
+calculist.register('exportDisplay', ['_','$'], function (_, $) {
 
     var $el = $('#export-display');
     $el.on('keydown', function (e) {

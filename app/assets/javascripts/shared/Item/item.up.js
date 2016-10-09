@@ -1,4 +1,4 @@
-lm.register('item.up', ['_','lmSessionStorage'], function (_, lmSessionStorage) {
+calculist.register('item.up', ['_','lmSessionStorage'], function (_, lmSessionStorage) {
 
   return function(skipChildren, maintainDepth) {
     if (!this.$parent) return;

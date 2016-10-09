@@ -1,4 +1,4 @@
-lm.require(['Item','_','parseItemText','computeItemValue','somethingHasChanged','syncAnimationFrame','eventHub'], function (Item, _, parseItemText, computeItemValue, somethingHasChanged, syncAnimationFrame, eventHub) {
+calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasChanged','syncAnimationFrame','eventHub'], function (Item, _, parseItemText, computeItemValue, somethingHasChanged, syncAnimationFrame, eventHub) {
 
   'use strict';
 

@@ -1,4 +1,4 @@
-lm.register('item.handleBlur', [], function () {
+calculist.register('item.handleBlur', [], function () {
 
   return function() {
     if (this.mode === 'command') {

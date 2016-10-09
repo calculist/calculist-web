@@ -1,4 +1,4 @@
-lm.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
+calculist.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
 
   var toJSON = function(mapper) {
     return {

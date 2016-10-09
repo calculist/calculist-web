@@ -1,4 +1,4 @@
-lm.register('parseItemText', ['_'], function (_) {
+calculist.register('parseItemText', ['_'], function (_) {
 
   'use strict';
 

@@ -1,4 +1,4 @@
-lm.require(['Item', 'cursorPosition','isReadOnly'], function (Item, cursorPosition, isReadOnly) {
+calculist.require(['Item', 'cursorPosition','isReadOnly'], function (Item, cursorPosition, isReadOnly) {
 
   Item.prototype.handleFocus = function() {
     var $input;

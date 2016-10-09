@@ -1,4 +1,4 @@
-lm.register('copyToClipboard', ['_','$','Promise','Clipboard'], function (_, $, Promise, Clipboard) {
+calculist.register('copyToClipboard', ['_','$','Promise','Clipboard'], function (_, $, Promise, Clipboard) {
   return function (text) {
     var trigger = $('<input type="button">')[0];
     var params = {};

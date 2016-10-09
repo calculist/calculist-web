@@ -1,4 +1,4 @@
-lm.require(['Item','_','isReadOnly'], function (Item, _, isReadOnly) {
+calculist.require(['Item','_','isReadOnly'], function (Item, _, isReadOnly) {
 
   'use strict';
 

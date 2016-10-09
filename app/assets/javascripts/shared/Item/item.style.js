@@ -1,4 +1,4 @@
-lm.require(['Item','zoomPage'], function (Item, zoomPage) {
+calculist.require(['Item','zoomPage'], function (Item, zoomPage) {
 
   'use strict';
 

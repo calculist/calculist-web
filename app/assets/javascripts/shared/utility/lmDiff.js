@@ -1,4 +1,4 @@
-lm.register('lmDiff', ['_','Promise','Worker','jsondiffpatch','getItemByGuid'], function (_, Promise, Worker, jsondiffpatch, getItemByGuid) {
+calculist.register('lmDiff', ['_','Promise','Worker','jsondiffpatch','getItemByGuid'], function (_, Promise, Worker, jsondiffpatch, getItemByGuid) {
 
   var worker = new Worker(window.location.protocol + '//' + window.location.host + WORKER_FILE_PATH);
 

@@ -1,4 +1,4 @@
-lm.register('getAndApplyChangesFromServer', ['_','http','getItemByGuid','Item'], function (_, http, getItemByGuid, Item) {
+calculist.register('getAndApplyChangesFromServer', ['_','http','getItemByGuid','Item'], function (_, http, getItemByGuid, Item) {
   var lastSave = window.INITIAL_LAST_SAVE,
       url = function (path) { return window.location.origin + path; },
       newItemFromData = function (data) {

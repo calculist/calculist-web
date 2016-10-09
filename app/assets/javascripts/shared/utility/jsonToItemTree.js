@@ -1,4 +1,4 @@
-lm.register('jsonToItemTree', ['_','getNewGuid'], function (_, getNewGuid) {
+calculist.register('jsonToItemTree', ['_','getNewGuid'], function (_, getNewGuid) {
 
   var jsonToItemTree = function (json, text) {
     if (!text || _.isNumber(text)) {

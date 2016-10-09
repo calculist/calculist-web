@@ -1,4 +1,4 @@
-lm.register('item.executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead'], function (_, commands, transaction, computeItemValue, commandTypeahead) {
+calculist.register('item.executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead'], function (_, commands, transaction, computeItemValue, commandTypeahead) {
 
   return function (commandString) {
     var commandStringPieces = commandString.split(/([^\w\s]|\d)/);

@@ -1,4 +1,4 @@
-lm.require(['Item'], function (Item) {
+calculist.require(['Item'], function (Item) {
 
   Item.prototype.getTopItem = function() {
     var item;

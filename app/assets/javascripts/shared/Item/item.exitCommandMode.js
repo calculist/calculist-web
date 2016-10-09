@@ -1,4 +1,4 @@
-lm.register('item.exitCommandMode', [], function () {
+calculist.register('item.exitCommandMode', [], function () {
 
     return function() {
       this.mode = null;

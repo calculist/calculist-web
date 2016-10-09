@@ -4,7 +4,7 @@ window.sessionStorage || (window.sessionStorage = {});
 
   'use strict';
 
-  var lm = {};
+  var calculist = {};
 
   var registeredObjects = {},
       require = _.propertyOf(registeredObjects),
@@ -36,23 +36,23 @@ window.sessionStorage || (window.sessionStorage = {});
     }
   };
 
-  lm.register = function (name, dependencies, initializer) {
+  calculist.register = function (name, dependencies, initializer) {
     queue.push([name, dependencies, initializer]);
     if (initialized) processQueue();
   };
 
-  lm.require = _.partial(lm.register, false);
+  calculist.require = _.partial(calculist.register, false);
 
-  lm.init = function (dependencies, bootstrap) {
+  calculist.init = function (dependencies, bootstrap) {
     processQueue();
     initialized = true;
     if (_.isFunction(dependencies)) {
       bootstrap = dependencies;
       dependencies = [];
     }
-    if (bootstrap) lm.require(dependencies, bootstrap);
+    if (bootstrap) calculist.require(dependencies, bootstrap);
   };
 
-  global.lm = lm;
+  global.calculist = calculist;
 
 })(this, _);

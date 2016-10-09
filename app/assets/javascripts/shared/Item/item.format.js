@@ -1,4 +1,4 @@
-lm.require(['Item','replaceTeX','_','userIsTyping'], function (Item, replaceTeX, _, userIsTyping) {
+calculist.require(['Item','replaceTeX','_','userIsTyping'], function (Item, replaceTeX, _, userIsTyping) {
 
   var ERROR_VAL = '#ERROR!';
 

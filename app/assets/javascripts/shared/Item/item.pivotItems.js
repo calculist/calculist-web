@@ -1,4 +1,4 @@
-lm.register('item.pivotItems',['_','getNewGuid'], function (_, getNewGuid) {
+calculist.register('item.pivotItems',['_','getNewGuid'], function (_, getNewGuid) {
 
   return function () {
 

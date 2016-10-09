@@ -1,4 +1,4 @@
-lm.register('item.changeText', ['_','transaction'], function (_, transaction) {
+calculist.register('item.changeText', ['_','transaction'], function (_, transaction) {
 
   return function(newText) {
     transaction.debounced(_.noop);
@@ -8,7 +8,7 @@ lm.register('item.changeText', ['_','transaction'], function (_, transaction) {
 
 });
 
-lm.register('item.addText', [], function () {
+calculist.register('item.addText', [], function () {
 
   return function(newText) {
     return this.changeText(this.text + newText);

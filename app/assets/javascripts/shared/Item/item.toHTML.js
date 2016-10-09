@@ -1,4 +1,4 @@
-lm.register('item.toHTML', ['_'], function (_) {
+calculist.register('item.toHTML', ['_'], function (_) {
 
     return function (uncomputed, hideCollapsed) {
       return '<li>' +

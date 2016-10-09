@@ -1,4 +1,4 @@
-// lm.register('commandCenter', ['_', '$'], function (_, $) {
+// calculist.register('commandCenter', ['_', '$'], function (_, $) {
 //   var input = $('#command-center');
 
 //   var commands = [

@@ -1,4 +1,4 @@
-lm.register('evalculist', [], function () {
+calculist.register('evalculist', [], function () {
   // FIXME Do proper lexical analysis.
   var ESCAPED_DOUBLE_QUOTES_PLACEHOLDER = "______adsfasdfrtrssgoivdfoijwpdfoijdfg_______";
   var ESCAPED_DOUBLE_QUOTES_PATTERN = new RegExp(ESCAPED_DOUBLE_QUOTES_PLACEHOLDER, 'g');

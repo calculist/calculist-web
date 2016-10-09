@@ -1,4 +1,4 @@
-lm.require(['Item','createComputationContextObject'], function (Item, createComputationContextObject) {
+calculist.require(['Item','createComputationContextObject'], function (Item, createComputationContextObject) {
 
   Item.prototype.formatNumber = function(n) {
     var formatItem = this.$$item('number format');

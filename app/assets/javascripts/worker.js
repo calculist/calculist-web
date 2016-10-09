@@ -1,6 +1,6 @@
 //= require lodash/lodash
 //= require simple_statistics/simple_statistics
-//= require_tree ./shared/lm
+//= require calculist
 //= require ./shared/utility/vendors
 //= require ./shared/utility/evalculist
 //= require ./shared/Item/parseItemText
@@ -26,7 +26,7 @@ var getDiff = function (a, b, keys) {
   return diff;
 };
 
-lm.register('Item', ['_'], function (_) {
+calculist.register('Item', ['_'], function (_) {
   var prepareItems = function (items, _this) {
     return _.map(_.compact(items), function(item) {
       var newItemOptions = _.isPlainObject(item) ? _.clone(item) : item.toJSON();
@@ -48,7 +48,7 @@ lm.register('Item', ['_'], function (_) {
 
 });
 
-lm.require(['_','Item','parseItemText','computeItemValue'], function (_, Item, parseItemText, computeItemValue) {
+calculist.require(['_','Item','parseItemText','computeItemValue'], function (_, Item, parseItemText, computeItemValue) {
   Item.prototype.valueOf = function () {
     if (!this.parsedText || this.parsedText.text !== this.text || this.valIsComputed) {
       var parsedText = this.parsedText;
@@ -114,7 +114,7 @@ lm.require(['_','Item','parseItemText','computeItemValue'], function (_, Item, p
 
 });
 
-lm.init(['Item'], function (Item) {
+calculist.init(['Item'], function (Item) {
   onmessage = function(e) {
     if (e.data.action === 'compute') {
       var tree = new Item(e.data.tree);

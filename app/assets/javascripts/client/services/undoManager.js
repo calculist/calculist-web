@@ -1,4 +1,4 @@
-lm.register('undoManager', ['UndoManager','_','eventHub','getItemByGuid','lmDiff'], function (UndoManager, _, eventHub, getItemByGuid, lmDiff) {
+calculist.register('undoManager', ['UndoManager','_','eventHub','getItemByGuid','lmDiff'], function (UndoManager, _, eventHub, getItemByGuid, lmDiff) {
 
   var undoManager = new UndoManager(),
       previousData, focusGuid, undoIndex;

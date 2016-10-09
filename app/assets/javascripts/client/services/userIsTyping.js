@@ -1,4 +1,4 @@
-lm.register('userIsTyping', ['_','eventHub'], function (_, eventHub) {
+calculist.register('userIsTyping', ['_','eventHub'], function (_, eventHub) {
 
   var UP_KEY = 38, DOWN_KEY = 40;
 

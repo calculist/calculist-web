@@ -1,4 +1,4 @@
-lm.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGuid','undoManager'], function (_, $, Promise, lmSessionStorage, getItemByGuid, undoManager) {
+calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGuid','undoManager'], function (_, $, Promise, lmSessionStorage, getItemByGuid, undoManager) {
 
   var stack = [],
       $page,

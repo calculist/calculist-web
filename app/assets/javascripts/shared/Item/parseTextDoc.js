@@ -1,4 +1,4 @@
-lm.register('parseTextDoc', ['_'], function (_) {
+calculist.register('parseTextDoc', ['_'], function (_) {
 
   return function (textDoc) {
     var flatDoc, flatDocById, flatListsByDepth, justData, lines;

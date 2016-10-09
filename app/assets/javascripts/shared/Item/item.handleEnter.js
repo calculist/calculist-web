@@ -1,4 +1,4 @@
-lm.register('item.handleEnter',['_','$','cursorPosition'],function (_, $, cursorPosition) {
+calculist.register('item.handleEnter',['_','$','cursorPosition'],function (_, $, cursorPosition) {
 
   return function (e, anchorOffset) {
     e.preventDefault();

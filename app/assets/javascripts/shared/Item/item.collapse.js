@@ -1,4 +1,4 @@
-lm.register('item.collapse',['Promise','_','transaction'], function (Promise, _, transaction) {
+calculist.register('item.collapse',['Promise','_','transaction'], function (Promise, _, transaction) {
 
   return function() {
     var _this = this;
@@ -32,7 +32,7 @@ lm.register('item.collapse',['Promise','_','transaction'], function (Promise, _,
 
 });
 
-lm.register('item.collapseRecursive',['Promise','_','transaction'], function (Promise, _, transaction) {
+calculist.register('item.collapseRecursive',['Promise','_','transaction'], function (Promise, _, transaction) {
 
   return function (isTreeTop) {
     var _this = this,

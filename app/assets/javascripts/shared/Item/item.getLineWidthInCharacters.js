@@ -1,4 +1,4 @@
-lm.register('item.getLineWidthInCharacters', ['_'], function (_) {
+calculist.register('item.getLineWidthInCharacters', ['_'], function (_) {
 
   var CHAR_WIDTH = 8, PADDING = 8, FUDGE = 32;
 

@@ -1,4 +1,4 @@
-lm.register('varExists',['_','eventHub'], function (_, eventHub) {
+calculist.register('varExists',['_','eventHub'], function (_, eventHub) {
   var itemCountByKey = {};
   eventHub.on('keychange', function (prev, nw) {
     if (prev) {

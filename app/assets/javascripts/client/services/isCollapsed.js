@@ -1,4 +1,4 @@
-lm.register('isCollapsed', ['lmSessionStorage'], function (lmSessionStorage) {
+calculist.register('isCollapsed', ['lmSessionStorage'], function (lmSessionStorage) {
 
   var values = {};
   // TODO Start using this service instead of the object attribute, which will

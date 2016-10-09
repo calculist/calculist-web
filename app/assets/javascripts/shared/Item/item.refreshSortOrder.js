@@ -1,4 +1,4 @@
-lm.register('item.refreshSortOrder', ['_'], function (_) {
+calculist.register('item.refreshSortOrder', ['_'], function (_) {
 
   return function () {
     var siblings = this.$parent.$items,

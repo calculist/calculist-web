@@ -1,4 +1,4 @@
-lm.register('item.applyDelta', ['_','getItemByGuid'], function (_, getItemByGuid) {
+calculist.register('item.applyDelta', ['_','getItemByGuid'], function (_, getItemByGuid) {
 
   return function (delta) {
     // console.log('delta', delta);

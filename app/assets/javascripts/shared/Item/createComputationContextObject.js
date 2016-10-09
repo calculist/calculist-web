@@ -1,4 +1,4 @@
-lm.register('createComputationContextObject', ['_','ss','evalculist','isItem'], function (_, ss, evalculist, isItem) {
+calculist.register('createComputationContextObject', ['_','ss','evalculist','isItem'], function (_, ss, evalculist, isItem) {
 
   'use strict';
 

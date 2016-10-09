@@ -1,4 +1,4 @@
-lm.require(['Item','getNewGuid', '_'], function (Item, getNewGuid, _) {
+calculist.require(['Item','getNewGuid', '_'], function (Item, getNewGuid, _) {
 
   Item.prototype.ensureGuidsAreUnique = function (itemsByGuid) {
     var isTreeTop = !itemsByGuid;

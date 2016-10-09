@@ -1,4 +1,4 @@
-lm.require(['Item','_','getNewGuid','itemsByGuid'], function (Item, _, getNewGuid, itemsByGuid) {
+calculist.require(['Item','_','getNewGuid','itemsByGuid'], function (Item, _, getNewGuid, itemsByGuid) {
 
   var prepareItems = function (items, _this) {
     return _.map(_.compact(items), function(item) {

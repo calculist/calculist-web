@@ -1,4 +1,4 @@
-lm.register('replaceTeX', ['katex'], function (katex) {
+calculist.register('replaceTeX', ['katex'], function (katex) {
 
   return function(string) {
     return string.replace(/\$\$(.*?)\$\$/g, function(s, tex) {

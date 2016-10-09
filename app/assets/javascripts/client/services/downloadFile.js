@@ -1,4 +1,4 @@
-lm.register('downloadFile', [], function () {
+calculist.register('downloadFile', [], function () {
 
   return function (text, fileType, fileName) {
     var blob = new Blob([text], { type: fileType });

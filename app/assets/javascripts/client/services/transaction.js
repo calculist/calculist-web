@@ -1,4 +1,4 @@
-lm.register('transaction', ['_','eventHub'], function (_, eventHub) {
+calculist.register('transaction', ['_','eventHub'], function (_, eventHub) {
 
   var debouncedFn, debouncedTimeout,
       transactionInProgress = false,
