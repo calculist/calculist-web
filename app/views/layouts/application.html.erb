@@ -9,6 +9,20 @@
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag 'application', media: 'all' %>
+    <% if @font %>
+      <style>
+        @import url(https://fonts.googleapis.com/css?family=<%= @font.split(' ').join('+') %>);
+        #main-container {
+          font-family: "<%= @font %>", "Ubuntu Mono", courier, monospace;
+        }
+        #main-container .input {
+          font-family: "<%= @font %>", "Ubuntu Mono", courier, monospace;
+        }
+        #main-container #command-typeahead-menu {
+          font-family: "<%= @font %>", "Ubuntu Mono", courier, monospace;
+        }
+      </style>
+    <% end %>
   </head>
 
   <body>

@@ -97,6 +97,14 @@ class User < ApplicationRecord
     item ? item.text : 'light'
   end
 
+  def default_font
+    list_id = preferences.id
+    parent_item = Item.where(list_id: list_id, is_deleted: false, text: 'default font').first
+    return 'Ubuntu Mono' unless parent_item
+    item = Item.where(list_id: list_id, is_deleted: false, parent_guid: parent_item.guid).first
+    item ? item.text : 'Ubuntu Mono'
+  end
+
   def access_to_list(list)
     return 'read_write' if list.user_id == id
     share = ListShare.where(list_id: list.id, user_id: id).first

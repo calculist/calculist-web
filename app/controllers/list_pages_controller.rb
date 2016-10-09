@@ -13,6 +13,7 @@ class ListPagesController < ApplicationController
     @list.content['$items'].unshift(get_profile_page_list_of_lists)
     @other_lists = get_title_handle_path_id(@lists, @user)
     @theme = @user.default_theme
+    @font = @user.default_font
   end
 
   def show
@@ -26,6 +27,7 @@ class ListPagesController < ApplicationController
     @lists = current_user.lists
     @other_lists = get_title_handle_path_id(@lists, current_user)
     @theme = @list_owner.default_theme
+    @font = @list_owner.default_font
   end
 
   def show_non_existent

@@ -175,6 +175,12 @@ class UserPreferencesManager
         text: "light",
         items: []
       }]
+    },{
+      text: "default font",
+      items: [{
+        text: "Ubuntu Mono",
+        items: []
+      }]
     }]
   }
 
