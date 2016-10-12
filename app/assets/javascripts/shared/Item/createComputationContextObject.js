@@ -184,6 +184,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   };
   proto.itemsOf = _.property('$items');
   proto.nameOf = _.property('key');
+  proto.parentOf = _.property('$parent');
   proto.pluckItems = function ($items, key) {
     var condition;
     if (_.isFunction(key)) {
