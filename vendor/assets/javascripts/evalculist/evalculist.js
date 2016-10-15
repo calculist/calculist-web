@@ -1,6 +1,11 @@
-
+/**
+ * @license
+ * evalculist 0.0.1
+ * Copyright 2016 Dan Allison <dan@calculist.io> and Calculist LLC <http://calculist.io>
+ * Released under MIT license
+ */
 (function (global) {
-    // FIXME Do proper lexical analysis.
+  // FIXME Do proper lexical analysis.
   var ESCAPED_DOUBLE_QUOTES_PLACEHOLDER = "______adsfasdfrtrssgoivdfoijwpdfoijdfg_______";
   var ESCAPED_DOUBLE_QUOTES_PATTERN = new RegExp(ESCAPED_DOUBLE_QUOTES_PLACEHOLDER, 'g');
   var ESCAPED_SINGLE_QUOTES_PLACEHOLDER = "______oiwjefoijfviojdfhweoiufhoihsdfoi_______";
@@ -18,10 +23,31 @@
     }).join('')
     .replace(/_var\("((?:\w|\$)+)"\)\[(.+?)\]/g, function(s, variableName, attributeName) {
       return '_brk_acc(_var("' + variableName + '"), ' + attributeName + ')';
-    })
-    .replace(/_var\("((?:\w|\$)+)"\)\._var\("((?:\w|\$)+)"\)/g, function(s, variableName, attributeName) {
-      return '_dot_acc(_var("' + variableName + '"), "' + attributeName + '")';
-    })
+    });
+
+    var varPieces = [];
+    string = string.split(/(_var\("(?:\w|\$)+"\))/g).map(function (piece) {
+      if (varPieces.length && piece === '.') return '';
+      var returnVal;
+      if (/^_var\("(?:\w|\$)+"\)$/.test(piece)) {
+        varPieces.push(piece);
+        return '';
+      } else if (varPieces.length <= 1) {
+        returnVal = (varPieces[0] || '') + piece;
+      } else {
+        var accessorPieces = [];
+        var i = varPieces.length;
+        while (--i) {
+          varPieces[i] = varPieces[i].replace(/_var\(("(?:\w|\$)+")\)/, function (s, attributeName) {
+            return attributeName + ')';
+          });
+          accessorPieces.push('_dot_acc(');
+        }
+        returnVal = accessorPieces.join('') + varPieces.join(', ') + piece;
+      }
+      varPieces = [];
+      return returnVal;
+    }).join('')
     .replace(ESCAPED_DOUBLE_QUOTES_PATTERN, '\\"')
     .replace(ESCAPED_SINGLE_QUOTES_PATTERN, "\\'");
 

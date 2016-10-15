@@ -33,7 +33,9 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
         },
         dotAccessor: function (obj, attr) {
           if (!valueContext) valueContext = createComputationContextObject(item);
-          return valueContext.dotAccessor(obj, attr);
+          var val = valueContext.dotAccessor(obj, attr);
+          if (val === item) return NaN;
+          return val;
         }
       });
       item.isComputingValue = false;
