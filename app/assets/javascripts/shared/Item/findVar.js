@@ -1,4 +1,4 @@
-calculist.register('item.findVar',['_','isItem'], function (_, isItem) {
+calculist.register('findVar',['_','isItem','keyToVarName'], function (_, isItem, keyToVarName) {
   var varVal = function (item) {
     var val;
     if (item.hasVal) {
@@ -13,9 +13,7 @@ calculist.register('item.findVar',['_','isItem'], function (_, isItem) {
     return val;
   };
 
-  var keyToVarName = function (key) { return key.replace(/\s/g, '_'); };
-
-  var findVar = function (varName, item) {
+  var findVar = function (item, varName) {
     if (!item.$parent) return;
     var items = item.$parent.$items;
     var i = items.indexOf(item);
@@ -23,11 +21,9 @@ calculist.register('item.findVar',['_','isItem'], function (_, isItem) {
       if (keyToVarName(items[i].key) === varName) return varVal(items[i]);
     }
     if (keyToVarName(item.$parent.key) === varName) return varVal(item.$parent);
-    return findVar(varName, item.$parent);
+    return findVar(item.$parent, varName);
   };
 
-  return function (varName) {
-    return findVar(varName, this);
-  };
+  return findVar;
 
 });

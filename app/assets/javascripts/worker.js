@@ -1,11 +1,12 @@
 //= require lodash/lodash
 //= require simple_statistics/simple_statistics
+//= require evalculist/evalculist
 //= require calculist
 //= require ./shared/utility/vendors
-//= require ./shared/utility/evalculist
+//= require ./shared/utility/keyToVarName
 //= require ./shared/Item/parseItemText
 //= require ./shared/Item/isItem
-//= require ./shared/Item/item.findVar
+//= require ./shared/Item/findVar
 //= require ./shared/Item/createComputationContextObject
 //= require ./shared/Item/computeItemValue
 //= require_self

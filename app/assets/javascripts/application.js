@@ -20,6 +20,7 @@
 //= require simple_statistics/simple_statistics
 //= require clipboard/clipboard
 //= require katex/katex.min
+//= require evalculist/evalculist
 //= require calculist
 //= require_tree ./shared/utility
 //= require_tree ./shared/commands

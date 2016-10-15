@@ -38,7 +38,6 @@ calculist.register('item.protoMethods', [], function () {
         'splitToList',
       // pure functions
         '$item',
-        'findVar',
         '_flatten',
         'flatten',
         'flatten_v2',

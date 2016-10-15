@@ -1,4 +1,4 @@
-calculist.register('computeItemValue', ['_','createComputationContextObject','evalculist','item.findVar'], function (_, createComputationContextObject, evalculist, findVar) {
+calculist.register('computeItemValue', ['_','createComputationContextObject','evalculist','findVar'], function (_, createComputationContextObject, evalculist, findVar) {
 
   'use strict';
 
@@ -20,7 +20,7 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
         variable: function (v) {
           if (!variables) variables = {};
           if (variables[v] == null) {
-            variables[v] = (args && args[v] != null) ? args[v] : findVar.call(item, v);
+            variables[v] = (args && args[v] != null) ? args[v] : findVar(item, v);
             // console.log(v, variables[v]);
           }
           if (variables[v] != null) return variables[v];
@@ -30,6 +30,10 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
         accessor: function (obj, attr) {
           if (!valueContext) valueContext = createComputationContextObject(item);
           return valueContext.accessor(obj, attr);
+        },
+        dotAccessor: function (obj, attr) {
+          if (!valueContext) valueContext = createComputationContextObject(item);
+          return valueContext.dotAccessor(obj, attr);
         }
       });
       item.isComputingValue = false;

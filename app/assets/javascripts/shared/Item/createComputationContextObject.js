@@ -1,4 +1,4 @@
-calculist.register('createComputationContextObject', ['_','ss','evalculist','isItem'], function (_, ss, evalculist, isItem) {
+calculist.register('createComputationContextObject', ['_','ss','evalculist','isItem','keyToVarName'], function (_, ss, evalculist, isItem, keyToVarName) {
 
   'use strict';
 
@@ -296,6 +296,16 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   proto.accessor = function (obj, key) {
     if (_.isNumber(key) && !isItem(obj[key])) return obj[key];
     return proto.pluckItems(obj, key);
+  };
+
+  proto.dotAccessor = function (obj, key) {
+    if (isItem(obj)) {
+      return _.findLast(obj.$items, function (item) {
+        return keyToVarName(item.key) === key;
+      });
+    } else {
+      return proto.accessor(obj, key);
+    }
   };
 
   var iterators = ['sum','count','average','mean','median','mode','standardDeviation','products',
