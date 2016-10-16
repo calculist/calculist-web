@@ -6,6 +6,7 @@ calculist.register('saveButton', ['_','$'], function (_, $) {
 
   var render = function () {
     if (currentStatus === 'saved') {
+      $('#header').attr({style: ''});
       $el.text('saved').css({
         cursor: 'default',
         backgroundColor: 'transparent',
@@ -18,6 +19,7 @@ calculist.register('saveButton', ['_','$'], function (_, $) {
         color: ''
       });
     } else if (currentStatus === 'saving failed') {
+      $('#header').css({opacity:1});
       $el.text('saving failed').css({
         cursor: 'pointer',
         backgroundColor: 'red',

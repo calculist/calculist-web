@@ -19,6 +19,9 @@ body {
     cursor: pointer;
   }
   header {
+    opacity: 0;
+    transition: opacity 160ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    transition-delay: 160ms;
     background-color: #fff;
     padding: 10px;
     margin: 0;
@@ -29,6 +32,9 @@ body {
     top: 0;
     width: 100%;
     z-index: 1000;
+    &:hover {
+      opacity: 1;
+    }
     #logo {
       float:left;
       width:112px;
@@ -75,7 +81,7 @@ body {
   }
   .main-page, .zoom-page {
     display: block;
-    margin: 20px auto;
+    margin: 0 auto;
     padding: 10px;
     width: $main-page-width;
     min-height: $main-page-width * (11 / 9);
