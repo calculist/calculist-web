@@ -18,7 +18,7 @@ calculist.register('item.protoMethods', [], function () {
         'handleKeypress',
         'handleKeyup',
         'up',
-      // pure functions
+      // non-mutating functions
         'getLineCount',
         'getLineWidthInCharacters',
         'isWithinZoom',
@@ -36,7 +36,7 @@ calculist.register('item.protoMethods', [], function () {
         'pivotItems',
         'refreshSortOrder',
         'splitToList',
-      // pure functions
+      // non-mutating functions
         '$item',
         '_flatten',
         'flatten',
