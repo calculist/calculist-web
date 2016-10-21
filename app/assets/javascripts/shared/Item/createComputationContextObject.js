@@ -300,9 +300,11 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
 
   proto.dotAccessor = function (obj, key) {
     if (isItem(obj)) {
-      return _.findLast(obj.$items, function (item) {
+      var item = _.findLast(obj.$items, function (item) {
         return keyToVarName(item.key) === key;
       });
+      if (item && item.hasVal) return item.valueOf();
+      return item;
     } else {
       return proto.accessor(obj, key);
     }
