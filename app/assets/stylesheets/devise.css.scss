@@ -43,7 +43,7 @@
     text-align: left;
     padding: 10px;
     background: #fff;
-    @include c-box-shadow;
+    // @include c-box-shadow;
   }
   .field {
     width: 256px - (20px + 4px); // TODO figure out a cleaner way to fix this
