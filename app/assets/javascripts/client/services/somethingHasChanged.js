@@ -1,4 +1,4 @@
-calculist.register('somethingHasChanged', ['_','eventHub','transaction'], function (_, eventHub) {
+calculist.register('somethingHasChanged', ['_','eventHub'], function (_, eventHub) {
 
   var somethingHasChanged = true,
       beforeText;

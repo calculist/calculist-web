@@ -7,15 +7,17 @@ calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasCh
   };
 
   Item.prototype.valueOf = function () {
-    if (!this.parsedText || this.parsedText.text !== this.text || (this.valIsComputed && this.lastAnimationFrame !== syncAnimationFrame() && somethingHasChanged())) {
+    if ((this.parsedText || {}).text !== this.text || (this.hasVariableReference && this.lastAnimationFrame !== syncAnimationFrame() && somethingHasChanged())) {
       this.lastAnimationFrame = syncAnimationFrame();
       var prevKey = this.key;
       var parsedText = this.parsedText;
       if (!parsedText || parsedText.text !== this.text) {
+        this.evalFn = null;
         parsedText = (this.parsedText = parseItemText(this.text));
       }
 
       this.valIsComputed = false;
+      this.hasVariableReference = false;
       this.key = parsedText.key;
       if (parsedText.separator) {
         switch (parsedText.separator) {
@@ -40,7 +42,9 @@ calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasCh
                   argObject[_.trim(name)] = args[i];
                 });
               }
-              return computeItemValue(pieces.join('|'), _this, argObject);
+              var val = computeItemValue(pieces.join('|'), _this, argObject);
+              _this.hasVariableReference = false;
+              return val;
             };
             this.val.toString = _.constant( parsedText.val);
             this._valueOf = this.val;

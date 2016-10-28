@@ -10,6 +10,12 @@ calculist.require(['Item','_','getNewGuid','itemsByGuid'], function (Item, _, ge
     });
   };
 
+  var callDepth = 0;
+  var callValueOf = function (item) {
+    item.valueOf();
+    _.each(item.$items, callValueOf);
+  };
+
   Item.prototype.initialize = function(options) {
     this.guid = options.guid;
     if (!this.guid) throw new Error('guid required');
@@ -30,15 +36,10 @@ calculist.require(['Item','_','getNewGuid','itemsByGuid'], function (Item, _, ge
     this.depth = this.$parent ? this.$parent.depth + 1 : 0;
     this.collapsed = options.collapsed && !!this.$parent;
     this.sort_order = options.sort_order;
+    ++callDepth;
     this.$items = prepareItems(options.$items, this);
-    // this.$items.sortBy = (function(_this) {
-    //   return function(sorter) {
-    //     return _this.sortItemsBy(sorter);
-    //   };
-    // })(this);
-    if (this.text) {
-      this.valueOf();
-    }
+    --callDepth;
+    if (callDepth === 0) callValueOf(this);
   };
 
 });

@@ -17,6 +17,9 @@
   var TOKEN_STRING_INDEX = 1;
   var PAREN_DEPTH_INDEX = 2;
   var SQUARE_DEPTH_INDEX = 3;
+  var VAR_FUNCTION_NAME = 'variable';
+  var DOT_ACC_FUNCTION_NAME = 'dotAccessor';
+  var SQUARE_ACC_FUNCTION_NAME = 'bracketAccessor';
   var ESCAPED_DOUBLE_QUOTES_PLACEHOLDER = "______adsfasdfrtrssgoivdfoijwpdfoijdfg_______";
   var ESCAPED_DOUBLE_QUOTES_PATTERN = new RegExp(ESCAPED_DOUBLE_QUOTES_PLACEHOLDER, 'g');
   var ESCAPED_SINGLE_QUOTES_PLACEHOLDER = "______oiwjefoijfviojdfhweoiufhoihsdfoi_______";
@@ -31,8 +34,8 @@
       if (t[TOKEN_TYPE_INDEX] === DOT) {
         var nextT = tokens[++i];
         if (nextT[TOKEN_TYPE_INDEX] === VAR_TOKEN) {
-          expressions[expressions.length - 1] =
-            '_dot_acc(' + expressions[expressions.length - 1] + ', "' + nextT[TOKEN_STRING_INDEX] + '")';
+          expressions[expressions.length - 1] = DOT_ACC_FUNCTION_NAME +
+            '(' + expressions[expressions.length - 1] + ', "' + nextT[TOKEN_STRING_INDEX] + '")';
         } else {
           expressions[expressions.length - 1] += '.' + nextT[TOKEN_STRING_INDEX];
         }
@@ -51,7 +54,7 @@
                       prevT[TOKEN_TYPE_INDEX] === CLOSE_SQUARE
                     ) && nextT[TOKEN_TYPE_INDEX] === CLOSE_SQUARE;
         if (isAcc) {
-          exp = '_brk_acc(' + expressions[expressions.length - 1] + ', ' + nextExp +  ')'
+          exp = SQUARE_ACC_FUNCTION_NAME + '(' + expressions[expressions.length - 1] + ', ' + nextExp +  ')'
         } else {
           exp = '[' + nextExp + (nextT ? nextT[TOKEN_STRING_INDEX] : '');
         }
@@ -75,7 +78,7 @@
           expressions.push(exp);
         }
       } else if (t[TOKEN_TYPE_INDEX] === VAR_TOKEN) {
-        expressions.push('_var("' + t[TOKEN_STRING_INDEX] + '")');
+        expressions.push(VAR_FUNCTION_NAME + '("' + t[TOKEN_STRING_INDEX] + '")');
       } else {
         expressions.push(t[TOKEN_STRING_INDEX]);
       }
@@ -95,7 +98,7 @@
       return dqChunk.split(/('.*?')/g).map(function (sqChunk) {
         var isStr = sqChunk[0]  == '"' || sqChunk[0] == "'";
         if (isStr) {
-          if (tokens.length && tokens[tokens.length - 1][0] === EXPRESSION_TOKEN){
+          if (tokens.length && tokens[tokens.length - 1][TOKEN_TYPE_INDEX] === EXPRESSION_TOKEN){
             tokens[tokens.length - 1][TOKEN_STRING_INDEX] += sqChunk;
           } else {
             tokens.push([EXPRESSION_TOKEN, sqChunk, parenDepth, sqrBrktDepth]);
@@ -141,13 +144,23 @@
     var string = compile(tokens, 0)
                 .replace(ESCAPED_DOUBLE_QUOTES_PATTERN, '\\"')
                 .replace(ESCAPED_SINGLE_QUOTES_PATTERN, "\\'");
-    handlers || (handlers = evalculist);
     if (handlers === true) return string;
-    var fn = new Function('_var','_brk_acc','_dot_acc', "'use strict';return " + string + ";");
-    var _var = handlers.variable;
-    var _brk_acc =  handlers.bracketAccessor || handlers.accessor;
-    var _dot_acc =  handlers.dotAccessor || handlers.accessor;
-    return fn(_var, _brk_acc, _dot_acc);
+    var fn = new Function(
+      VAR_FUNCTION_NAME,
+      SQUARE_ACC_FUNCTION_NAME,
+      DOT_ACC_FUNCTION_NAME,
+      "'use strict';return " + string
+    );
+    if (!handlers) return function (handlers) {
+      var variable = handlers.variable;
+      var bracketAccessor =  handlers.bracketAccessor || handlers.accessor;
+      var dotAccessor =  handlers.dotAccessor || handlers.accessor;
+      return fn(variable, bracketAccessor, dotAccessor);
+    };
+    var variable = handlers.variable;
+    var bracketAccessor =  handlers.bracketAccessor || handlers.accessor;
+    var dotAccessor =  handlers.dotAccessor || handlers.accessor;
+    return fn(variable, bracketAccessor, dotAccessor);
   };
 
   evalculist.context = {};

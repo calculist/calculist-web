@@ -16,11 +16,13 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
       if (item.isComputingValue) throw 'infinite loop';
       item.isComputingValue = true;
       var valueContext, variables;
-      var val = evalculist(string, {
+      item.evalFn || (item.evalFn = evalculist(string));
+      var val = item.evalFn({
         variable: function (v) {
+          item.hasVariableReference = true;
           if (!variables) variables = {};
           if (!variables.hasOwnProperty(v)) {
-            variables[v] = (args && args[v] != null) ? args[v] : findVar(item, v);
+            variables[v] = (args && args.hasOwnProperty(v)) ? args[v] : findVar(item, v);
             // console.log(v, variables[v]);
           }
           if (variables.hasOwnProperty(v) && variables[v] != null) return variables[v];
