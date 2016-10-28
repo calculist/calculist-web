@@ -19,11 +19,11 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
       var val = evalculist(string, {
         variable: function (v) {
           if (!variables) variables = {};
-          if (variables[v] == null) {
+          if (!variables.hasOwnProperty(v)) {
             variables[v] = (args && args[v] != null) ? args[v] : findVar(item, v);
             // console.log(v, variables[v]);
           }
-          if (variables[v] != null) return variables[v];
+          if (variables.hasOwnProperty(v) && variables[v] != null) return variables[v];
           if (!valueContext) valueContext = createComputationContextObject(item);
           return valueContext[v];
         },

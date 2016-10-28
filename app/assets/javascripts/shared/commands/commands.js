@@ -1,8 +1,16 @@
 calculist.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome','commands.permanentlyDeleteList','commands.changeFont'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, executePreviousCommand, gotoList, goHome, permanentlyDeleteList, changeFont) {
 
   var commands = {
-    openFile: function (_this) {
-
+    hideHeader: function (_this) {
+      $('#header').hide();
+    },
+    showHeader: function (_this) {
+      $('#header').show();
+    },
+    generateItemsFromValue: function (_this) {
+      _this.$items = [];
+      var val = _this.valueOf();
+      this.addItems(_this, val);
     },
     newList: function (_this, title, handle) {
       if (!title) return alert('New lists need titles.');
@@ -195,15 +203,21 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
       _this.renderChildren();
     },
     addItems: function (_this) {
-      var args = _.flatten(arguments);
-      if (isItem(args)) args = args.$items;
+      var args = _.flatten(arguments).slice(1);
       _.each(args, function (text) {
         var newItem;
         if (isItem(text)) {
           newItem = text.clone(_this);
         } else {
+          if (_.isNumber(text)) {
+            text = '[:] ' + text;
+          } else if (_.isArray(text)) {
+            text = '[=] [' + text.join(', ') + ']';
+          } else {
+            text = '' + text;
+          }
           newItem = new Item({
-            text: ('' + text) || '',
+            text: text,
             guid: getNewGuid(),
             $items: [],
             $parent: _this
