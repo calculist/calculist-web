@@ -2,7 +2,7 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
 
   'use strict';
 
-  return function (string, item, args) {
+  return function (string, item, args, skipCache) {
 
     string = string.replace(/\^item/g, function() {
       return '$$item';
@@ -16,8 +16,8 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
       if (item.isComputingValue) throw 'infinite loop';
       item.isComputingValue = true;
       var valueContext, variables;
-      item.evalFn || (item.evalFn = evalculist(string));
-      var val = item.evalFn({
+      var evalFn = skipCache ? evalculist(string) : (item.evalFn || (item.evalFn = evalculist(string)));
+      var val = evalFn({
         variable: function (v) {
           item.hasVariableReference = true;
           if (!variables) variables = {};
