@@ -18,7 +18,10 @@ calculist.register('item.executeCommand', ['_', 'commands', 'transaction', 'comp
       commandArgumentsString = commandStringPieces.slice(1).join('');
     }
     var commandFunction = commands[commandStringPieces[0]];
+    var evalFn = this.evalFn; // FIXME this is a hacky bug fix
+    this.evalFn = null; // FIXME this is a hacky bug fix
     var commandArguments = commandArgumentsString ? computeItemValue('[' + commandArgumentsString + ']', this) : [];
+    this.evalFn = evalFn; // FIXME this is a hacky bug fix
     commandArguments.unshift(this);
     var mode = this.mode;
     transaction(function () {
