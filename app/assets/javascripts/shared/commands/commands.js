@@ -7,10 +7,9 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
     showHeader: function (_this) {
       $('#header').show();
     },
-    generateItemsFromValue: function (_this) {
+    replaceItemsWith: function (_this) {
       _this.$items = [];
-      var val = _this.valueOf();
-      this.addItems(_this, val);
+      this.addItems.apply(this, arguments);
     },
     newList: function (_this, title, handle) {
       if (!title) return alert('New lists need titles.');

@@ -18,7 +18,9 @@ calculist.register('item.executeCommand', ['_', 'commands', 'transaction', 'comp
       commandArgumentsString = commandStringPieces.slice(1).join('');
     }
     var commandFunction = commands[commandStringPieces[0]];
-    var commandArguments = commandArgumentsString ? computeItemValue('[' + commandArgumentsString + ']', this, null, true) : [];
+    var additionalVariables = commandArgumentsString ? { '$value': this.valueOf() } : null;
+    var computingForCommand = true;
+    var commandArguments = commandArgumentsString ? computeItemValue('[' + commandArgumentsString + ']', this, additionalVariables, computingForCommand) : [];
     commandArguments.unshift(this);
     var mode = this.mode;
     transaction(function () {

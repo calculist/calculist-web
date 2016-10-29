@@ -2,7 +2,7 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
 
   'use strict';
 
-  return function (string, item, args, skipCache) {
+  return function (string, item, args, isForCommand) {
 
     string = string.replace(/\^item/g, function() {
       return '$$item';
@@ -16,14 +16,13 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
       if (item.isComputingValue) throw 'infinite loop';
       item.isComputingValue = true;
       var valueContext, variables;
-      var evalFn = skipCache ? evalculist(string) : (item.evalFn || (item.evalFn = evalculist(string)));
+      var evalFn = isForCommand ? evalculist(string) : (item.evalFn || (item.evalFn = evalculist(string)));
       var val = evalFn({
         variable: function (v) {
-          item.hasVariableReference = true;
+          isForCommand || (item.hasVariableReference = true);
           if (!variables) variables = {};
           if (!variables.hasOwnProperty(v)) {
             variables[v] = (args && args.hasOwnProperty(v)) ? args[v] : findVar(item, v);
-            // console.log(v, variables[v]);
           }
           if (variables.hasOwnProperty(v) && variables[v] != null) return variables[v];
           if (!valueContext) valueContext = createComputationContextObject(item);
