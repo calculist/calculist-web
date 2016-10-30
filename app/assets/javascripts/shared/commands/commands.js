@@ -552,6 +552,11 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
       _this.save();
       _this.renderChildren();
     },
+    forEach: function (_this, array, cmd) {
+      if (isItem(array)) array = array.$items;
+      if (!_.isArray(array)) return;
+      _.each(array.slice(), _.method('executeCommand', cmd));
+    },
     forEachItem: function(_this, cmd) {
       _.each(_this.$items.slice(), _.method('executeCommand', cmd));
     },

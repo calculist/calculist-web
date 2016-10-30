@@ -10,7 +10,25 @@ calculist.register('item.executeCommand', ['_', 'commands', 'transaction', 'comp
       commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
     }
     var commandArgumentsString;
-    if (commandStringPieces[0] === 'forEachItem' && commandStringPieces[1] === ',') {
+    if (commandStringPieces[0] === 'forEach') {
+      var enclosureDepth = 0;
+      var commandArgumentsStringPieces = commandStringPieces.slice(1).join('').split('');
+      var firstArgumentString = '';
+      var char = commandArgumentsStringPieces.shift();
+      while (commandArgumentsStringPieces.length) {
+        firstArgumentString += char;
+        // FIXME Account for strings also.
+        if (_.includes(['(','[','{'], char)) {
+          ++enclosureDepth;
+        } else if (_.includes([')',']','}'], char)) {
+          --enclosureDepth;
+        } else if (char === ',' && enclosureDepth === 0) {
+          break;
+        }
+        char = commandArgumentsStringPieces.shift();
+      };
+      commandArgumentsString = firstArgumentString + '"' + commandArgumentsStringPieces.join('').replace(/"/g, '\\"') + '"';
+    } else if (commandStringPieces[0] === 'forEachItem' && commandStringPieces[1] === ',') {
       commandArgumentsString = '"' + commandStringPieces.slice(2).join('').replace(/"/g, '\\"') + '"';
     } else if (commandStringPieces[0] === 'forEachItemRecursively' && commandStringPieces[1] === ',') {
       commandArgumentsString = '"' + commandStringPieces.slice(2).join('').replace(/"/g, '\\"') + '"';
