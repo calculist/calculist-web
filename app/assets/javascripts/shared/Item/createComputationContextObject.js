@@ -322,6 +322,19 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
     };
   });
 
+  proto.flatten = function (items) {
+    if (isItem(items)) items = items.$items;
+    if (isItem(items[0])) {
+      return _.reduce(items, function (flatItems, item) {
+        flatItems.push(item);
+        if (item.$items.length) return flatItems.concat(proto.flatten(item));
+        return flatItems;
+      }, []);
+    } else {
+      return _.flatten(items);
+    }
+  }
+
   proto.uniq = proto.unique = function (items) {
     if (isItem(items)) items = items.$items;
     items = _.map(items, proto.valueOf);
