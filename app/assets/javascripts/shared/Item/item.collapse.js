@@ -1,6 +1,6 @@
 calculist.register('item.collapse',['Promise','_','transaction'], function (Promise, _, transaction) {
 
-  return function() {
+  return function(skipAnimation) {
     var _this = this;
     return new Promise(function (resolve) {
       var $list, height;
@@ -11,6 +11,11 @@ calculist.register('item.collapse',['Promise','_','transaction'], function (Prom
       _this.$el.addClass('collapsed');
       _this.$('#dot' + _this.id).addClass('collapsed');
       $list = _this.$("#list" + _this.id);
+      if (skipAnimation) {
+        $list.height(0);
+        _this.renderChildren();
+        return resolve();
+      }
       $list.css({
         overflow: 'hidden'
       });
