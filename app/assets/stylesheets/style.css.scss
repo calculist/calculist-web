@@ -144,16 +144,22 @@ body {
     }
   }
   .dot {
-    display: inline-block;
-    border: 1px solid #aaa;
-    margin: 8px;
-    border-radius: 11px;
-    width: 5px - 1px;
-    height: 5px - 1px;
-    float: left;
-    background: none;
     cursor: pointer;
-    &.collapsed {
+    display: inline-block;
+    width: auto;
+    float: left;
+    &:after {
+      content: "";
+      display: inline-block;
+      border: 1px solid #aaa;
+      margin: 8px;
+      border-radius: 11px;
+      width: 5px - 1px;
+      height: 5px - 1px;
+      float: left;
+      background: none;
+    }
+    &.collapsed:after {
       border-color: transparent;
       background: #000;
     }
