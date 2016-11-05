@@ -1,0 +1,9 @@
+<%
+def get_text(content, depth)
+  txt = "#{' ' * depth}#{content['text']}\n"
+  content['$items'].each do |item|
+    txt += get_text(item, depth + 2)
+  end
+  txt
+end
+%><%= get_text(@list.content, 0).chomp("\n") %>
