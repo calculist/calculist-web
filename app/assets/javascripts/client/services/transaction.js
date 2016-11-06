@@ -22,7 +22,7 @@ calculist.register('transaction', ['_','eventHub'], function (_, eventHub) {
       transactionInProgress = true;
       eventHub.trigger('transactionstart');
       error = _try(fn);
-      if (!stalling && !error) {
+      if (!stalling) {
         transactionInProgress = false;
         eventHub.trigger('transactionend');
       }
