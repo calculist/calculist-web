@@ -27,11 +27,11 @@ calculist.register('item.executeCommand', ['_', 'commands', 'transaction', 'comp
         }
         char = commandArgumentsStringPieces.shift();
       };
-      commandArgumentsString = firstArgumentString + '"' + commandArgumentsStringPieces.join('').replace(/"/g, '\\"') + '"';
+      commandArgumentsString = firstArgumentString + JSON.stringify(commandArgumentsStringPieces.join(''));
     } else if (commandStringPieces[0] === 'forEachItem' && commandStringPieces[1] === ',') {
-      commandArgumentsString = '"' + commandStringPieces.slice(2).join('').replace(/"/g, '\\"') + '"';
+      commandArgumentsString = JSON.stringify(commandStringPieces.slice(2).join(''));
     } else if (commandStringPieces[0] === 'forEachItemRecursively' && commandStringPieces[1] === ',') {
-      commandArgumentsString = '"' + commandStringPieces.slice(2).join('').replace(/"/g, '\\"') + '"';
+      commandArgumentsString = JSON.stringify(commandStringPieces.slice(2).join(''));
     } else {
       commandArgumentsString = commandStringPieces.slice(1).join('');
     }
