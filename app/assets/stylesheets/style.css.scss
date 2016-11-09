@@ -273,7 +273,7 @@ body {
       }
     }
     .dot {
-      &.collapsed {
+      &.collapsed:after {
         background: rgba(255,255,255,0.8);
       }
     }
