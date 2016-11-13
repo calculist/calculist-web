@@ -1,0 +1,22 @@
+<header id="header" class="hidden">
+  <a href="/"><img id="logo" src="/logo-blue-black.svg"></a>
+</header>
+
+<div class="page main-page">
+  <ul id="top-level"></ul>
+</div>
+
+<input type="file" style="display:none;">
+
+<script>
+  var LIST_TITLE = "Calculist",
+      LIST_DATA = {},
+      LIST_ID = 0,
+      INITIAL_LAST_SAVE = 0,
+      USER_PREFERENCES = <%= raw(current_user ? current_user.preferences.content.to_json : UserPreferencesManager::DEFAULT_PREFERENCES.to_json) %>,
+      WORKER_FILE_PATH = '<%= asset_path('worker.js') %>',
+      READ_ONLY = false,
+      OTHER_LISTS = [];
+</script>
+
+<%= javascript_include_tag "application" %>

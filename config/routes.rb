@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   resources :lists
 
+  get 'blankpage' => 'list_pages#blankpage'
+
   get ':username' => 'list_pages#index', as: :profile_page
   get ':username/:handle' => 'list_pages#show', as: :list_page
   get ':username/:handle/deleted' => 'list_pages#show_deleted', as: :list_page_deleted

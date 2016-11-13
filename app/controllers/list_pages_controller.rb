@@ -1,5 +1,5 @@
 class ListPagesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: :blankpage
 
   def index
     @user = User.where(username: params[:username]).first
@@ -57,6 +57,9 @@ class ListPagesController < ApplicationController
     @list.handle = params[:handle] || @list.id
     @list.save!
     redirect_to list_page_path(username: current_user.username, handle: @list.handle)
+  end
+
+  def blankpage
   end
 
 private
