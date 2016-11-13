@@ -1,5 +1,6 @@
 // TODO refactor
 calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndApplyChangesFromServer','jsonToItemTree','getNewGuid'], function (foo, Item, _, $, Backbone, lmDiff, saveButton, getAndApplyChangesFromServer, jsonToItemTree, getNewGuid) {
+  window.DEV_MODE = window.localStorage.DEV_MODE;
   var jsonView = window.location.search.split('?json=')[1];
   if (jsonView) {
     window.LIST_DATA = jsonToItemTree(decodeURIComponent(jsonView));
@@ -15,35 +16,49 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
     window.topItem = new Item(LIST_DATA);
     var saveCount = 0, updateCount = 0;
     if (window.FILE_PATH) {
-      _.defer(function () {
-        var fs = require('fs');
-        window.topItem.handlePaste(fs.readFileSync(window.FILE_PATH, 'utf8'));
-        var markAsCollapsed = function (item) {
-          if (item.$items.length) {
-            item.collapsed = item.$parent && true;
-            _.each(item.$items, markAsCollapsed);
-          }
-        };
-        markAsCollapsed(window.topItem);
-        window.topItem.render();
-        window.topItem.focus();
-        window.topItem.waitingBeforeSave = false;
-        saveButton.changeStatus('saved');
-        // fs.watchFile(window.FILE_PATH, { persistent: true, interval: 1007 }, function (a, b) {
-        //   if (a.mtime != b.mtime) {
-        //     console.log(saveCount, updateCount);
-        //     if (++updateCount > saveCount) {
-        //       if (window.confirm('This file has changed on disk. Reload?')) {
-        //         window.topItem.waitingBeforeSave = false;
-        //         window.topItem.saveNow = _.noop;
-        //         window.location.reload();
-        //       } else {
-        //         --updateCount;
-        //       }
-        //     }
-        //   }
-        // });
-      });
+      var openFile = function (filePath) {
+        console.log(filePath)
+        _.defer(function () {
+          var fs = require('fs');
+          window.topItem.handlePaste(fs.readFileSync(filePath, 'utf8'));
+          var markAsCollapsed = function (item) {
+            if (item.$items.length) {
+              item.collapsed = item.$parent && true;
+              _.each(item.$items, markAsCollapsed);
+            }
+          };
+          markAsCollapsed(window.topItem);
+          window.topItem.render();
+          window.topItem.focus();
+          window.topItem.waitingBeforeSave = false;
+          saveButton.changeStatus('saved');
+          // fs.watchFile(window.FILE_PATH, { persistent: true, interval: 1007 }, function (a, b) {
+          //   if (a.mtime != b.mtime) {
+          //     console.log(saveCount, updateCount);
+          //     if (++updateCount > saveCount) {
+          //       if (window.confirm('This file has changed on disk. Reload?')) {
+          //         window.topItem.waitingBeforeSave = false;
+          //         window.topItem.saveNow = _.noop;
+          //         window.location.reload();
+          //       } else {
+          //         --updateCount;
+          //       }
+          //     }
+          //   }
+          // });
+        });
+      }
+      var electron = require('electron')
+      electron.ipcRenderer.on('save', (event, filePath) => {
+        window.topItem.saveNow(filePath)
+        window.FILE_PATH = filePath;
+        window.LIST_TITLE = filePath.split('/').pop();
+        window.document.title = window.LIST_TITLE;
+      })
+      electron.ipcRenderer.on('open', (event, filePath) => {
+        openFile(filePath);
+      })
+      openFile(window.FILE_PATH)
     }
     var ul = document.getElementById('top-level');
     var previousContent = JSON.stringify(LIST_DATA);
@@ -51,13 +66,13 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
     window.topItem.refreshDepth();
     window.topItem.collapse = _.noop;
     window.topItem.zoomOut = _.noop;
-    window.topItem.saveNow = function() {
+    window.topItem.saveNow = function(filePath) {
       return new Promise(function (resolve, reject) {
         ++saveCount;
         if (window.READ_ONLY) return resolve();
-        if (window.FILE_PATH) {
+        if (filePath) {
           var fs = require('fs');
-          fs.writeFileSync(window.FILE_PATH, window.topItem.toText(0, false), 'utf8');
+          fs.writeFileSync(filePath, window.topItem.toText(0, false), 'utf8');
           saveButton.changeStatus('saved');
           return window.topItem.waitingBeforeSave = false;
         }
@@ -113,18 +128,21 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
       });
     };
     (function() {
-      var debouncedSave;
-      debouncedSave = _.debounce(window.topItem.saveNow, 2000);
+      var debouncedSave = _.debounce(window.topItem.saveNow, 2000);
       window.topItem.save = function() {
         saveButton.changeStatus('save');
         window.topItem.waitingBeforeSave = true;
-        if (!window.FILE_PATH) debouncedSave();
+        if (window.FILE_PATH) {
+          require('electron').ipcRenderer.send('documentedited', window.FILE_PATH)
+        } else {
+          debouncedSave()
+        }
       };
     })();
     (function() {
       var focusItem, item;
       ul.appendChild(window.topItem.render().el);
-      document.title = _.unescape(LIST_TITLE) + ' | Calculist.io';
+      document.title = _.unescape(LIST_TITLE);
       if (sessionStorage.zoomGuid) {
         item = window.topItem.$item(sessionStorage.zoomGuid, 'guid');
         if (!item) sessionStorage.zoomGuid = window.topItem.guid;
@@ -187,7 +205,7 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
       });
       if (window.FILE_PATH) {
         window.addEventListener('blur', function (e) {
-          window.topItem.saveNow();
+          // window.topItem.saveNow();
         });
       }
       window.addEventListener('beforeunload', function(e) {

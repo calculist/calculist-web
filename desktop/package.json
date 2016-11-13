@@ -1,0 +1,19 @@
+{
+  "name": "CalculistDesktop",
+  "productName": "Calculist Desktop",
+  "version": "0.0.1",
+  "description": "Desktop version of Calculist.io",
+  "private": true,
+  "main": "./main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --debug"
+  },
+  "author": "Dan Allison and Calculist LLC",
+  "devDependencies": {
+    "electron": "^1.3.5",
+    "electron-packager": "^8.0.0",
+    "electron-winstaller": "^2.2.0",
+    "lodash": "4.11.1"
+  }
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <link href="http://localhost:3010/assets/application.css" media="all" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+  <div id="main-container" class="theme-light">
+    <header id="header" class="hidden">
+      <img id="logo" src="http://localhost:3010/logo-blue-black.svg">
+      <div class="header-right">
+        <span id="save-status">saved</span>
+      </div>
+    </header>
+    <div class="page main-page">
+      <ul id="top-level"></ul>
+    </div>
+    <input type="file" style="display:none;">
+  </div>
+
+
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <script>
+
+  var LIST_TITLE = " ",
+      LIST_DATA = {},
+      LIST_ID = 0,
+      INITIAL_LAST_SAVE = 0,
+      FILE_PATH = __dirname + '/foo.txt',
+      WORKER_FILE_PATH = 'http://localhost:3010/assets/worker.js';
+  require('electron').ipcRenderer.on('open', (event, filePath) => {
+    window.FILE_PATH = filePath;
+    window.LIST_TITLE = filePath.split('/').pop();
+    window.document.title = window.LIST_TITLE;
+  })
+
+  </script>
+  <script src="http://localhost:3010/assets/application.js" type="text/javascript"></script>
+  <script>if (window.module) module = window.module;</script>
+  </body>
+
+</html>

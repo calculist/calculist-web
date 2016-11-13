@@ -221,11 +221,11 @@ class ItemManager
 
   def generate_tree(item, children_by_parent_guid)
     tree = {
-      '$items' => [],
-      'guid' => item.guid,
       'text' => item.text,
+      'guid' => item.guid,
       'collapsed' => item.is_collapsed,
-      'sort_order' => item.sort_order
+      'sort_order' => item.sort_order,
+      '$items' => [],
     }
     children = children_by_parent_guid[item.guid] || []
     children.each do |child|

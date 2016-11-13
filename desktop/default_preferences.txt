@@ -1,0 +1,63 @@
+my preferences
+  keyboard shortcuts
+    ctrl + enter
+      enter command mode
+    alt + =
+      add text "\[=]"
+    alt + shift + ;
+      add text "\[:]"
+    alt + ;
+      add text "\[:]"
+    alt + 0
+      goto -1
+    alt + spacebar
+      goto ($parent)
+    ctrl + spacebar
+      toggle collapse
+    ctrl + right
+      zoom in
+    ctrl + left
+      zoom out
+    ctrl + up
+      collapse all
+    ctrl + down
+      expand all
+    ctrl + alt + up
+      collapse items recursively
+    ctrl + shift + d
+      duplicate
+    ctrl + shift + delete
+      delete
+    ctrl + shift + down
+      move down
+    ctrl + shift + up
+      move up
+    ctrl + shift + right
+      indent
+    ctrl + shift + left
+      outdent
+    ctrl + shift + spacebar
+      toggle collapse siblings
+    alt + enter
+      new item
+    ctrl + k
+      template "kanban"
+    ctrl + w
+      template "days of the week"
+  templates
+    kanban
+      DONE
+      IN PROGRESS
+      TODO
+    days of the week
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      Sunday
+  default theme
+    light
+  default font
+    Ubuntu Mono

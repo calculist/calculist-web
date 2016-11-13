@@ -84,7 +84,7 @@ private
   def get_profile_page_list_of_lists
     inc = 0
     {
-      text: 'lists [=] count($items)',
+      text: 'lists',
       guid: "do_not_save#{inc += 1}",
       '$items': @lists.map do |list| {
         text: list.title,
