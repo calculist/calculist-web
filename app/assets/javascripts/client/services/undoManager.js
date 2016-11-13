@@ -1,7 +1,8 @@
 calculist.register('undoManager', ['UndoManager','_','eventHub','getItemByGuid','lmDiff'], function (UndoManager, _, eventHub, getItemByGuid, lmDiff) {
 
   var undoManager = new UndoManager(),
-      previousData, focusGuid, undoIndex;
+      previousDataQueue = [],
+      focusGuid, undoIndex;
 
   var reverseDelta = function (delta) {
     var rDelta = {};
@@ -22,14 +23,19 @@ calculist.register('undoManager', ['UndoManager','_','eventHub','getItemByGuid',
   undoManager.setLimit(100);
 
   eventHub.on('transactionstart', function () {
-    previousData = window.topItem.flatten();
+    previousDataQueue.push(window.topItem.flatten());
     focusGuid = sessionStorage.focusGuid;
     undoIndex = undoManager.getIndex();
   });
 
   eventHub.on('transactionend', function () {
-    // TODO figure out how previousData can be null sometimes
-    if (previousData == null) return;
+    var previousData = previousDataQueue.shift();
+    if (!previousData) return;
+    if (previousDataQueue.length) {
+      console.log('unexpected data');
+      if (window.DEV_MODE) debugger;
+      previousDataQueue = [];
+    }
     // If the index has changed, that means an undo or redo happened
     // in the transaction, and we should ignore the event
     if (undoIndex !== undoManager.getIndex()) return;
@@ -78,7 +84,6 @@ calculist.register('undoManager', ['UndoManager','_','eventHub','getItemByGuid',
       window.topItem.save();
       window.topItem.softRenderAll();
     });
-    previousData = null;
   });
 
   // TODO make this a command, like other keyboard shortcuts

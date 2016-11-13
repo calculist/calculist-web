@@ -92,6 +92,10 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
         // TODO clean up old variable names so this is not so confusing
         originalDimensions = dimensionAttrs.reduce(function (dimensions, attr) {
           dimensions[attr] = $standin[attr]();
+          if (attr === 'offset') {
+            dimensions[attr].top -= 10;
+            dimensions[attr].left += 10;
+          }
           return dimensions;
         }, {});
         applyOriginalDimensions();
