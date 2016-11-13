@@ -49,13 +49,13 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
         });
       }
       var electron = require('electron')
-      electron.ipcRenderer.on('save', (event, filePath) => {
+      electron.ipcRenderer.on('save', function (event, filePath) {
         window.topItem.saveNow(filePath)
         window.FILE_PATH = filePath;
         window.LIST_TITLE = filePath.split('/').pop();
         window.document.title = window.LIST_TITLE;
       })
-      electron.ipcRenderer.on('open', (event, filePath) => {
+      electron.ipcRenderer.on('open', function (event, filePath) {
         openFile(filePath);
       })
       openFile(window.FILE_PATH)
