@@ -26,13 +26,17 @@ calculist.require(['Item','zoomPage'], function (Item, zoomPage) {
     var isTopLevel = zoomPage.isTopOfAPage(this);
     if (isTopLevel) {
       this.$el.addClass('top-level');
+      this.$('.input-container:first').addClass('top-level');
       this.$('.input:first').addClass('top-level');
       this.$('.dot:first').addClass('top-level');
+      this.$('ul:first').addClass('top-level');
       classMap.topLevel = true;
     } else if (!isTopLevel && classMap.topLevel) {
       this.$el.removeClass('top-level');
+      this.$('.input-container:first').removeClass('top-level');
       this.$('.input:first').removeClass('top-level');
       this.$('.dot:first').removeClass('top-level');
+      this.$('ul:first').removeClass('top-level');
       classMap.topLevel = false;
     }
     var hasError = this.valIsComputed && _.isNaN(this.val);

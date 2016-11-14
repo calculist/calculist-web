@@ -49,8 +49,10 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
       $('#main-container').append($page.html('').append(item.render().el));
       window.requestAnimationFrame(function () {
         // item.addOrRemoveClasses(true);
+        item.$('.input-container:first').addClass('top-level');
         item.$('.input:first').addClass('top-level');
         item.$('.dot:first').addClass('top-level');
+        item.$('ul:first').addClass('top-level');
         var mainPageOffset = $mainPage.offset();
         $page.offset({
           top: mainPageOffset.top + 10,
@@ -104,8 +106,10 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
         $page.css({
           width: 800 - originalDimensions.left - 200
         });
+        pageData.item.$('.input-container:first').removeClass('top-level');
         pageData.item.$('.input:first').removeClass('top-level');
         pageData.item.$('.dot:first').removeClass('top-level');
+        pageData.item.$('ul:first').removeClass('top-level');
         $page.on('transitionend', function () {
           $page.off('transitionend');
           $standin.replaceWith(pageData.item.render().el);

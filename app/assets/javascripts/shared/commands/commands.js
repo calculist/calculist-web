@@ -2,10 +2,10 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
 
   var commands = {
     hideHeader: function (_this) {
-      $('#header').hide();
+      $('#header').addClass('hidden');
     },
     showHeader: function (_this) {
-      $('#header').show();
+      $('#header').removeClass('hidden');
     },
     replaceItemsWith: function (_this) {
       _this.$items = [];
