@@ -1,5 +1,5 @@
 // TODO refactor
-calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndApplyChangesFromServer','jsonToItemTree','getNewGuid'], function (foo, Item, _, $, Backbone, lmDiff, saveButton, getAndApplyChangesFromServer, jsonToItemTree, getNewGuid) {
+calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndApplyChangesFromServer','jsonToItemTree','getNewGuid','userPreferences'], function (foo, Item, _, $, Backbone, lmDiff, saveButton, getAndApplyChangesFromServer, jsonToItemTree, getNewGuid, userPreferences) {
   window.DEV_MODE = window.localStorage.DEV_MODE;
   var jsonView = window.location.search.split('?json=')[1];
   if (jsonView) {
@@ -246,6 +246,12 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
       // This fixes a bug where computed values
       // are not always correct on initial pageload.
       window.topItem.softRenderAll();
+      _.each([userPreferences, window.topItem], function (topItem) {
+        var commands = topItem.$item('onpageload');
+        if (commands) _.each(commands.$items, function (commandItem) {
+          if (/^[a-zA-Z]/.test(commandItem.text)) window.topItem.executeCommand(commandItem.text);
+        });
+      });
     });
   });
 });

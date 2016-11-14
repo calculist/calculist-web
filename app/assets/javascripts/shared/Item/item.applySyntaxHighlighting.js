@@ -3,7 +3,8 @@ calculist.register('item.applySyntaxHighlighting',[], function () {
   var specialItems = {
     'templates': true,
     'keyboard shortcuts': true,
-    'number format': true
+    'number format': true,
+    'onpageload': true,
   };
 
   // TODO Do actual syntax highlighting
