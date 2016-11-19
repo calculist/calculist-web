@@ -93,7 +93,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
                     'ceil','floor','max','min','round','clamp','inRange','range',
                     'camelCase','capitalize','kebabCase','lowerCase','join','split',
                     'parseInt','repeat','replace','snakeCase','split','startCase','toLower',
-                    'toUpper','truncate','upperCase','words','times'];
+                    'toUpper','truncate','upperCase','words','times','identity'];
   _.each(lodashKeys, function (key) { proto[key] = _[key]; });
 
   var valIfItem = function (item) { return isItem(item) ? item.val : item; };
