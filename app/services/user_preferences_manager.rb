@@ -175,16 +175,16 @@ class UserPreferencesManager
         text: '// remove the "//" to execute the commands when the page loads',
         items: []
       },{
-        text: '// hide header',
+        text: '//hide header',
         items: []
       },{
-        text: '// change theme "dark"',
+        text: '//change theme "dark"',
         items: [{
           text: 'default theme is "light"',
           items: []
         }]
       },{
-        text: '// change font "Courier New"',
+        text: '//change font "Courier New"',
         items: [{
           text: 'see fonts.google.com for other available fonts'
         }]
