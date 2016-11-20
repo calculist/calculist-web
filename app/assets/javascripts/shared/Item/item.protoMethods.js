@@ -11,6 +11,7 @@ calculist.register('item.protoMethods', [], function () {
         'down',
         'enterCommandMode',
         'exitCommandMode',
+        'focus',
         'handleBlur',
         'handleDotClick',
         'handleEnter',

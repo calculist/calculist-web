@@ -253,16 +253,6 @@ calculist.register('Item', ['_','Backbone','$','ss','Papa','getNewGuid','jsonToI
       this.focus();
     };
 
-    Item.prototype.focus = function() {
-      // if (this.hasFocus) return; // BUG Refactor this.hasFocus. It's buggy. Breaks keyboard shortcuts and other things.
-      var $input = this.$("#input" + this.id);
-      if (isReadOnly()) {
-        $input.addClass('focus');
-      } else {
-        $input.focus();
-      }
-    };
-
     Item.prototype.moveChildUp = function(child) {
       var nextUp, nextUpParent;
       nextUp = this.getUpperSibling(child);
