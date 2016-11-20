@@ -4,7 +4,7 @@ calculist.require(['Item','createComputationContextObject'], function (Item, cre
     var formatItem = this.$$item('number format');
     if (formatItem) {
       try {
-        return (new Function('n', "with (this) { return " + (formatItem.valueOf()) + "; }")).call(createComputationContextObject(), n);
+        return formatItem.valueOf()(n);
       } catch (error) {
         // log(error);
         return n;
