@@ -31,8 +31,36 @@ window.sessionStorage || (window.sessionStorage = {});
       removed = _.remove(queue, _process);
     }
     if (queue.length) {
-      var notFound = _.reject(_.flatten(_.map(queue, '1')), require);
-      throw new Error('Unresolveable dependencies: "' + notFound.join('", "') + '"');
+      var notFound = _.uniq(_.reject(_.flatten(_.map(queue, '1')), require));
+      var getDependents = function (dependencies) {
+        return _.map(_.filter(queue, _.spread(function (name, _dependencies) {
+          return _.intersection(dependencies, _dependencies).length > 0;
+        })), _.spread(function (name) { return name || '[require]'; }));
+      };
+      var dependents = getDependents(notFound);
+      var culprits = _.difference(notFound, dependents);
+      if (culprits.length === 0) {
+        var dByN = _.reduce(queue, function (h, s) {
+          if (require(s[0])) return h;
+          h[s[0]] = s[1];
+          return h;
+        }, {});
+        var circulars = [];
+        _.each(dByN, function (d, n1) {
+          _.each(d, function (n2) {
+            if (_.includes(dByN[n2], n1)) circulars.push(n1);
+          });
+        });
+        throw new Error('Circular dependencies: "' + circulars.join('", "') + '"');
+      } else {
+        dependents = getDependents(culprits);
+        throw new Error('Unresolveable dependenc' +
+          (culprits.length === 1 ? 'y' : 'ies') +
+          ': "' + culprits.join('", "') +
+          '" for object' + (dependents.length === 1 ? '' : 's') +
+          ' "' + dependents.join('", "') + '"'
+        );
+      }
     }
   };
 
