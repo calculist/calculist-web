@@ -1,4 +1,4 @@
-calculist.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome','commands.permanentlyDeleteList','commands.changeFont'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, executePreviousCommand, gotoList, goHome, permanentlyDeleteList, changeFont) {
+calculist.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome','commands.permanentlyDeleteList','commands.changeFont','itemOfFocus'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, executePreviousCommand, gotoList, goHome, permanentlyDeleteList, changeFont, itemOfFocus) {
 
   var commands = {
     hideHeader: function (_this) {
@@ -63,7 +63,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
       }
     },
     addText: function (_this, text) {
-      if (_this.hasFocus) {
+      if (itemOfFocus.is(_this)) {
         var cursorIndex = cursorPosition.get(_this.depth);
         if (_this.mode !== 'command' && (cursorIndex >= _this.text.length || !(cursorIndex >= 0))) {
           _this.text += text;
@@ -89,12 +89,12 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
       } else {
         _this.text += text;
       }
-      if (!_this.hasFocus) _this.render();
+      if (!itemOfFocus.is(_this)) _this.render();
       _this.save();
     },
     addPrefix: function (_this, text) {
       _this.text = text + _this.text;
-      if (!_this.hasFocus) _this.render();
+      if (!itemOfFocus.is(_this)) _this.render();
       _this.save();
     },
     removeText: function (_this, text) {
@@ -104,7 +104,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
     },
     replaceText: function (_this, text, newText) {
       _this.text = _this.text.split(new RegExp(_.escapeRegExp(text || _this.text), 'g')).join(newText || '');
-      if (!_this.hasFocus) _this.render();
+      if (!itemOfFocus.is(_this)) _this.render();
       _this.save();
     },
     changeTextOf: function (_this, item, text) {

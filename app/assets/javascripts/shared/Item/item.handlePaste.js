@@ -1,4 +1,4 @@
-calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction'], function (Item, _, parseTextDoc, getNewGuid, transaction) {
+calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfFocus'], function (Item, _, parseTextDoc, getNewGuid, transaction, itemOfFocus) {
 
   Item.prototype.handlePaste = function(e) {
     if (this.mode === 'command') return;
@@ -15,7 +15,7 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction'], functi
       transaction(function () {
         var items = parseTextDoc(content),
             firstItem = items.shift();
-        if (this.hasFocus) {
+        if (itemOfFocus.is(this)) {
           this.insertTextAtCursor(firstItem.text);
         } else {
           this.changeText(firstItem.text);

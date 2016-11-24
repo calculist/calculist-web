@@ -1,13 +1,13 @@
-calculist.require(['Item', 'cursorPosition','isReadOnly'], function (Item, cursorPosition, isReadOnly) {
+calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus'], function (Item, cursorPosition, isReadOnly, itemOfFocus) {
 
   Item.prototype.handleFocus = function() {
-    var $input;
-    this.hasFocus = true;
+    itemOfFocus.change(this);
     sessionStorage.focusGuid = this.guid;
     if (isReadOnly()) return;
     this.showTrueValue();
     this.showComputedValue();
-    $input = this.$("#input" + this.id);
+    var $input = this.$("#input" + this.id);
+    $input.addClass('focus');
     // $input[0].selectionStart = cursorPosition.get();
     // $input[0].selectionEnd = 0;
     var range = document.createRange();

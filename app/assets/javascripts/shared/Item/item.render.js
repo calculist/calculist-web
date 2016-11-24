@@ -1,4 +1,4 @@
-calculist.require(['Item','_'], function (Item, _) {
+calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
 
   'use strict';
 
@@ -7,7 +7,8 @@ calculist.require(['Item','_'], function (Item, _) {
     var templateData = {
       id: this.id,
       text: this.getComputedHTML(),
-      collapsed: this.collapsed
+      collapsed: this.collapsed,
+      focus: itemOfFocus.is(this)
     };
     this.$el.html(this.template(templateData));
     this.addOrRemoveClasses();

@@ -23,7 +23,6 @@ calculist.register('item.handleKeydown', ['_','$','cursorPosition','transaction'
       } else {
         transaction(this.indent, this);
       }
-      this.shouldSoftRender = true;
     } else if (e.which === 38) { // 38 = up
       if (e.metaKey) {
         e.preventDefault();
@@ -86,7 +85,6 @@ calculist.register('item.handleKeydown', ['_','$','cursorPosition','transaction'
         this.exitCommandMode();
       } else {
         this.$("#input" + this.id).blur();
-        this.hasFocus = false;
       }
     } else if (e.which === 68 && e.ctrlKey && e.shiftKey) { // 68 = d
       transaction(this.executeCommand, this, 'duplicate');

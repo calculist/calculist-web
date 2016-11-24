@@ -1,11 +1,12 @@
-calculist.require(['Item'], function (Item) {
+calculist.require(['Item','itemOfFocus'], function (Item, itemOfFocus) {
 
-  // TODO Make a constants service
+  'use strict';
+
   var ERROR_VAL = '#ERROR!';
 
   Item.prototype.showComputedValue = function() {
     var $cd, val;
-    if (this.hasFocus) {
+    if (itemOfFocus.is(this)) {
       this.valueOf();
       val = this.val;
       if (this.valIsComputed) {
@@ -22,9 +23,11 @@ calculist.require(['Item'], function (Item) {
         this.computedDisplayIsVisible = true;
       }
     } else {
+      if (this.computedDisplayIsVisible) {
+        this.$("#computed-display" + this.id).text('');
+        this.computedDisplayIsVisible = false;
+      }
       var previousVal = this.val;
-      this.$("#computed-display" + this.id).text('');
-      this.computedDisplayIsVisible = false;
       this.$("#input" + this.id).html(this.getComputedHTML());
       if (this.valIsComputed) {
         if (_.isNaN(this.val)) {

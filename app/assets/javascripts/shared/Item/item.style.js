@@ -1,4 +1,4 @@
-calculist.require(['Item','zoomPage'], function (Item, zoomPage) {
+calculist.require(['Item','zoomPage','itemOfFocus'], function (Item, zoomPage, itemOfFocus) {
 
   'use strict';
 
@@ -22,6 +22,13 @@ calculist.require(['Item','zoomPage'], function (Item, zoomPage) {
     } else if (!this.collapsed && classMap.collapsed) {
       this.$el.removeClass('collapsed');
       classMap.collapsed = false;
+    }
+    if (itemOfFocus.is(this) && !classMap.focus) {
+      this.$('.input:first').addClass('focus');
+      classMap.focus = true;
+    } else if (!itemOfFocus.is(this) && classMap.focus) {
+      this.$('.input:first').removeClass('focus');
+      classMap.focus = false;
     }
     var isTopLevel = zoomPage.isTopOfAPage(this);
     if (isTopLevel) {

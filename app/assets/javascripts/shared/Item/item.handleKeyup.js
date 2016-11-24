@@ -1,18 +1,14 @@
-calculist.register('item.handleKeyup',['cursorPosition','commandTypeahead'], function (cursorPosition, commandTypeahead) {
+calculist.register('item.handleKeyup', ['cursorPosition','itemOfFocus'], function (cursorPosition, itemOfFocus) {
 
   return function(e) {
-    var previousText, previousVal, text;
-    previousText = this.text;
-    text = e.target.textContent;
-    if (text !== previousText && this.mode !== 'command') {
+    if (this.mode === 'command' || !itemOfFocus.is(this)) return;
+    var previousText = this.text;
+    var text = e.target.textContent;
+    if (text !== previousText) {
       this.changeText(text);
-    }
-    if (text !== previousText || this.shouldSoftRender) {
       this.save();
-      previousVal = this.val;
       this.valueOf();
       this.softRenderAll();
-      this.shouldSoftRender = false;
     }
     if (this.justFocused) {
       this.justFocused = false;

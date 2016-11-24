@@ -5,7 +5,7 @@ calculist.register('item.template', ['_','isReadOnly'], function (_, isReadOnly)
       '<div class="computed-display" id="computed-display<%= id %>"></div>' +
       // '<input id="command-input<%= id %>" type="text" style="display:none;float:left;width:100%;">' +
       '<div class="dot <%= collapsed ? "collapsed" : "" %>" id="dot<%= id %>"></div>' +
-      '<pre id="input<%= id %>" class="input"' + (isReadOnly() ? '' : ' contenteditable="true"') + '><%= (text || "") %></pre>' +
+      '<pre id="input<%= id %>" class="input<%= focus ? " focus" : "" %>"' + (isReadOnly() ? '' : ' contenteditable="true"') + '><%= (text || "") %></pre>' +
       // '<ul id="typeahead<%= id %>" style="display:none;position:absolute;width:100%;"></ul>' +
     '</div>' +
     '<ul id="list<%= id %>"></ul>'

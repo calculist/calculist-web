@@ -5,7 +5,6 @@ calculist.register('item.handleEnter',['_','$','cursorPosition'],function (_, $,
     if (this.mode === 'command') {
       this.executeCommand(e.target.textContent);
       this.exitCommandMode();
-      this.shouldSoftRender = true;
     } else if (e.ctrlKey && !e.shiftKey) {
       this.enterCommandMode();
     } else if (e.shiftKey) {
@@ -15,7 +14,6 @@ calculist.register('item.handleEnter',['_','$','cursorPosition'],function (_, $,
         return;
       }
       (this.$parent || this).addNewChildBefore(this);
-      this.hasFocus = false;
     } else if (this.text) {
       var newItemText = '';
       if (this.text.length > anchorOffset) {
@@ -28,7 +26,6 @@ calculist.register('item.handleEnter',['_','$','cursorPosition'],function (_, $,
       } else {
         this.$parent.addNewChildAfter(this, newItemText);
       }
-      this.hasFocus = false;
     } else {
       this.outdent();
     }

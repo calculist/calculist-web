@@ -1,13 +1,5 @@
-calculist.register('item.focus', ['_','isReadOnly'], function (_, isReadOnly) {
+calculist.register('item.focus', ['_'], function (_) {
 
-
-  return _.debounce(function() {
-    var $input = this.$("#input" + this.id);
-    if (isReadOnly()) {
-      $input.addClass('focus');
-    } else {
-      $input.focus();
-    }
-  });
+  return _.debounce(function() { this.$("#input" + this.id).focus(); });
 
 });

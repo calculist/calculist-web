@@ -1,7 +1,7 @@
-calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorPosition'], function (Item, _, parseTextDoc, getNewGuid, transaction, cursorPosition) {
+calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorPosition','itemOfFocus'], function (Item, _, parseTextDoc, getNewGuid, transaction, cursorPosition, itemOfFocus) {
 
   Item.prototype.insertTextAtCursor = function(insertingText, skipRender) {
-    if (!this.hasFocus) return;
+    if (!itemOfFocus.is(this)) return;
     var selection = _.pick(document.getSelection(),
         'anchorOffset',
         // 'baseOffset',
