@@ -23,8 +23,12 @@ calculist.register('transaction', ['_','eventHub'], function (_, eventHub) {
       eventHub.trigger('transactionstart');
       error = _try(fn);
       if (!stalling) {
-        transactionInProgress = false;
-        eventHub.trigger('transactionend');
+        if (debouncedFn) {
+          concludeDebouncedTransaction();
+        } else {
+          transactionInProgress = false;
+          eventHub.trigger('transactionend');
+        }
       }
     }
     if (error) throw error;
@@ -47,7 +51,7 @@ calculist.register('transaction', ['_','eventHub'], function (_, eventHub) {
     debouncedFn = _.bind.apply(_, arguments);
     if (debouncedTimeout) {
       clearTimeout(debouncedTimeout);
-    } else {
+    } else if (!transactionInProgress) {
       transactionInProgress = true;
       eventHub.trigger('transactionstart');
     }
