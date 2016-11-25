@@ -1,37 +1,35 @@
 var window = this;
 window.sessionStorage || (window.sessionStorage = {});
-(function (global, _) {
+window.calculist = (function (_) {
 
   'use strict';
 
-  var calculist = {};
+  var graph = {};
 
-  var registeredObjects = {},
-      require = _.propertyOf(registeredObjects),
+  var vertices = {},
+      getVertex = _.propertyOf(vertices),
       queue = [],
       initialized = false;
 
   var processQueue = function () {
-    var _process = _.spread(function (name, dependencies, initializer) {
-      var resolvedDependencies = _.compact(_.map(dependencies, require));
+    var connectVertices = _.spread(function (name, dependencies, initializer) {
+      var resolvedDependencies = _.compact(_.map(dependencies, getVertex));
       if (resolvedDependencies.length < dependencies.length) {
         return false;
       } else if (name) {
-        if (registeredObjects[name]) throw new Error('Naming collision for "' + name + '"');
-        registeredObjects[name] = initializer.apply(null, resolvedDependencies);
-        if (!registeredObjects[name]) throw new Error('Attempted to register a falsy value for "' + name + '"');
+        if (vertices[name]) throw new Error('Naming collision for "' + name + '"');
+        vertices[name] = initializer.apply(null, resolvedDependencies);
+        if (!vertices[name]) throw new Error('Attempted to register a falsy value for "' + name + '"');
         return true;
       } else {
         initializer.apply(null, resolvedDependencies);
         return true;
       }
     });
-    var removed = [1];
-    while (removed.length > 0) {
-      removed = _.remove(queue, _process);
-    }
+    var connected = [1];
+    while (connected.length > 0) connected = _.remove(queue, connectVertices);
     if (queue.length) {
-      var notFound = _.uniq(_.reject(_.flatten(_.map(queue, '1')), require));
+      var notFound = _.uniq(_.reject(_.flatten(_.map(queue, '1')), getVertex));
       var getDependents = function (dependencies) {
         return _.map(_.filter(queue, _.spread(function (name, _dependencies) {
           return _.intersection(dependencies, _dependencies).length > 0;
@@ -41,7 +39,7 @@ window.sessionStorage || (window.sessionStorage = {});
       var culprits = _.difference(notFound, dependents);
       if (culprits.length === 0) {
         var dByN = _.reduce(queue, function (h, s) {
-          if (require(s[0])) return h;
+          if (getVertex(s[0])) return h;
           h[s[0]] = s[1];
           return h;
         }, {});
@@ -64,23 +62,23 @@ window.sessionStorage || (window.sessionStorage = {});
     }
   };
 
-  calculist.register = function (name, dependencies, initializer) {
+  graph.register = function (name, dependencies, initializer) {
     queue.push([name, dependencies, initializer]);
     if (initialized) processQueue();
   };
 
-  calculist.require = _.partial(calculist.register, false);
+  graph.require = _.partial(graph.register, false);
 
-  calculist.init = function (dependencies, bootstrap) {
+  graph.init = function (dependencies, bootstrap) {
     processQueue();
     initialized = true;
     if (_.isFunction(dependencies)) {
       bootstrap = dependencies;
       dependencies = [];
     }
-    if (bootstrap) calculist.require(dependencies, bootstrap);
+    if (bootstrap) graph.require(dependencies, bootstrap);
   };
 
-  global.calculist = calculist;
+  return graph;
 
-})(this, _);
+})(_);
