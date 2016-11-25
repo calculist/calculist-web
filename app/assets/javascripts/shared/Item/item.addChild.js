@@ -1,4 +1,4 @@
-calculist.register('item.addChild',['_','getNewGuid'], function (_, getNewGuid) {
+calculist.register('item.addChild',['_','getNewGuid','itemOfFocus'], function (_, getNewGuid, itemOfFocus) {
 
   return function(text) {
     var child;
@@ -8,13 +8,14 @@ calculist.register('item.addChild',['_','getNewGuid'], function (_, getNewGuid) 
       guid: getNewGuid()
     });
     this.$items.push(child);
+    itemOfFocus.change(child);
     this.renderChildren();
     child.focus();
   };
 
 });
 
-calculist.register('item.addNewChildBefore',['_','getNewGuid'], function (_, getNewGuid) {
+calculist.register('item.addNewChildBefore',['_','getNewGuid','itemOfFocus'], function (_, getNewGuid, itemOfFocus) {
 
   return function(beforeChild, text) {
     var newChild;
@@ -27,13 +28,14 @@ calculist.register('item.addNewChildBefore',['_','getNewGuid'], function (_, get
       guid: getNewGuid()
     });
     this.insertBefore(newChild, beforeChild);
+    itemOfFocus.change(newChild);
     this.renderChildren();
     newChild.focus();
   };
 
 });
 
-calculist.register('item.addNewChildAfter',['_','getNewGuid'], function (_, getNewGuid) {
+calculist.register('item.addNewChildAfter',['_','getNewGuid','itemOfFocus'], function (_, getNewGuid, itemOfFocus) {
 
   return function(afterChild, text) {
     var newChild;
@@ -46,6 +48,7 @@ calculist.register('item.addNewChildAfter',['_','getNewGuid'], function (_, getN
       guid: getNewGuid()
     });
     this.insertAfter(newChild, afterChild);
+    itemOfFocus.change(newChild);
     this.renderChildren();
     newChild.focus();
   };

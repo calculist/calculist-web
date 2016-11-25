@@ -205,11 +205,12 @@ calculist.register('Item', ['_','Backbone','$','ss','Papa','getNewGuid','jsonToI
     Item.prototype.refreshDepth = function() {
       this.depth = ((this.$parent || {}).depth || 0) + 1;
       var _this = this;
-      if (this.$items[0]) this.$items[0].refreshSortOrder();
+      var lastSortOrder = 0;
       _.each(this.$items, function (item, i) {
         item.$parent = _this;
         item.refreshDepth();
-        if (item.sort_order == null) item.refreshSortOrder();
+        if (item.sort_order == null || item.sort_order <= lastSortOrder) item.refreshSortOrder();
+        lastSortOrder = item.sort_order;
       });
     };
 
@@ -224,10 +225,11 @@ calculist.register('Item', ['_','Backbone','$','ss','Papa','getNewGuid','jsonToI
       this.$parent = newParent;
       this.$parent.$items.push(this);
       this.refreshDepth();
-      (((_ref = this.$parent) != null ? _ref.$parent : void 0) || this.$parent).renderChildren();
       this.save();
       if (this.$parent.collapsed) {
         this.$parent.toggleCollapse();
+      } else {
+        this.$parent.renderChildren();
       }
       this.refreshSortOrder();
       this.focus();
@@ -273,8 +275,9 @@ calculist.register('Item', ['_','Backbone','$','ss','Papa','getNewGuid','jsonToI
         nextUpParent.$items.push(child);
         if (nextUpParent.collapsed) {
           nextUpParent.toggleCollapse();
+        } else {
+          nextUpParent.render();
         }
-        nextUpParent.render();
       }
       child.refreshSortOrder();
       child.focus();

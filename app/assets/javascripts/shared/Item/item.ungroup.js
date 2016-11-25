@@ -1,11 +1,31 @@
-calculist.require(['Item','_'], function (Item, _) {
+calculist.require(['Item','_','getNewGuid','itemOfFocus'], function (Item, _, getNewGuid, itemOfFocus) {
 
-  Item.prototype.ungroup = function() {
+  Item.prototype.ungroup = function(groupAttribute) {
     var $items = _.clone(this.$items);
-    _.eachRight(this.$items, _.method('outdent'));
+    if (groupAttribute) {
+      var groupingItem = this;
+      _.each($items, function(groupedItem) {
+        var existingAttributeItem = _.find(groupedItem.$items, { key: groupAttribute });
+        if (existingAttributeItem) {
+          existingAttributeItem.text = existingAttributeItem.key + ' [:] ' + groupingItem.valueOf();
+        } else {
+          var newItem = new Item({
+            $parent: groupedItem,
+            guid: getNewGuid(),
+            text: "" + groupAttribute + " [:] " + groupingItem.valueOf()
+          });
+          groupedItem.$items.push(newItem);
+          newItem.refreshSortOrder();
+        }
+      });
+    }
+    _.eachRight($items, _.method('outdent'));
     this.$items = $items; // Needed for undo to work
-    this.deleteItem(true);
-    _.defer(_.bind($items[0].focus, $items[0]));
+    _.pull(this.$parent.$items, this);
+    itemOfFocus.change($items[0]);
+    $items[0].$parent.refreshDepth();
+    $items[0].$parent.renderChildren();
+    _.defer(function () { $items[0].focus(); });
     return this.$items;
   };
 

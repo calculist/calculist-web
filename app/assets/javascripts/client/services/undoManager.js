@@ -60,11 +60,7 @@ calculist.register('undoManager', ['UndoManager','_','eventHub','getItemByGuid',
             applyDelta(delta);
             eventHub.trigger('redo', delta);
             var focusItem = getItemByGuid(redoFocusGuid);
-            if (focusItem) {
-              _.defer(function() {
-                focusItem.focus();
-              });
-            }
+            if (focusItem) focusItem.focus();
           },
           undo: function () {
             redoFocusGuid = sessionStorage.focusGuid;
@@ -72,11 +68,7 @@ calculist.register('undoManager', ['UndoManager','_','eventHub','getItemByGuid',
             applyDelta(rDelta);
             eventHub.trigger('undo', rDelta);
             var focusItem = getItemByGuid(previousFocusGuid);
-            if (focusItem) {
-              _.defer(function() {
-                focusItem.focus();
-              });
-            }
+            if (focusItem) focusItem.focus();
           }
         });
         eventHub.trigger('undoableTransaction', delta);

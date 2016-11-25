@@ -531,24 +531,21 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
       _this.renderChildren();
     },
     ungroup: function(_this, groupAttribute) {
-      var _ref;
       _this.ungroup(groupAttribute);
       _this.save();
-      if ((_ref = _this.$parent) != null) {
-        _ref.renderChildren();
-      }
     },
     ungroupItems: function(_this, groupAttribute) {
       _this.ungroupItems(groupAttribute);
       _this.save();
-      _this.renderChildren();
     },
     pivotItems: function (_this) {
       _this.pivotItems();
     },
     shuffleItems: function(_this) {
       _this.$items = _.shuffle(_this.$items);
-      _this.refreshDepth();
+      _.each(_this.$items, function (item, i) {
+        item.sort_order = (i + 1) * 100;
+      });
       _this.save();
       _this.renderChildren();
     },

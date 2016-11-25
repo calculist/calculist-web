@@ -2,8 +2,12 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
 
   'use strict';
 
-  Item.prototype.render = function() {
-    this.undelegateEvents();
+  Item.prototype.render = function (unrenderFirst) {
+    if (unrenderFirst) {
+      this.unrender();
+    } else {
+      this.undelegateEvents();
+    }
     var templateData = {
       id: this.id,
       text: this.getComputedHTML(),
@@ -18,13 +22,26 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
   };
 
   Item.prototype.renderChildren = function() {
-    var listEl = this.$("#list" + this.id);
-    listEl.html('');
-    if (!this.collapsed) {
-      _.each(this.$items, function(child) {
-        listEl.append(child.render().el);
-      });
+    if (this.collapsed) {
+      this.unrenderChildren();
+    } else {
+      var listEl = this.$("#list" + this.id);
+      listEl.html(_.map(this.$items, function(child) {
+        return child.render(true).el;
+      }));
     }
+  };
+
+  Item.prototype.unrender = function () {
+    this.undelegateEvents();
+    this.$el.remove();
+    this.unrenderChildren();
+  };
+
+  var callUnrender = _.method('unrender');
+  Item.prototype.unrenderChildren = function () {
+    var listEl = this.$("#list" + this.id);
+    if (listEl.children().length > 0) _.each(this.$items, callUnrender);
   };
 
   Item.prototype.softRender = function() {
