@@ -1,6 +1,7 @@
 //= require lodash/lodash
 //= require simple_statistics/simple_statistics
 //= require evalculist/evalculist
+//= require acyclic/acyclic
 //= require calculist
 //= require ./shared/utility/vendors
 //= require ./shared/utility/keyToVarName

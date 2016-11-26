@@ -21,6 +21,7 @@
 //= require clipboard/clipboard
 //= require katex/katex.min
 //= require evalculist/evalculist
+//= require acyclic/acyclic
 //= require calculist
 //= require_tree ./shared/utility
 //= require_tree ./shared/commands
