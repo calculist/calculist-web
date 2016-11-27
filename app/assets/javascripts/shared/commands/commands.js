@@ -30,6 +30,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
     },
     goto: function (_this, item) {
       if (!isItem(item)) item = _this.$item(item) || _this.$$item(item);
+      // if (!zoomPage.isInPage(item)) return;
       item.$parent ? item.$parent.expand(true).then(function () {
         item.focus();
       }) : item.focus();

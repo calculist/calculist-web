@@ -27,6 +27,17 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
       }
       return lastItem;
     },
+    isInPage: function (item) {
+      var topItem = (_.last(stack) || {}).item;
+      if (!topItem || item === topItem) return true;
+      if (item.depth <= topItem.depth) return false;
+      var parent = item.$parent;
+      while (parent && parent.depth >= topItem.depth) {
+        if (parent === topItem) return true;
+        parent = parent.$parent;
+      }
+      return false;
+    },
     attach: function (item) {
       $page = $('<div class="page zoom-page"></div>');
       originalDimensions = dimensionAttrs.reduce(function (dimensions, attr) {
@@ -112,8 +123,8 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
         pageData.item.$('ul:first').removeClass('top-level');
         $page.on('transitionend', function () {
           $page.off('transitionend');
-          $standin.replaceWith(pageData.item.render().el);
-          $page.html('').remove();
+          $standin.replaceWith(pageData.item.render(true).el);
+          $page.remove();
           originalDimensions = nextPageData.originalDimensions;
           $standin = nextPageData.$standin;
           lmSessionStorage.set('zoomGuid', (nextPageData.item || window.topItem).guid);
