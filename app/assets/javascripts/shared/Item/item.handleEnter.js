@@ -1,5 +1,13 @@
 calculist.register('item.handleEnter',['_','$','cursorPosition'],function (_, $, cursorPosition) {
 
+  var addNewItem = function (_this, newItemText) {
+    if (sessionStorage.zoomGuid === _this.guid || !_this.$parent) {
+      _this.addNewChildBefore(_this.$items[0] || _this, newItemText);
+    } else {
+      _this.$parent.addNewChildAfter(_this, newItemText);
+    }
+  };
+
   return function (e, anchorOffset) {
     e.preventDefault();
     if (this.mode === 'command') {
@@ -21,13 +29,11 @@ calculist.register('item.handleEnter',['_','$','cursorPosition'],function (_, $,
         this.changeText(this.text.substring(0, anchorOffset));
         cursorPosition.set(newItemText, this.depth, 0);
       }
-      if (sessionStorage.zoomGuid === this.guid || !this.$parent) {
-        this.addNewChildBefore(this.$items[0] || this, newItemText);
-      } else {
-        this.$parent.addNewChildAfter(this, newItemText);
-      }
+      addNewItem(this, newItemText);
     } else {
+      var previousDepth = this.depth;
       this.outdent();
+      if (this.depth === previousDepth) addNewItem(this, '');
     }
   };
 
