@@ -1,11 +1,13 @@
-calculist.register('syncAnimationFrame', [], function () {
+calculist.register('syncAnimationFrame', ['_'], function (_) {
 
   var animationFrame, isRefeshing;
+
+  var requestAnimationFrame = window.requestAnimationFrame || function (cb) { _.defer(cb, _.now()); };
 
   var refreshAnimationFrame = function () {
     if (isRefeshing) return;
     isRefeshing = true;
-    window.requestAnimationFrame(function (af) {
+    requestAnimationFrame(function (af) {
       animationFrame = af;
       isRefeshing = false;
     });
