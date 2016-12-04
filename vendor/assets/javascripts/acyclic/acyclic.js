@@ -9,9 +9,22 @@
     var graph = {};
 
     var vertices = {},
-        getVertex = _.propertyOf(vertices),
+        namespaces = {},
         queue = [],
         initialized = false;
+
+    var namespaceIsComplete = function (namespace, vertext) {
+      return _.every(_.keys(namespace), function (key) {
+        if (namespace[key]) return namespaceIsComplete(namespace[key], vertext[key]);
+        return vertext[key];
+      });
+    };
+
+    var getVertex = function (name) {
+      var vertex = _.get(vertices, name);
+      var namespace = vertex && _.get(namespaces, name);
+      if (!namespace || namespaceIsComplete(namespace, vertex)) return vertex;
+    };
 
     var throwError = function () {
       var notFound = _.uniq(_.reject(_.flatten(_.map(queue, '1')), getVertex));
@@ -61,9 +74,15 @@
         if (resolvedDependencies.length < dependencies.length) {
           return false;
         } else if (name) {
-          if (vertices[name]) throw new Error('Naming collision for "' + name + '"');
-          vertices[name] = initializer.apply(null, resolvedDependencies);
-          if (!vertices[name]) throw new Error('Attempted to register a falsy value for "' + name + '"');
+          _.update(vertices, name, function (existingValue) {
+            if (existingValue) {
+              throw new Error('Name or namespace collision for "' + name + '"');
+            } else {
+              var vertex = initializer.apply(null, resolvedDependencies);
+              if (!vertex) throw new Error('Attempted to register a falsy value for "' + name + '"');
+              return vertex;
+            }
+          });
           return true;
         } else {
           initializer.apply(null, resolvedDependencies);
@@ -76,8 +95,13 @@
     };
 
     graph.register = function (name, dependencies, initializer) {
+      if (name) _.each([namespaces, vertices], function (object) {
+        // Claim namespaces before initialization
+        _.update(object, name, _.identity);
+      });
       queue.push([name, dependencies, initializer]);
       if (initialized) processQueue();
+      return graph;
     };
 
     graph.require = _.partial(graph.register, false);
@@ -90,6 +114,7 @@
         dependencies = [];
       }
       if (bootstrap) graph.require(dependencies, bootstrap);
+      return graph;
     };
 
     return graph;

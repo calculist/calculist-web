@@ -1,4 +1,4 @@
-calculist.register('commands', ['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','commands.executePreviousCommand','commands.gotoList','commands.goHome','commands.permanentlyDeleteList','commands.changeFont','itemOfFocus'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, executePreviousCommand, gotoList, goHome, permanentlyDeleteList, changeFont, itemOfFocus) {
+calculist.require(['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','itemOfFocus'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, itemOfFocus) {
 
   var commands = {
     hideHeader: function (_this) {
@@ -9,7 +9,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
     },
     replaceItemsWith: function (_this) {
       _this.$items = [];
-      this.addItems.apply(this, arguments);
+      commands.addItems.apply(commands, arguments);
     },
     newList: function (_this, title, handle) {
       if (!title) return alert('New lists need titles.');
@@ -20,13 +20,12 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
         alert('saving failed');
       })
     },
-    permanentlyDeleteList: permanentlyDeleteList,
     searchFor: function (_this, item, caseSensitive) {
       if (_.isString(item)) {
         if (caseSensitive) item = new RegExp(_.escapeRegExp(item));
         if (!caseSensitive) item = new RegExp(_.escapeRegExp(item), 'i');
       }
-      this.goto(_this, item);
+      commands.goto(_this, item);
     },
     goto: function (_this, item) {
       if (!isItem(item)) item = _this.$item(item) || _this.$$item(item);
@@ -36,16 +35,13 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
       }) : item.focus();
     },
     gotoItem: function (_this, item) {
-      this.goto(_this, item);
+      commands.goto(_this, item);
     },
-    gotoList: gotoList,
-    goHome: goHome,
     changeTheme: function (_this, theme) {
       if (_.includes(['light','dark','sandcastle'], theme)) {
         $('#main-container').removeClass().addClass('theme-' + theme);
       }
     },
-    changeFont: changeFont,
     enterCommandMode: function (_this) {
       if (_this.mode !== 'command') {
         _this.enterCommandMode();
@@ -114,7 +110,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
       item.save();
     },
     changeText: function (_this, text) {
-      this.changeTextOf(_this, _this, text);
+      commands.changeTextOf(_this, _this, text);
     },
     freezeComputedValue: function (_this) {
       if (_this.valIsComputed) {
@@ -265,7 +261,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
       });
     },
     importFromJson: function (_this) {
-      var parseJson = _.bind(this.parseJson, this);
+      var parseJson = _.bind(commands.parseJson, commands);
       importFile().then(function (file) {
         parseJson(_this, file);
       });
@@ -303,7 +299,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
     },
     copyToClipboard: _.rest(function (_this, options) {
       options = _.flatten(options);
-      if (_.includes(options, 'formatted')) return this.copyToClipboardFormatted(_this, options);
+      if (_.includes(options, 'formatted')) return commands.copyToClipboardFormatted(_this, options);
       var computed = _.includes(options, 'computed');
       var hideCollapsed = _.includes(options, 'hide collapsed');
       var itemsOnly = _.includes(options, 'items only');
@@ -319,7 +315,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
     }),
     copyItemsToClipboard: _.rest(function (_this, options) {
       options.push('items only');
-      this.copyToClipboard(_this, options);
+      commands.copyToClipboard(_this, options);
     }),
     copyToClipboardFormatted: _.rest(function (_this, options) {
       options = _.flatten(options);
@@ -404,7 +400,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
       downloadFile(_this.toText(0, computed), 'text/txt', filename + '.txt');
     },
     downloadAsComputedTxt: function (_this, filename) {
-      this.downloadAsTxt(_this, filename, true);
+      commands.downloadAsTxt(_this, filename, true);
     },
     downloadBackup: function (_this, filename) {
       filename || (filename =  window.topItem.text + '_' + (new Date()).toJSON().substring(0, 10));
@@ -427,7 +423,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
       _this.expandRecursive(true);
     },
     expandItemsRecursively: function (_this) {
-      this.expandAll();
+      commands.expandAll(_this);
     },
     collapseAll: function (_this){
       _this.collapseRecursive(true);
@@ -444,7 +440,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
         return item.collapsed || item.$items.length === 0;
       })) {
         _.noop();
-        // this.collapseAll();
+        // commands.collapseAll(_this);
       } else {
         transaction.stall();
         Promise.all(_.map(_this.$items, function(item) {
@@ -456,9 +452,9 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
     },
     toggleCollapseSiblings: function (_this) {
       if (_this.collapsed) {
-        this.expandSiblings(_this);
+        commands.expandSiblings(_this);
       } else {
-        this.collapseSiblings(_this);
+        commands.collapseSiblings(_this);
       }
     },
     expandSiblings: function (_this) {
@@ -480,14 +476,14 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
     // indentStraight:
     // TODO make this an item instance method
     outdentStraight: function (_this) {
-      this.indentSiblings();
+      commands.indentSiblings(_this);
       _this.outdent();
       _this.$parent.renderChildren();
       _this.save();
       _this.focus();
     },
     slideOut: function (_this) {
-      this.outdentStraight();
+      commands.outdentStraight(_this);
     },
     outdentItems: function (_this) {
       _.eachRight(_this.$items.slice(), _.method('outdent'));
@@ -615,7 +611,6 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
     redo: function (_this) {
       undoManager.redo();
     },
-    executePreviousCommand: executePreviousCommand,
     // reverseText
     // upperCase
     // lowerCase
@@ -687,6 +682,8 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
     unshareList: function (_this) {
 
     },
+    // moveToTop:
+    // moveToBottom:
     // randomWord:
     // randomAdjective:
     // randomNoun:
@@ -700,5 +697,7 @@ calculist.register('commands', ['_','$','transaction','computeItemValue','cursor
   _.each(itemMethods, function (methodName) {
     commands[methodName] = _.method(methodName);
   });
-  return commands;
+  _.each(commands, function (fn, name) {
+    calculist.register('commands.' + name, [], _.constant(fn));
+  });
 });
