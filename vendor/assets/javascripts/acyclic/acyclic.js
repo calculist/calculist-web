@@ -35,28 +35,27 @@
       };
       var dependents = getDependents(notFound);
       var culprits = _.difference(notFound, dependents);
-      if (culprits.length === 0) {
+      if (culprits.length === 0 || _.every(culprits, function (culprit) { return _.get(namespaces, culprit); })) {
         var dByN = _.reduce(queue, function (h, s) {
-          if (getVertex(s[0])) return h;
-          h[s[0]] = _.reject(s[1], getVertex);
+          if (!s[0] || getVertex(s[0])) return h;
+          _.set(h, s[0], _.reject(s[1], getVertex));
           return h;
         }, {});
-        var followPath = function (paths, n) {
-          if (paths.length > 1 && paths[0] === _.last(paths)) {
+        var paths = [];
+        var followPath = function (n, i) {
+          if (_.isArray(n)) {
+            paths.unshift(paths[0] + '.' + i);
+            _.each(n, followPath);
+          } else {
+            paths.unshift(n);
+          }
+          if (paths.length !== _.uniq(paths).length) {
             throw new Error('Circular dependencies: "' + paths.join('" -> "') + '"');
           }
-          _.each(dByN[n], function (d) {
-            paths.unshift(d);
-            followPath(paths, d);
-            paths.shift();
-          });
-        };
-        var paths = [];
-        _.each(_.keys(dByN), function (n) {
-          paths.unshift(n);
-          followPath(paths, n);
+          _.each(_.get(dByN, n), followPath);
           paths.shift();
-        });
+        };
+        _.each(_.keys(dByN), followPath);
       } else {
         dependents = getDependents(culprits);
         throw new Error('Unresolveable dependenc' +
