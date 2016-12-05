@@ -12,6 +12,7 @@ calculist.register('item.handleBlur', ['_','eventHub'], function (_, eventHub) {
     item.showComputedValue();
     var $input = item.$("#input" + item.id);
     $input.removeClass('focus');
+    eventHub.trigger('item.handleBlur', item);
   };
 
   var blurItems = function (focusItem) {
@@ -24,6 +25,7 @@ calculist.register('item.handleBlur', ['_','eventHub'], function (_, eventHub) {
   eventHub.on('itemOfFocusChange', blurItems);
 
   return function() {
+    eventHub.trigger('item.handleBlur:before', this);
     if (this.mode === 'command') this.exitCommandMode();
     addToQueue(this);
   };

@@ -1,4 +1,4 @@
-calculist.register('Item', ['_','Backbone','$','ss','Papa','getNewGuid','jsonToItemTree','eventHub','isReadOnly'], function (_, Backbone, $, ss, Papa, getNewGuid, jsonToItemTree, eventHub, isReadOnly) {
+calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], function (_, Backbone, $, getNewGuid, eventHub) {
 
   'use strict';
 
@@ -250,17 +250,6 @@ calculist.register('Item', ['_','Backbone','$','ss','Papa','getNewGuid','jsonToI
     return Item;
 
   })(Backbone.View);
-
-  calculist.require(['item'], function (item) {
-    _.each(item, function (fn, methodName) {
-      Item.prototype[methodName] = function () {
-        eventHub.trigger('item.' + methodName + ':before', this, arguments);
-        var returnValue = fn.apply(this, arguments);
-        eventHub.trigger('item.' + methodName, this, arguments, returnValue);
-        return returnValue;
-      };
-    });
-  });
 
   return Item;
 

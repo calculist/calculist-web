@@ -1,9 +1,10 @@
-calculist.register('item.handleKeydown', ['_','$','cursorPosition','transaction','commandTypeahead','zoomPage'],function (_, $, cursorPosition, transaction, commandTypeahead, zoomPage) {
+calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cursorPosition','transaction','commandTypeahead','zoomPage','executeCommand','eventHub'],function (_, $, customKeyboardShortcuts, cursorPosition, transaction, commandTypeahead, zoomPage, executeCommand, eventHub) {
 
   return function(e) {
+    eventHub.trigger('item.handleKeydown:before', this, arguments)
     var anchorOffset, baseOffset, expandOrCollapse, extentOffset, focusOffset, rangeCount, _ref, _ref1;
     this.keydownData || (this.keydownData = {});
-    if (this.customKeyboardShortcuts(e)) {
+    if (customKeyboardShortcuts(this, e)) {
       e.preventDefault();
       return;
     }
@@ -87,7 +88,7 @@ calculist.register('item.handleKeydown', ['_','$','cursorPosition','transaction'
         this.$("#input" + this.id).blur();
       }
     } else if (e.which === 68 && e.ctrlKey && e.shiftKey) { // 68 = d
-      transaction(this.executeCommand, this, 'duplicate');
+      transaction(executeCommand, null, this, 'duplicate');
     } else if (e.which === 190 && e.shiftKey && !e.ctrlKey && !e.altKey) { // 190 = >
       if (this.text.substring(anchorOffset - 3, anchorOffset) === '[=]') {
         e.preventDefault();
@@ -108,6 +109,7 @@ calculist.register('item.handleKeydown', ['_','$','cursorPosition','transaction'
     }
     this.keydownData.previousKey = e.which;
     this.keydownData.previousIndex = anchorOffset;
+    eventHub.trigger('item.handleKeydown', this, arguments)
   };
 
 });

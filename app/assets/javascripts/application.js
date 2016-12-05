@@ -25,6 +25,7 @@
 //= require calculist
 //= require_tree ./shared/utility
 //= require_tree ./shared/commands
+//= require_tree ./shared/run
 //= require_tree ./shared/Item
 //= require_tree ./client/services
 //= require_tree ./client/ui

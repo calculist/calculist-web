@@ -1,10 +1,10 @@
-calculist.register('item.executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead'], function (_, commands, transaction, computeItemValue, commandTypeahead) {
+calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead'], function (_, commands, transaction, computeItemValue, commandTypeahead) {
 
-  return function (commandString) {
+  return function (contextItem, commandString) {
     var commandStringPieces = commandString.split(/([^\w\s]|\d)/);
     commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
     if (commandStringPieces[0] === 'delete') commandStringPieces[0] = '_delete';
-    if (this.mode === 'command' && !_.isFunction(commands[commandStringPieces[0]]) ) {
+    if (contextItem.mode === 'command' && !_.isFunction(commands[commandStringPieces[0]]) ) {
       commandString = commandTypeahead.getTopMatch() || 'noop';
       commandStringPieces = commandString.split(/([^\w\s]|\d)/);
       commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
@@ -36,11 +36,11 @@ calculist.register('item.executeCommand', ['_', 'commands', 'transaction', 'comp
       commandArgumentsString = commandStringPieces.slice(1).join('');
     }
     var commandFunction = commands[commandStringPieces[0]];
-    var additionalVariables = commandArgumentsString ? { '$value': this.valueOf() } : null;
+    var additionalVariables = commandArgumentsString ? { '$value': contextItem.valueOf() } : null;
     var computingForCommand = true;
-    var commandArguments = commandArgumentsString ? computeItemValue('[' + commandArgumentsString + ']', this, additionalVariables, computingForCommand) : [];
-    commandArguments.unshift(this);
-    var mode = this.mode;
+    var commandArguments = commandArgumentsString ? computeItemValue('[' + commandArgumentsString + ']', contextItem, additionalVariables, computingForCommand) : [];
+    commandArguments.unshift(contextItem);
+    var mode = contextItem.mode;
     transaction(function () {
       commandFunction.apply(commands, commandArguments);
     });

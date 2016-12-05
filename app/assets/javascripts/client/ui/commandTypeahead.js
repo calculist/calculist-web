@@ -128,11 +128,6 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
     stackIndex = commandStack.length;
   });
 
-  // eventHub.on('item.executeCommand', function (item, args) {
-  //   if (item.mode !== 'command') return;
-
-  // });
-
   eventHub.on('item.exitCommandMode', function (item) {
     // console.log('exitCommandMode');
     $el && $el.remove();

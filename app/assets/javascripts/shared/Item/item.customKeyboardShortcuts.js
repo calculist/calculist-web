@@ -1,12 +1,12 @@
-calculist.register('item.customKeyboardShortcuts', ['_','keydownToString','transaction','userPreferences'], function (_, keydownToString, transaction, userPreferences) {
+calculist.register('customKeyboardShortcuts', ['_','keydownToString','transaction','userPreferences','executeCommand'], function (_, keydownToString, transaction, userPreferences, executeCommand) {
 
   var globalShortcuts;
   var $shortcutsDisplay;
 
-  return function(e) {
+  return function(contextItem, e) {
     var shortcuts = [];
     var options = [];
-    var nextUp = (this.key === 'keyboard shortcuts' ? this : this.$$item('keyboard shortcuts'));
+    var nextUp = (contextItem.key === 'keyboard shortcuts' ? contextItem : contextItem.$$item('keyboard shortcuts'));
     while (nextUp) {
       shortcuts.push(nextUp);
       nextUp = nextUp.$$item('keyboard shortcuts');
@@ -26,9 +26,10 @@ calculist.register('item.customKeyboardShortcuts', ['_','keydownToString','trans
     }
     if (shortcut) {
       transaction(function () {
-        var executeCommand = _.flow(_.property('text'), _.bind(this.executeCommand, this));
-        _.each(shortcut.$items, executeCommand);
-      }, this);
+        _.each(shortcut.$items, function (shortcutItem) {
+          executeCommand(contextItem, shortcutItem.text);
+        });
+      });
       return true;
     }
     // if (options.length) {
@@ -49,4 +50,3 @@ calculist.register('item.customKeyboardShortcuts', ['_','keydownToString','trans
   };
 
 });
-

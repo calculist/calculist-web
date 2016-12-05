@@ -1,4 +1,4 @@
-calculist.register('item.handleEnter',['_','$','cursorPosition'],function (_, $, cursorPosition) {
+calculist.register('item.handleEnter',['_','$','cursorPosition','executeCommand'],function (_, $, cursorPosition, executeCommand) {
 
   var addNewItem = function (_this, newItemText) {
     if (sessionStorage.zoomGuid === _this.guid || !_this.$parent) {
@@ -11,7 +11,7 @@ calculist.register('item.handleEnter',['_','$','cursorPosition'],function (_, $,
   return function (e, anchorOffset) {
     e.preventDefault();
     if (this.mode === 'command') {
-      this.executeCommand(e.target.textContent);
+      executeCommand(this, e.target.textContent);
       this.exitCommandMode();
     } else if (e.ctrlKey && !e.shiftKey) {
       this.enterCommandMode();
