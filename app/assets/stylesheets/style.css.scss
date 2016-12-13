@@ -24,14 +24,16 @@ body {
     }
     transition: opacity 160ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
     transition-delay: 160ms;
-    background-color: #fff;
-    padding: 10px;
+    background-color: transparent;
+    // padding: 10px;
     margin: 0;
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
     // box-shadow: 4px 4px 12px -4px rgba(0,0,0,0.3);
-    outline: $default-outline;
+    // outline: $default-outline;
     position: fixed;
-    top: 0;
+    top: 10px;
+    left: 10px;
+    height: 0;
     width: 100%;
     z-index: 1000;
     &:hover {
@@ -41,6 +43,11 @@ body {
       float:left;
       width:112px;
       margin-top: -1px;
+    }
+    #version {
+      display: inline-block;
+      margin: 5px 0 0 5px;
+      font-size: 14px;
     }
     .header-right {
       float: right;
@@ -248,9 +255,9 @@ body {
   &.theme-dark {
     background-color: $dark-color;
     color: $light-color;
-    header {
-      background-color: rgb(36,36,36);
-    }
+    // header {
+    //   background-color: rgb(36,36,36);
+    // }
     a {
       color: $light-color;
     }
@@ -301,9 +308,9 @@ body {
     a {
       color: $dark-color;
     }
-    header {
-      background-color: rgb(255,255,255);
-    }
+    // header {
+    //   background-color: rgb(255,255,255);
+    // }
     .page {
       background-color: #fff;
     }
@@ -340,9 +347,9 @@ body {
     a {
       color: $dark-color;
     }
-    header {
-      background-color: #f7f7f0;
-    }
+    // header {
+    //   background-color: #f7f7f0;
+    // }
     .page {
       background-color: rgba(251,251,248,1);
     }
