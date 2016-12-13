@@ -43,3 +43,7 @@ bower.json
 .byebug_history
 
 /desktop/node_modules
+/desktop/assets
+/desktop/Calculist-*
+
+notes.txt

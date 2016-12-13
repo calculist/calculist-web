@@ -125,4 +125,4 @@
     global.acyclic = acyclic;
   }
 
-})(this, _);
+})(this, this._ || require('lodash'));
