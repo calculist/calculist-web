@@ -1,6 +1,6 @@
 /**
  * @license
- * evalculist 0.0.1
+ * evalculist 0.1.0
  * Copyright 2016 Dan Allison <dan@calculist.io> and Calculist LLC <http://calculist.io>
  * Released under MIT license
  */
@@ -96,7 +96,7 @@
     .replace(/\\'/g , ESCAPED_SINGLE_QUOTES_PLACEHOLDER)
     .split(/(".*?")/g).forEach(function (dqChunk) {
       return dqChunk.split(/('.*?')/g).map(function (sqChunk) {
-        var isStr = sqChunk[0]  == '"' || sqChunk[0] == "'";
+        var isStr = sqChunk[0]  == '"' || sqChunk[0] == "'" || sqChunk[sqChunk.length - 1]  == '"' || sqChunk[sqChunk.length - 1] == "'";
         if (isStr) {
           if (tokens.length && tokens[tokens.length - 1][TOKEN_TYPE_INDEX] === EXPRESSION_TOKEN){
             tokens[tokens.length - 1][TOKEN_STRING_INDEX] += sqChunk;
