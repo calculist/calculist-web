@@ -207,14 +207,17 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
         window.addEventListener('blur', function (e) {
           // window.topItem.saveNow();
         });
+      } else {
+        // TODO add a warning for desktop also
+        window.addEventListener('beforeunload', function(e) {
+          if (window.topItem.waitingBeforeSave) {
+            _.delay(_.bind(window.topItem.saveNow, window.topItem), 200);
+            e.returnValue = 'Not all changes have saved.';
+            return e.returnValue;
+          }
+        });
+
       }
-      window.addEventListener('beforeunload', function(e) {
-        if (window.topItem.waitingBeforeSave) {
-          _.delay(_.bind(window.topItem.saveNow, window.topItem), 200);
-          e.returnValue = 'Not all changes have saved.';
-          return e.returnValue;
-        }
-      });
     }
     // window.addEventListener('storage', function(storageEvent) {
     //   var data, item, key, newValue, oldValue, zoomGuid;
