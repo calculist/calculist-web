@@ -8,7 +8,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       $('#header').removeClass('hidden');
     },
     replaceItemsWith: function (_this) {
-      _this.$items = [];
+      _this.items = [];
       commands.addItems.apply(commands, arguments);
     },
     newList: function (_this, title, handle) {
@@ -121,7 +121,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     },
     template: function(_this, key) {
       var nextUp, template, templates;
-      if (_this.$items.length) {
+      if (_this.items.length) {
         if (!confirm('Are you sure you want to overwrite the existing list?')) {
           return;
         }
@@ -137,13 +137,13 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       while (templates.length && !template) {
         template = templates.shift().$item(key);
       }
-      if (template && template.$items.length === 1) {
-        template = template.$items[0];
+      if (template && template.items.length === 1) {
+        template = template.items[0];
         _this.addText(template.text);
         _this.render();
       }
-      if (template && template.$items.length) {
-        _this.$items = _.map(template.$items, _.method('clone', _this));
+      if (template && template.items.length) {
+        _this.items = _.map(template.items, _.method('clone', _this));
         _this.renderChildren();
       } else if (template) {
         _this.text += template.valueOf();
@@ -159,17 +159,17 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         templates = new Item({
           text: 'templates',
           guid: getNewGuid(),
-          $items: [],
+          items: [],
           $parent: topItem
         });
-        topItem.$items.unshift(templates);
+        topItem.items.unshift(templates);
         topItem.renderChildren();
       }
       clone = _this.clone(templates);
       if (key) {
         clone.text = key;
       }
-      templates.$items.push(clone);
+      templates.items.push(clone);
       templates.renderChildren();
       _this.save();
     },
@@ -189,11 +189,11 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         newItem = new Item({
           text: ('' + text) || '',
           guid: getNewGuid(),
-          $items: [],
+          items: [],
           $parent: _this
         });
       }
-      _this.$items.push(newItem);
+      _this.items.push(newItem);
       newItem.refreshDepth();
       newItem.refreshSortOrder();
       _this.renderChildren();
@@ -215,11 +215,11 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
           newItem = new Item({
             text: text,
             guid: getNewGuid(),
-            $items: [],
+            items: [],
             $parent: _this
           });
         }
-        _this.$items.push(newItem);
+        _this.items.push(newItem);
         newItem.refreshDepth();
         newItem.refreshSortOrder();
       });
@@ -233,7 +233,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         var data = Papa.parse(file).data;
         var headerRow = _.map(data.shift(), _.trim);
         var labelIndex = labelKey ? headerRow.indexOf(labelKey) : 0;
-        _this.$items = _.map(data, function(row) {
+        _this.items = _.map(data, function(row) {
           var item;
           item = new Item({
             guid: getNewGuid(),
@@ -241,7 +241,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
             $parent: _this,
             collapsed: true
           });
-          item.$items = _.map(row, function(val, i) {
+          item.items = _.map(row, function(val, i) {
             return new Item({
               guid: getNewGuid(),
               text: "" + headerRow[i] + " [:] " + val,
@@ -271,7 +271,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       if (json) text = _this.text;
       var tree = jsonToItemTree(json || _this.text, text);
       _this.text = tree.text;
-      _this.$items = _.map(tree.$items, function (itemData) {
+      _this.items = _.map(tree.items, function (itemData) {
         var item = new Item(itemData);
         item.$parent = _this;
         return item;
@@ -305,7 +305,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       var itemsOnly = _.includes(options, 'items only');
       var text;
       if (itemsOnly) {
-        text = _.map(_this.$items, _.method('toText', 0, computed, hideCollapsed)).join('');
+        text = _.map(_this.items, _.method('toText', 0, computed, hideCollapsed)).join('');
       } else {
         text = _this.toText(0, computed, hideCollapsed);
       }
@@ -325,7 +325,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       var el;
       if (itemsOnly) {
         el =  $('<ul>' +
-                  _.map(_this.$items, _.method('toHTML', !computed, hideCollapsed)).join('') +
+                  _.map(_this.items, _.method('toHTML', !computed, hideCollapsed)).join('') +
                 '</ul>')[0];
       } else {
         el = $(_this.toHTML(!computed, hideCollapsed))[0];
@@ -347,7 +347,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         options = {};
       }
       computed = options.computed, hideCollapsed = options.hideCollapsed;
-      var text = _.map(_this.$items, _.method('toText', 0, computed, hideCollapsed)).join('');
+      var text = _.map(_this.items, _.method('toText', 0, computed, hideCollapsed)).join('');
       $('#export-display')
         .val(text)
         .show();
@@ -376,7 +376,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         options = {};
       }
       computed = options.computed, hideCollapsed = options.hideCollapsed;
-      var text = _.map(_this.$items, _.method('toMarkdown', 0, computed, hideCollapsed)).join('\n');
+      var text = _.map(_this.items, _.method('toMarkdown', 0, computed, hideCollapsed)).join('\n');
       $('#export-display')
         .val(text)
         .show();
@@ -386,8 +386,8 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       });
     },
     downloadAsCsv: function (_this) {
-      var rows = _.map(_this.$items, function (item) {
-        return _.reduce(item.$items, function (row, it) {
+      var rows = _.map(_this.items, function (item) {
+        return _.reduce(item.items, function (row, it) {
           row[it.key] = it.val;
           return row;
         }, {});
@@ -429,21 +429,21 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       _this.collapseRecursive(true);
     },
     collapseSiblings: function(_this) {
-      _.each(_this.$parent.$items, function(item) {
+      _.each(_this.$parent.items, function(item) {
         item.collapse();
       });
       _this.save();
       _this.focus();
     },
     collapseItemsRecursively: function (_this) {
-      if (_.every(_this.$items, function (item) {
-        return item.collapsed || item.$items.length === 0;
+      if (_.every(_this.items, function (item) {
+        return item.collapsed || item.items.length === 0;
       })) {
         _.noop();
         // commands.collapseAll(_this);
       } else {
         transaction.stall();
-        Promise.all(_.map(_this.$items, function(item) {
+        Promise.all(_.map(_this.items, function(item) {
           return item.collapseRecursive();
         })).then(transaction.end).catch(transaction.end);
       }
@@ -458,7 +458,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       }
     },
     expandSiblings: function (_this) {
-      _.each(_this.$parent.$items, function(item) {
+      _.each(_this.$parent.items, function(item) {
         item.expand();
       });
       _this.save();
@@ -468,8 +468,8 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     indentSiblings: function (_this) {
       var parent = _this.$parent;
       if (!parent) return;
-      var index = parent.$items.indexOf(_this) + 1;
-      _.invokeMap(parent.$items.slice(index), 'indent');
+      var index = parent.items.indexOf(_this) + 1;
+      _.invokeMap(parent.items.slice(index), 'indent');
       parent.renderChildren();
       _this.save();
     },
@@ -486,12 +486,12 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       commands.outdentStraight(_this);
     },
     outdentItems: function (_this) {
-      _.eachRight(_this.$items.slice(), _.method('outdent'));
+      _.eachRight(_this.items.slice(), _.method('outdent'));
       _this.$parent.renderChildren();
       _this.save();
     },
     sortItems: function(_this, order) {
-      _this.$items.sort(function(a, b) {
+      _this.items.sort(function(a, b) {
         a = a.valueOf();
         b = b.valueOf();
         if (a > b) {
@@ -502,24 +502,24 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         return 0;
       });
       if (_.includes(order, 'desc')) {
-        _this.$items.reverse();
+        _this.items.reverse();
       }
       _this.save();
       _this.renderChildren();
     },
     sortItemsBy: function(_this, sorter, order) {
       var previousItems;
-      previousItems = _this.$items;
+      previousItems = _this.items;
       try {
-        _this.$items = _this.sortItemsBy(sorter);
-        _this.$items.sortBy = previousItems.sortBy;
+        _this.items = _this.sortItemsBy(sorter);
+        _this.items.sortBy = previousItems.sortBy;
         if (_.includes(order, 'desc')) {
-          _this.$items.reverse();
+          _this.items.reverse();
         }
         _this.save();
         _this.renderChildren();
       } catch (_error) {
-        _this.$items = previousItems;
+        _this.items = previousItems;
       }
     },
     groupItemsBy: function(_this, grouper, options) {
@@ -539,45 +539,45 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       _this.pivotItems();
     },
     shuffleItems: function(_this) {
-      _this.$items = _.shuffle(_this.$items);
-      _.each(_this.$items, function (item, i) {
+      _this.items = _.shuffle(_this.items);
+      _.each(_this.items, function (item, i) {
         item.sort_order = (i + 1) * 100;
       });
       _this.save();
       _this.renderChildren();
     },
     forEach: function (_this, array, cmd) {
-      if (isItem(array)) array = array.$items;
+      if (isItem(array)) array = array.items;
       if (!_.isArray(array)) return;
       _.each(array.slice(), _.method('executeCommand', cmd));
     },
     forEachItem: function(_this, cmd) {
-      _.each(_this.$items.slice(), _.method('executeCommand', cmd));
+      _.each(_this.items.slice(), _.method('executeCommand', cmd));
     },
     forEachItemRecursively: function (_this, cmd) {
       var execCmd = _.method('executeCommand', cmd),
           recurse = function (items) {
             _.each(items, function (item) {
               execCmd(item);
-              if (item.$items.length) recurse(item.$items.slice());
+              if (item.items.length) recurse(item.items.slice());
             });
           };
-      recurse(_this.$items.slice());
+      recurse(_this.items.slice());
     },
     flatten: function (_this) {
       var parent = _this.$parent;
       if (!parent) return; // TODO
-      // parent.$items.splice = _this._flatten();
+      // parent.items.splice = _this._flatten();
     },
     reverseItems: function (_this) {
-      _this.$items.reverse();
-      _.each(_this.$items, _.method('refreshSortOrder'));
+      _this.items.reverse();
+      _.each(_this.items, _.method('refreshSortOrder'));
       _this.save();
       _this.renderChildren();
     },
     generateList: _.noop,
     deleteItems: function(_this) {
-      _this.$items = [];
+      _this.items = [];
       _this.save();
       _this.renderChildren();
     },
@@ -586,7 +586,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
           newParent = _this.$$item(listName) || window.topItem.$item(listName);
       if (newParent) {
         _this.$parent.removeChild(_this);
-        newParent.$items.push(_this);
+        newParent.items.push(_this);
         _this.$parent = newParent;
         _this.refreshDepth();
         _this.refreshSortOrder();
@@ -623,7 +623,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         var parent = _this.$parent || _this;
         parent.insertAfter(new Item({
           text: outcome,
-          $items: [],
+          items: [],
           $parent: parent,
           guid: getNewGuid()
         }), _this);

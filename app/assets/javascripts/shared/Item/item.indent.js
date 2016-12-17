@@ -8,7 +8,7 @@ calculist.register('item.indent', ['zoomPage'], function (zoomPage) {
     }
     this.$parent.removeChild(this);
     this.$parent = newParent;
-    this.$parent.$items.push(this);
+    this.$parent.items.push(this);
     this.refreshDepth();
     this.save();
     if (this.$parent.collapsed) {

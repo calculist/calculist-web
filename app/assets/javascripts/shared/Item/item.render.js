@@ -26,7 +26,7 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
       this.unrenderChildren();
     } else {
       var listEl = this.$("#list" + this.id);
-      listEl.html(_.map(this.$items, function(child) {
+      listEl.html(_.map(this.items, function(child) {
         return child.render(true).el;
       }));
     }
@@ -41,7 +41,7 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
   var callUnrender = _.method('unrender');
   Item.prototype.unrenderChildren = function () {
     var listEl = this.$("#list" + this.id);
-    if (listEl.children().length > 0) _.each(this.$items, callUnrender);
+    if (listEl.children().length > 0) _.each(this.items, callUnrender);
   };
 
   Item.prototype.softRender = function() {
@@ -53,7 +53,7 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
     }
     this.addOrRemoveClasses();
     if (!this.collapsed) {
-      _.each(this.$items, _.method('softRender'));
+      _.each(this.items, _.method('softRender'));
     }
   };
 

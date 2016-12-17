@@ -21,7 +21,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
         attributeName = 'key';
       }
       item = null;
-      nextChildren = this.$items;
+      nextChildren = this.items;
       while (!(item || nextChildren.length === 0)) {
         children = nextChildren;
         if (children.length) {
@@ -30,7 +30,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
             if (child[attributeName] === key) {
               return true;
             } else {
-              nextChildren.unshift.apply(nextChildren, child.$items);
+              nextChildren.unshift.apply(nextChildren, child.items);
               return false;
             }
           });
@@ -41,7 +41,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
 
     Item.prototype.$$item = function(key) {
       if (!this.$parent) return;
-      var items = this.$parent.$items;
+      var items = this.$parent.items;
       var i = items.indexOf(this);
       while (--i >= 0) {
         if (items[i].key === key) return items[i];
@@ -52,13 +52,13 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
 
     Item.prototype.$siblings = function() {
       var _this = this;
-      return _.filter(this.$parent.$items, function(item) {
+      return _.filter(this.$parent.items, function(item) {
         return item !== _this;
       });
     };
 
     Item.prototype.getTotalItemCount = function() {
-      return this.$items.reduce(function(count, item) {
+      return this.items.reduce(function(count, item) {
         return count + 1 + item.getTotalItemCount();
       }, 0);
     };
@@ -68,7 +68,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
     };
 
     Item.prototype.toggleCollapse = function() {
-      if (!this.$items.length) {
+      if (!this.items.length) {
         return;
       }
       if (this.collapsed) {
@@ -82,24 +82,24 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
 
     Item.prototype.getUpperSibling = function(child) {
       var i, item;
-      i = this.$items.indexOf(child);
+      i = this.items.indexOf(child);
       if (i === -1) {
         return;
       }
-      item = this.$items[--i];
+      item = this.items[--i];
       return item;
     };
 
     Item.prototype.getNextSibling = function(child) {
       var i, item;
       if (!child) {
-        return this.$items[0];
+        return this.items[0];
       }
-      i = this.$items.indexOf(child);
+      i = this.items.indexOf(child);
       if (i === -1) {
         return;
       }
-      item = this.$items[++i];
+      item = this.items[++i];
       return item;
     };
 
@@ -110,7 +110,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
         return (_ref = this.$parent) != null ? _ref.getUpperItemAtDepth(this, depth) : void 0;
       } else if (upperSibling.depth === depth) {
         return upperSibling;
-      } else if (upperSibling.$items.length === 0 || (upperSibling.collapsed && !includeCollapsed)) {
+      } else if (upperSibling.items.length === 0 || (upperSibling.collapsed && !includeCollapsed)) {
         return this.getUpperItemAtDepth(upperSibling, depth);
       }
       item = (findItem = function(items) {
@@ -119,8 +119,8 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
         if (((_ref1 = items[0]) != null ? _ref1.depth : void 0) < depth) {
           while (--i >= 0) {
             item = items[i];
-            if (item.$items.length && (includeCollapsed || !item.collapsed)) {
-              item = findItem(item.$items);
+            if (item.items.length && (includeCollapsed || !item.collapsed)) {
+              item = findItem(item.items);
               if (item) {
                 return item;
               }
@@ -129,7 +129,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
         } else {
           return items[i - 1];
         }
-      })(upperSibling.$items);
+      })(upperSibling.items);
       if (item) {
         return item;
       } else {
@@ -144,7 +144,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
         return (_ref = this.$parent) != null ? _ref.getNextItemAtDepth(this, depth) : void 0;
       } else if (nextSibling.depth === depth) {
         return nextSibling;
-      } else if (nextSibling.$items.length === 0 || (nextSibling.collapsed && !includeCollapsed)) {
+      } else if (nextSibling.items.length === 0 || (nextSibling.collapsed && !includeCollapsed)) {
         return this.getNextItemAtDepth(nextSibling, depth);
       }
       item = (findItem = function(items) {
@@ -153,8 +153,8 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
         if (((_ref1 = items[0]) != null ? _ref1.depth : void 0) < depth) {
           while (++i < items.length) {
             item = items[i];
-            if (item.$items.length && (includeCollapsed || !item.collapsed)) {
-              item = findItem(item.$items);
+            if (item.items.length && (includeCollapsed || !item.collapsed)) {
+              item = findItem(item.items);
               if (item) {
                 return item;
               }
@@ -163,7 +163,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
         } else {
           return items[0];
         }
-      })(nextSibling.$items);
+      })(nextSibling.items);
       if (item) {
         return item;
       } else {
@@ -172,33 +172,33 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
     };
 
     Item.prototype.removeChild = function(child) {
-      _.pull(this.$items, child);
+      _.pull(this.items, child);
     };
 
     Item.prototype.insertAt = function(child, i) {
-      this.$items.splice(i, 0, child);
+      this.items.splice(i, 0, child);
       child.$parent = this;
       child.refreshSortOrder();
     };
 
     Item.prototype.insertAfter = function(child, otherChild) {
       var i;
-      i = this.$items.indexOf(otherChild);
+      i = this.items.indexOf(otherChild);
       if (i === -1) {
         return false;
       }
-      this.$items.splice(i + 1, 0, child);
+      this.items.splice(i + 1, 0, child);
       child.refreshSortOrder();
       return true;
     };
 
     Item.prototype.insertBefore = function(child, otherChild) {
       var i;
-      i = this.$items.indexOf(otherChild);
+      i = this.items.indexOf(otherChild);
       if (i === -1) {
         return;
       }
-      this.$items.splice(i, 0, child);
+      this.items.splice(i, 0, child);
       child.refreshSortOrder();
     };
 
@@ -206,7 +206,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
       this.depth = ((this.$parent || {}).depth || 0) + 1;
       var _this = this;
       var lastSortOrder = 0;
-      _.each(this.$items, function (item, i) {
+      _.each(this.items, function (item, i) {
         item.$parent = _this;
         item.refreshDepth();
         if (item.sort_order == null || item.sort_order <= lastSortOrder) item.refreshSortOrder();
@@ -228,16 +228,16 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
       if (!depth) depth = 0;
       if (computed !== false) computed = true;
       text = computed ? this.getComputedText() : this.text;
-      if ((hideCollapsed && this.collapsed) || this.$items.length === 0) {
+      if ((hideCollapsed && this.collapsed) || this.items.length === 0) {
         nestedText = '';
       } else {
-        nestedText = _.map(this.$items, _.method('toText', depth + 2, computed, hideCollapsed)).join('');
+        nestedText = _.map(this.items, _.method('toText', depth + 2, computed, hideCollapsed)).join('');
       }
       return _.repeat(' ', depth) + _.trim(text) + '\n' + nestedText;
     };
 
     Item.prototype.deleteItem = function(youAreSure) {
-      if (youAreSure || this.$items.length === 0) {
+      if (youAreSure || this.items.length === 0) {
         var nextUp = this.$parent.getUpperSibling(this) || this.$parent;
         this.$parent.removeChild(this);
         this.$parent.renderChildren();

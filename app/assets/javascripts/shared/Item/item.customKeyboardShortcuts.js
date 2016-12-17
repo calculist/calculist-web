@@ -16,17 +16,17 @@ calculist.register('customKeyboardShortcuts', ['_','keydownToString','transactio
     var string = keydownToString(e);
     var shortcut;
     while (shortcuts.length && !shortcut) {
-      shortcut = _.find(shortcuts.shift().$items, function (item) {
+      shortcut = _.find(shortcuts.shift().items, function (item) {
         if (_.includes(item.text, string)) options.push({
           shortcutString: item.text,
-          commandString: _.map(item.$items, 'text').join('; ')
+          commandString: _.map(item.items, 'text').join('; ')
         });
-        return item.text === string && item.$items[0];
+        return item.text === string && item.items[0];
       });
     }
     if (shortcut) {
       transaction(function () {
-        _.each(shortcut.$items, function (shortcutItem) {
+        _.each(shortcut.items, function (shortcutItem) {
           executeCommand(contextItem, shortcutItem.text);
         });
       });

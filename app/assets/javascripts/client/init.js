@@ -22,9 +22,9 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
           var fs = require('fs');
           window.topItem.handlePaste(fs.readFileSync(filePath, 'utf8'));
           var markAsCollapsed = function (item) {
-            if (item.$items.length) {
+            if (item.items.length) {
               item.collapsed = item.$parent && true;
-              _.each(item.$items, markAsCollapsed);
+              _.each(item.items, markAsCollapsed);
             }
           };
           markAsCollapsed(window.topItem);
@@ -96,7 +96,7 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
           list.url = '/lists/' + LIST_ID;
           saveButton.changeStatus('saving');
           // localStorage.tabsOpen = '';
-          // localStorage.$items = newContent;
+          // localStorage.items = newContent;
           // localStorage.tabsOpen = +(localStorage.tabsOpen || '0') + 1;
           getAndApplyChangesFromServer(window.topItem.last_save).then(function (response) {
             // TODO Need to get previous content before getting changes from server, then
@@ -222,7 +222,7 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
     // window.addEventListener('storage', function(storageEvent) {
     //   var data, item, key, newValue, oldValue, zoomGuid;
     //   key = storageEvent.key, newValue = storageEvent.newValue, oldValue = storageEvent.oldValue;
-    //   if (key === '$items') {
+    //   if (key === 'items') {
     //     localStorage.tabsOpen = +(localStorage.tabsOpen || '0') + 1;
     //     if (newValue) {
     //       data = JSON.parse(newValue);
@@ -251,7 +251,7 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
       window.topItem.softRenderAll();
       _.each([userPreferences, window.topItem], function (topItem) {
         var commands = topItem.$item('onpageload');
-        if (commands) _.each(commands.$items, function (commandItem) {
+        if (commands) _.each(commands.items, function (commandItem) {
           if (/^[a-zA-Z]/.test(commandItem.text)) executeCommand(window.topItem, commandItem.text);
         });
       });

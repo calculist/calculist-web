@@ -36,7 +36,7 @@ calculist.register('parseTextDoc', ['_'], function (_) {
       return _.map(items, function(item) {
         return {
           text: item.text,
-          $items: item.items.length ? justData(item.items) : []
+          items: item.items.length ? justData(item.items) : []
         };
       });
     })(flatListsByDepth[0]);

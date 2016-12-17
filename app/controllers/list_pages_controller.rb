@@ -10,7 +10,7 @@ class ListPagesController < ApplicationController
     end
     @lists = @user.lists.where(list_type: ['user_preferences', nil]).order('updated_at desc')
     @list = @user.primary_list
-    @list.content['$items'].unshift(get_profile_page_list_of_lists)
+    @list.content['items'].unshift(get_profile_page_list_of_lists)
     @other_lists = get_title_handle_path_id(@lists, @user)
     @theme = @user.default_theme
     @font = @user.default_font
@@ -86,11 +86,11 @@ private
     {
       text: 'lists',
       guid: "do_not_save#{inc += 1}",
-      '$items': @lists.map do |list| {
+      'items': @lists.map do |list| {
         text: list.title,
         collapsed: true,
         guid: "do_not_save#{inc += 1}",
-        '$items': [
+        'items': [
           {
             text: "handle [:] #{list.handle}",
             guid: "do_not_save#{inc += 1}"
@@ -109,7 +109,7 @@ private
           },{
             text: "shared_with [=] count($items)",
             guid: "do_not_save#{inc += 1}",
-            '$items': list.list_shares.map { |ls| { text: "#{ls.user.username} [:] #{ls.access_type}" } }
+            'items': list.list_shares.map { |ls| { text: "#{ls.user.username} [:] #{ls.access_type}" } }
           }
         ]
       } end

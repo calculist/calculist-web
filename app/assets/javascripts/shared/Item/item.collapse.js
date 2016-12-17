@@ -4,7 +4,7 @@ calculist.register('item.collapse',['Promise','_','transaction'], function (Prom
     var _this = this;
     return new Promise(function (resolve) {
       var $list, height;
-      if (_this.collapsed || _this.$items.length === 0 || sessionStorage.zoomGuid === _this.guid) {
+      if (_this.collapsed || _this.items.length === 0 || sessionStorage.zoomGuid === _this.guid) {
         return resolve();
       }
       _this.collapsed = true;
@@ -41,7 +41,7 @@ calculist.register('item.collapseRecursive',['Promise','_','transaction'], funct
 
   return function (isTreeTop) {
     var _this = this,
-        promise = Promise.all(_this.$items.map(_.method('collapseRecursive'))).then(function () {
+        promise = Promise.all(_this.items.map(_.method('collapseRecursive'))).then(function () {
           return _this.collapse();
         });
     if (isTreeTop === true) {

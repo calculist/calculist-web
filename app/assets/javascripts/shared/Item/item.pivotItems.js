@@ -12,32 +12,32 @@ calculist.register('item.pivotItems',['_','getNewGuid'], function (_, getNewGuid
       return a.key;
     };
 
-    _.each(this.$items, function (child) {
+    _.each(this.items, function (child) {
       child.valueOf();
-      _.each(child.$items, function (grandchild) {
+      _.each(child.items, function (grandchild) {
         grandchild.valueOf();
         if (!newChildrenByKey[grandchild.key]) {
           newChildrenByKey[grandchild.key] = new Item({
             guid: getNewGuid(),
             text: getNewText(grandchild, child),
             $parent: parent,
-            $items: []
+            items: []
           });
         }
         var newGrandchild = new Item({
           guid: getNewGuid(),
           text: getNewText(child, grandchild),
           $parent: newChildrenByKey[grandchild.key],
-          $items: []
+          items: []
         });
 
-        newGrandchild.$items = grandchild.$items;
+        newGrandchild.items = grandchild.items;
 
-        newChildrenByKey[grandchild.key].$items.push(newGrandchild);
+        newChildrenByKey[grandchild.key].items.push(newGrandchild);
       });
     });
 
-    this.$items = _.values(newChildrenByKey);
+    this.items = _.values(newChildrenByKey);
     this.refreshDepth();
     this.renderChildren();
 

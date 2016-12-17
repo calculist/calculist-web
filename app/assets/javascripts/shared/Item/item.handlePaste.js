@@ -20,14 +20,14 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfF
         } else {
           this.changeText(firstItem.text);
         }
-        newChildren = firstItem.$items.map((function(_this) {
+        newChildren = firstItem.items.map((function(_this) {
           return function(item) {
             item.$parent = _this;
             item.guid = getNewGuid();
             return new Item(item);
           };
         })(this));
-        this.$items.unshift.apply(this.$items, newChildren);
+        this.items.unshift.apply(this.items, newChildren);
         this.refreshDepth();
         if (items.length) {
           var parent = this.$parent || this;

@@ -16,7 +16,7 @@ calculist.register('item.moveDown', ['_','zoomPage'], function (_, zoomPage) {
       }
       originalParent.removeChild(child);
       child.$parent = nextParent;
-      nextParent.$items.unshift(child);
+      nextParent.items.unshift(child);
       if (nextParent.collapsed) {
         nextParent.toggleCollapse();
       }

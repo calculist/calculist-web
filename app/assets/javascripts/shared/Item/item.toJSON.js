@@ -3,7 +3,7 @@ calculist.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
   var toJSON = function(mapper) {
     return {
       text: this.text,
-      $items: _.map(this.$items, mapper),
+      items: _.map(this.items, mapper),
       collapsed: !!this.collapsed,
       sort_order: this.sort_order,
       guid: this.guid
@@ -14,7 +14,7 @@ calculist.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
   Item.prototype.toClonedJSON = function () {
     return {
       text: this.text,
-      $items: _.map(this.$items, _.method('toClonedJSON')),
+      items: _.map(this.items, _.method('toClonedJSON')),
       collapsed: !!this.collapsed,
       sort_order: this.sort_order,
       guid: getNewGuid()
@@ -23,7 +23,7 @@ calculist.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
   Item.prototype.toFlatJSON = function() {
     return {
       text: this.text,
-      $items: _.map(this.$items, 'guid').toString(),
+      items: _.map(this.items, 'guid').toString(),
       collapsed: !!this.collapsed,
       sort_order: this.sort_order,
       guid: this.guid

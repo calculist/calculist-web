@@ -5,8 +5,8 @@ calculist.register('item.$item', ['_'], function (_) {
     var condition;
     if (_.isNumber(key)) {
       var i = key;
-      if (i < 0) i += this.$items.length;
-      return this.$items[i];
+      if (i < 0) i += this.items.length;
+      return this.items[i];
     } else if (_.isFunction(key)) {
       condition = key;
     } else if (_.isRegExp(key)) {
@@ -16,7 +16,7 @@ calculist.register('item.$item', ['_'], function (_) {
     }
     var item = null,
         children,
-        nextChildren = this.$items;
+        nextChildren = this.items;
     while (!(item || nextChildren.length === 0)) {
       children = nextChildren;
       if (children.length) {
@@ -25,7 +25,7 @@ calculist.register('item.$item', ['_'], function (_) {
           if (condition(child)) {
             return true;
           } else {
-            nextChildren.push.apply(nextChildren, child.$items);
+            nextChildren.push.apply(nextChildren, child.items);
             return false;
           }
         });

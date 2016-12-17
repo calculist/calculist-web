@@ -7,11 +7,11 @@ calculist.register('getAndApplyChangesFromServer', ['_','http','getItemByGuid','
           text: data.text,
           collapsed: data.is_collapsed,
           $parent: getItemByGuid(data.parent_guid),
-          $items: null
+          items: null
         });
       },
       addToParentItemsAtCorrectIndex = function (item, parent) {
-        var index = _.sortedIndex(parent.$items, item, 'sort_order');
+        var index = _.sortedIndex(parent.items, item, 'sort_order');
         parent.insertAt(item, index);
       };
 

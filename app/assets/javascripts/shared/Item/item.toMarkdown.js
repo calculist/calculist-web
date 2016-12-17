@@ -5,10 +5,10 @@ calculist.register('item.toMarkdown', ['_'], function (_) {
       if (!depth) depth = 0;
       if (computed !== false) computed = true;
       text = computed ? this.getComputedText() : this.text;
-      if ((hideCollapsed && this.collapsed) || this.$items.length === 0) {
+      if ((hideCollapsed && this.collapsed) || this.items.length === 0) {
         nestedText = '';
       } else {
-        nestedText = _.map(this.$items, _.method('toMarkdown', depth + 4, computed, hideCollapsed)).join('');
+        nestedText = _.map(this.items, _.method('toMarkdown', depth + 4, computed, hideCollapsed)).join('');
       }
       var trimmedText = _.trim(text);
       if (depth === 0) {

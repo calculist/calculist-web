@@ -11,7 +11,7 @@ calculist.register('item.splitToList', ['_','getNewGuid'], function (_, getNewGu
         text: text + replacer,
         $parent: previousSibling.$parent,
         guid: getNewGuid(),
-        $items: []
+        items: []
       });
       item.$parent.insertAfter(item, previousSibling);
       item.refreshSortOrder();

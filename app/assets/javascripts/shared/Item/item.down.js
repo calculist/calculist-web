@@ -11,7 +11,7 @@ calculist.register('item.down',['_','lmSessionStorage'], function (_, lmSessionS
       skipChildren = skipChildren === true || this.collapsed;
       i = 0;
       if (!skipChildren) {
-        item = this.$items[i];
+        item = this.items[i];
       }
       if (item && !skipChildren) {
         item.focus();

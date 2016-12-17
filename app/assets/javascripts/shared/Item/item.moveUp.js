@@ -19,7 +19,7 @@ calculist.register('item.moveUp', ['_','zoomPage'], function (_, zoomPage) {
       }
       originalParent.removeChild(child);
       child.$parent = nextUpParent;
-      nextUpParent.$items.push(child);
+      nextUpParent.items.push(child);
       if (nextUpParent.collapsed) {
         nextUpParent.toggleCollapse();
       } else {

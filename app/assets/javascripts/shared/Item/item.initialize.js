@@ -13,7 +13,7 @@ calculist.require(['Item','_','getNewGuid','itemsByGuid'], function (Item, _, ge
   var callDepth = 0;
   var callValueOf = function (item) {
     item.valueOf();
-    _.each(item.$items, callValueOf);
+    _.each(item.items, callValueOf);
   };
 
   Item.prototype.initialize = function(options) {
@@ -37,7 +37,7 @@ calculist.require(['Item','_','getNewGuid','itemsByGuid'], function (Item, _, ge
     this.collapsed = options.collapsed && !!this.$parent;
     this.sort_order = options.sort_order;
     ++callDepth;
-    this.$items = prepareItems(options.$items, this);
+    this.items = prepareItems(options.items, this);
     --callDepth;
     if (callDepth === 0) callValueOf(this);
   };

@@ -7,7 +7,7 @@ calculist.require(['Item','_'], function (Item, _) {
         return item.$item(key);
       };
     }
-    return _.sortBy(this.$items, sorter);
+    return _.sortBy(this.items, sorter);
   };
 
 });

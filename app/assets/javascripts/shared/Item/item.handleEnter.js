@@ -2,7 +2,7 @@ calculist.register('item.handleEnter',['_','$','cursorPosition','executeCommand'
 
   var addNewItem = function (_this, newItemText) {
     if (sessionStorage.zoomGuid === _this.guid || !_this.$parent) {
-      _this.addNewChildBefore(_this.$items[0] || _this, newItemText);
+      _this.addNewChildBefore(_this.items[0] || _this, newItemText);
     } else {
       _this.$parent.addNewChildAfter(_this, newItemText);
     }

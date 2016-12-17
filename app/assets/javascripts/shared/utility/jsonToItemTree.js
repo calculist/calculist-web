@@ -11,7 +11,7 @@ calculist.register('jsonToItemTree', ['_','getNewGuid'], function (_, getNewGuid
     }
     return {
       text: text || '...',
-      $items: _.map(json, jsonToItemTree),
+      items: _.map(json, jsonToItemTree),
       guid: getNewGuid()
     };
   };

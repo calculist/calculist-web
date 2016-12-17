@@ -72,8 +72,8 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
         e.preventDefault();
         transaction(function () {
           if (!this.$parent) return;
-          var i = _.indexOf(this.$parent.$items, this);
-          var itemAbove = this.$parent.$items[i - 1] || this.$parent;
+          var i = _.indexOf(this.$parent.items, this);
+          var itemAbove = this.$parent.items[i - 1] || this.$parent;
           var newText = itemAbove.text + this.text;
           var newCursorOffset = itemAbove.text.length;
           itemAbove.changeText(newText);

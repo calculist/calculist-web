@@ -43,7 +43,7 @@ calculist.register('Item', ['_'], function (_) {
     this.text = data.text;
     this.$parent = data.$parent;
     this.sort_order = data.sort_order;
-    this.$items = prepareItems(data.$items, this);
+    this.items = prepareItems(data.items, this);
   }
 
   return Item;
@@ -124,7 +124,7 @@ calculist.init(['Item'], function (Item) {
       var computeNext = function (items) {
         _.each(items, function (item) {
           valsByGuid[item.guid] = item.valueOf();
-          if (item.$items.length) computeNext(item.$items);
+          if (item.items.length) computeNext(item.items);
         });
       };
       computeNext([tree]);

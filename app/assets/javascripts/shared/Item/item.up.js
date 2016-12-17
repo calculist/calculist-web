@@ -14,8 +14,8 @@ calculist.register('item.up', ['_','lmSessionStorage'], function (_, lmSessionSt
       nextUp = this.$parent.getUpperSibling(this);
     }
     if (skipChildren !== true) {
-      while (nextUp && !nextUp.collapsed && nextUp.$items.length) {
-        nextUp = _.last(nextUp.$items);
+      while (nextUp && !nextUp.collapsed && nextUp.items.length) {
+        nextUp = _.last(nextUp.items);
       }
     }
     if (nextUp && nextUp.isWithinZoom()) {

@@ -5,8 +5,8 @@ calculist.register('item.applyDelta', ['_','getItemByGuid'], function (_, getIte
     if (!delta) return;
     var _this = this;
     _.each(delta, function (val, key) {
-      if (key == '$items') {
-        _this.$items = val[1].split(',').reduce(function (items, guid) {
+      if (key == 'items') {
+        _this.items = val[1].split(',').reduce(function (items, guid) {
           if (!guid) return items;
           var item = getItemByGuid(guid);
           if (!item) throw new Error('cannot find item with guid ' + guid);

@@ -1,7 +1,7 @@
 calculist.register('userPreferences',['_','Item','parseTextDoc','getNewGuid'], function (_, Item, parseTextDoc, getNewGuid) {
   var addGuid = function (item) {
     item.guid = getNewGuid();
-    _.each(item.$items, addGuid);
+    _.each(item.items, addGuid);
   };
   if (!window.USER_PREFERENCES) {
     try {
@@ -18,7 +18,7 @@ calculist.register('userPreferences',['_','Item','parseTextDoc','getNewGuid'], f
     } catch (e) {
       return new Item({
         guid: 'not a real item',
-        $items: [],
+        items: [],
         invisible: true
       });
     }
@@ -31,7 +31,7 @@ calculist.register('userPreferences',['_','Item','parseTextDoc','getNewGuid'], f
 
   var evaluate = function (item) {
     item.valueOf();
-    _.each(item.$items, evaluate);
+    _.each(item.items, evaluate);
   };
 
   // FIXME Should not have to do this

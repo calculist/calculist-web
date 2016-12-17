@@ -20,8 +20,8 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
 
       // var fns = item.$$item('functions');
 
-      // if (fns && fns.$items.length) {
-      //   _.each(fns.$items, function (fn) {
+      // if (fns && fns.items.length) {
+      //   _.each(fns.items, function (fn) {
       //     _this[fn.key] = function () {
       //       return evalculist(fn.val)(_this);
       //     };
@@ -53,14 +53,14 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
           previousParent = nextParent;
           nextParent = parents.shift();
           if (previousParent && nextParent) {
-            _.find(previousParent.$items, function (sibling, i) {
+            _.find(previousParent.items, function (sibling, i) {
               assignVar(sibling);
               return sibling === nextParent;
             });
           }
         }
         this.$index = 0;
-        var siblings = item.$parent && item.$parent.$items;
+        var siblings = item.$parent && item.$parent.items;
         if (siblings && siblings.length) {
           _.find(siblings, function (sibling, i) {
             if (sibling === item) {
@@ -73,8 +73,8 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
       }
 
       this.$parent = item.$parent;
-      this.$index = item.$parent ? item.$parent.$items.indexOf(item) : 0;
-      this.$items = item.$items;
+      this.$index = item.$parent ? item.$parent.items.indexOf(item) : 0;
+      this.$items = item.items;
       this.$key = item.key;
       this.$name = item.key;
     }
@@ -171,7 +171,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   proto.toString = _.method('toString');
   proto.recursiveCount = function (items) {
     return items.length + _.reduce(items, function (m, item) {
-      return m + proto.recursiveCount(item.$items);
+      return m + proto.recursiveCount(item.items);
     }, 0);
   };
 
@@ -182,19 +182,19 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   proto.itemOf = function (item, name) {
     return item.$item(name);
   };
-  proto.itemsOf = _.property('$items');
+  proto.itemsOf = _.property('items');
   proto.nameOf = _.property('key');
   proto.parentOf = _.property('$parent');
-  proto.pluckItems = function ($items, key) {
+  proto.pluckItems = function (items, key) {
     var condition;
     if (_.isFunction(key)) {
       condition = key;
     } else {
       condition = { key: key };
     }
-    if (isItem($items)) $items = $items.$items;
-    return $items.map(function (item) {
-      return _.find(item.$items, condition);
+    if (isItem(items)) items = items.items;
+    return items.map(function (item) {
+      return _.find(item.items, condition);
     });
   };
 
@@ -300,7 +300,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
 
   proto.dotAccessor = function (obj, key) {
     if (isItem(obj)) {
-      var item = _.findLast(obj.$items, function (item) {
+      var item = _.findLast(obj.items, function (item) {
         return keyToVarName(item.key) === key;
       });
       if (item && item.hasVal) return item.valueOf();
@@ -317,17 +317,17 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   _.each(iterators, function (methodName) {
     var baseFn = proto[methodName];
     proto[methodName] = function () {
-      if (isItem(arguments[0])) arguments[0] = arguments[0].$items;
+      if (isItem(arguments[0])) arguments[0] = arguments[0].items;
       return baseFn.apply(this, arguments);
     };
   });
 
   proto.flatten = function (items) {
-    if (isItem(items)) items = items.$items;
+    if (isItem(items)) items = items.items;
     if (isItem(items[0])) {
       return _.reduce(items, function (flatItems, item) {
         flatItems.push(item);
-        if (item.$items.length) return flatItems.concat(proto.flatten(item));
+        if (item.items.length) return flatItems.concat(proto.flatten(item));
         return flatItems;
       }, []);
     } else {
@@ -336,7 +336,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   }
 
   proto.uniq = proto.unique = function (items) {
-    if (isItem(items)) items = items.$items;
+    if (isItem(items)) items = items.items;
     items = _.map(items, proto.valueOf);
     return _.uniq(items);
   };
@@ -348,7 +348,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
     proto[methodName] = function () {
       var args = arguments;
       _.each(args, function (arg, i) {
-        if (isItem(arg)) arg = arg.$items;
+        if (isItem(arg)) arg = arg.items;
         if (_.isArray(arg)) arg = _.map(arg, proto.valueOf);
         args[i] = arg;
       });

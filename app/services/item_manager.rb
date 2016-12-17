@@ -210,7 +210,7 @@ class ItemManager
       is_top_item: parent_guid.nil?,
       is_deleted: false
     }
-    item_items = tree['$items'] || tree[:items]
+    item_items = tree['items'] || tree[:items]
     if item_items
       item_items.each_with_index do |_item, i|
         items << parse_tree(_item, items, item[:guid], (i + 1) * 100)
@@ -225,11 +225,11 @@ class ItemManager
       'guid' => item.guid,
       'collapsed' => item.is_collapsed,
       'sort_order' => item.sort_order,
-      '$items' => [],
+      'items' => [],
     }
     children = children_by_parent_guid[item.guid] || []
     children.each do |child|
-      tree['$items'] << generate_tree(child, children_by_parent_guid)
+      tree['items'] << generate_tree(child, children_by_parent_guid)
     end
     tree
   end

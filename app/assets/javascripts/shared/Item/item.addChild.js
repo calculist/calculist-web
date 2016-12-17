@@ -7,7 +7,7 @@ calculist.register('item.addChild',['_','getNewGuid','itemOfFocus'], function (_
       $parent: this,
       guid: getNewGuid()
     });
-    this.$items.push(child);
+    this.items.push(child);
     itemOfFocus.change(child);
     this.renderChildren();
     child.focus();

@@ -21,9 +21,9 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
     },
     getLastVisibleItem: function () {
       var topItem = this.getTopItem(),
-          lastItem = _.last(topItem.$items) || topItem;
-      while (!lastItem.collapsed && lastItem.$items.length) {
-        lastItem = _.last(lastItem.$items);
+          lastItem = _.last(topItem.items) || topItem;
+      while (!lastItem.collapsed && lastItem.items.length) {
+        lastItem = _.last(lastItem.items);
       }
       return lastItem;
     },

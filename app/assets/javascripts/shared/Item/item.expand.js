@@ -64,7 +64,7 @@ calculist.require(['Item','Promise','_','transaction'], function (Item, Promise,
   Item.prototype.expandRecursive = function (isTreeTop) {
     var _this = this;
     var promise = _this.expand().then(function () {
-      return Promise.all(_this.$items.map(_.method('expandRecursive')));
+      return Promise.all(_this.items.map(_.method('expandRecursive')));
     });
     if (isTreeTop === true) {
       transaction.stall();
