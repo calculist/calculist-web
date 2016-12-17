@@ -1,7 +1,7 @@
 calculist.register('item.refreshSortOrder', ['_'], function (_) {
 
   return function () {
-    var siblings = this.$parent.items,
+    var siblings = this.parent.items,
         thisIndex = siblings.indexOf(this);
 
     if (thisIndex === -1) throw('incorrect parent item');

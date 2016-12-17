@@ -9,11 +9,11 @@ calculist.register('item.splitToList', ['_','getNewGuid'], function (_, getNewGu
     _.reduce(splitText, function (previousSibling, text) {
       var item = new Item({
         text: text + replacer,
-        $parent: previousSibling.$parent,
+        parent: previousSibling.parent,
         guid: getNewGuid(),
         items: []
       });
-      item.$parent.insertAfter(item, previousSibling);
+      item.parent.insertAfter(item, previousSibling);
       item.refreshSortOrder();
       return item;
     }, this);

@@ -37,7 +37,7 @@ calculist.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
     // TODO Write tests for this.
     return {
       text: this.text,
-      parent_guid: (this === window.topItem ? null : this.$parent.guid),
+      parent_guid: (this === window.topItem ? null : this.parent.guid),
       is_collapsed: !!this.collapsed,
       sort_order: this.sort_order,
       guid: this.guid

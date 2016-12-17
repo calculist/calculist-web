@@ -5,10 +5,10 @@ calculist.register('item.isWithinZoom', ['lmSessionStorage'], function (lmSessio
     if (!zoomGuid || zoomGuid === this.guid) {
       return true;
     } else {
-      var nextParent = this.$parent;
+      var nextParent = this.parent;
       while (nextParent) {
         if (nextParent.guid === zoomGuid) return true;
-        nextParent = nextParent.$parent;
+        nextParent = nextParent.parent;
       }
       return false;
     }

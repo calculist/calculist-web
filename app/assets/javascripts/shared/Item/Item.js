@@ -40,19 +40,19 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
     };
 
     Item.prototype.$$item = function(key) {
-      if (!this.$parent) return;
-      var items = this.$parent.items;
+      if (!this.parent) return;
+      var items = this.parent.items;
       var i = items.indexOf(this);
       while (--i >= 0) {
         if (items[i].key === key) return items[i];
       }
-      if (this.$parent.key === key) return this.$parent;
-      return this.$parent.$$item(key);
+      if (this.parent.key === key) return this.parent;
+      return this.parent.$$item(key);
     };
 
     Item.prototype.$siblings = function() {
       var _this = this;
-      return _.filter(this.$parent.items, function(item) {
+      return _.filter(this.parent.items, function(item) {
         return item !== _this;
       });
     };
@@ -107,7 +107,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
       var findItem, item, upperSibling, _ref;
       upperSibling = this.getUpperSibling(child);
       if (!upperSibling) {
-        return (_ref = this.$parent) != null ? _ref.getUpperItemAtDepth(this, depth) : void 0;
+        return (_ref = this.parent) != null ? _ref.getUpperItemAtDepth(this, depth) : void 0;
       } else if (upperSibling.depth === depth) {
         return upperSibling;
       } else if (upperSibling.items.length === 0 || (upperSibling.collapsed && !includeCollapsed)) {
@@ -141,7 +141,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
       var findItem, item, nextSibling, _ref;
       nextSibling = this.getNextSibling(child);
       if (!nextSibling) {
-        return (_ref = this.$parent) != null ? _ref.getNextItemAtDepth(this, depth) : void 0;
+        return (_ref = this.parent) != null ? _ref.getNextItemAtDepth(this, depth) : void 0;
       } else if (nextSibling.depth === depth) {
         return nextSibling;
       } else if (nextSibling.items.length === 0 || (nextSibling.collapsed && !includeCollapsed)) {
@@ -177,7 +177,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
 
     Item.prototype.insertAt = function(child, i) {
       this.items.splice(i, 0, child);
-      child.$parent = this;
+      child.parent = this;
       child.refreshSortOrder();
     };
 
@@ -203,11 +203,11 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
     };
 
     Item.prototype.refreshDepth = function() {
-      this.depth = ((this.$parent || {}).depth || 0) + 1;
+      this.depth = ((this.parent || {}).depth || 0) + 1;
       var _this = this;
       var lastSortOrder = 0;
       _.each(this.items, function (item, i) {
-        item.$parent = _this;
+        item.parent = _this;
         item.refreshDepth();
         if (item.sort_order == null || item.sort_order <= lastSortOrder) item.refreshSortOrder();
         lastSortOrder = item.sort_order;
@@ -218,7 +218,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
       var options;
       options = this.toClonedJSON();
       options.guid = getNewGuid();
-      options.$parent = parent;
+      options.parent = parent;
       return new Item(options);
     };
 
@@ -238,9 +238,9 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
 
     Item.prototype.deleteItem = function(youAreSure) {
       if (youAreSure || this.items.length === 0) {
-        var nextUp = this.$parent.getUpperSibling(this) || this.$parent;
-        this.$parent.removeChild(this);
-        this.$parent.renderChildren();
+        var nextUp = this.parent.getUpperSibling(this) || this.parent;
+        this.parent.removeChild(this);
+        this.parent.renderChildren();
         nextUp.focus();
         this.save();
         return true;

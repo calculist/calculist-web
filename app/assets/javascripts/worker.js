@@ -32,7 +32,7 @@ calculist.register('Item', ['_'], function (_) {
   var prepareItems = function (items, _this) {
     return _.map(_.compact(items), function(item) {
       var newItemOptions = _.isPlainObject(item) ? _.clone(item) : item.toJSON();
-      item.$parent = _this;
+      item.parent = _this;
       return new Item(newItemOptions);
     });
   };
@@ -41,7 +41,7 @@ calculist.register('Item', ['_'], function (_) {
     this.guid = data.guid;
     if (!this.guid) throw new Error('guid required');
     this.text = data.text;
-    this.$parent = data.$parent;
+    this.parent = data.parent;
     this.sort_order = data.sort_order;
     this.items = prepareItems(data.items, this);
   }

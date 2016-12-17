@@ -30,13 +30,13 @@ calculist.require(['Item','Promise','_','transaction'], function (Item, Promise,
             });
           };
           if (expandParents) {
-            var nextParent = _this.$parent;
+            var nextParent = _this.parent;
             var collapsedParents = null;
             while (nextParent) {
               if (nextParent.collapsed) {
                 (collapsedParents || (collapsedParents = [])).unshift(nextParent);
               }
-              nextParent = nextParent.$parent;
+              nextParent = nextParent.parent;
             }
             if (collapsedParents) {
               var expandNext = function () {

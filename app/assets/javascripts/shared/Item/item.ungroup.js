@@ -10,7 +10,7 @@ calculist.require(['Item','_','getNewGuid','itemOfFocus'], function (Item, _, ge
           existingAttributeItem.text = existingAttributeItem.key + ' [:] ' + groupingItem.valueOf();
         } else {
           var newItem = new Item({
-            $parent: groupedItem,
+            parent: groupedItem,
             guid: getNewGuid(),
             text: "" + groupAttribute + " [:] " + groupingItem.valueOf()
           });
@@ -21,10 +21,10 @@ calculist.require(['Item','_','getNewGuid','itemOfFocus'], function (Item, _, ge
     }
     _.eachRight(items, _.method('outdent'));
     this.items = items; // Needed for undo to work
-    _.pull(this.$parent.items, this);
+    _.pull(this.parent.items, this);
     itemOfFocus.change(items[0]);
-    items[0].$parent.refreshDepth();
-    items[0].$parent.renderChildren();
+    items[0].parent.refreshDepth();
+    items[0].parent.renderChildren();
     _.defer(function () { items[0].focus(); });
     return this.items;
   };

@@ -16,7 +16,7 @@ calculist.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
       _.each(this.items, function(item) {
         var it = item.$item(key);
         if (it) {
-          _.pull(it.$parent.items, it);
+          _.pull(it.parent.items, it);
         }
       });
     }
@@ -24,18 +24,18 @@ calculist.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
       return function(items, text) {
         var item = new Item({
           guid: getNewGuid(),
-          $parent: _this,
+          parent: _this,
           items: [],
           text: text
         });
         item.items = items;
         _.each(item.items, function (child) {
-          child.$parent = item;
+          child.parent = item;
         });
         return item;
       };
     })(this));
-    (this.$parent || this).refreshDepth();
+    (this.parent || this).refreshDepth();
     return this.items;
   };
 

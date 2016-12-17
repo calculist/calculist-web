@@ -14,14 +14,14 @@ calculist.register('findVar',['_','isItem','keyToVarName'], function (_, isItem,
   };
 
   var findVar = function (item, varName) {
-    if (!item.$parent) return;
-    var items = item.$parent.items;
+    if (!item.parent) return;
+    var items = item.parent.items;
     var i = items.indexOf(item);
     while (--i >= 0) {
       if (keyToVarName(items[i].key) === varName) return varVal(items[i]);
     }
-    if (keyToVarName(item.$parent.key) === varName) return varVal(item.$parent);
-    return findVar(item.$parent, varName);
+    if (keyToVarName(item.parent.key) === varName) return varVal(item.parent);
+    return findVar(item.parent, varName);
   };
 
   return findVar;

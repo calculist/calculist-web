@@ -14,7 +14,7 @@ calculist.require(['Item','_','$','lmSessionStorage','zoomPage'], function (Item
       if (item) item.focus();
     } else {
       if (options.focus !== false) this.focus();
-      if (this.$parent) zoomPage.attach(this);
+      if (this.parent) zoomPage.attach(this);
     }
   };
 
@@ -34,7 +34,7 @@ calculist.require(['Item','_','$','lmSessionStorage','zoomPage'], function (Item
         zoomOut: true
       });
     } else {
-      this.$parent.zoomOut();
+      this.parent.zoomOut();
     }
   };
 

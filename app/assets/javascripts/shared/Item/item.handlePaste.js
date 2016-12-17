@@ -22,7 +22,7 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfF
         }
         newChildren = firstItem.items.map((function(_this) {
           return function(item) {
-            item.$parent = _this;
+            item.parent = _this;
             item.guid = getNewGuid();
             return new Item(item);
           };
@@ -30,9 +30,9 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfF
         this.items.unshift.apply(this.items, newChildren);
         this.refreshDepth();
         if (items.length) {
-          var parent = this.$parent || this;
+          var parent = this.parent || this;
           _.reduce(items, function (previousSibling, item) {
-            item.$parent = parent;
+            item.parent = parent;
             item.guid = getNewGuid();
             item = new Item(item);
             parent.insertAfter(item, previousSibling);

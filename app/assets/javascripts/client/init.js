@@ -23,7 +23,7 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
           window.topItem.handlePaste(fs.readFileSync(filePath, 'utf8'));
           var markAsCollapsed = function (item) {
             if (item.items.length) {
-              item.collapsed = item.$parent && true;
+              item.collapsed = item.parent && true;
               _.each(item.items, markAsCollapsed);
             }
           };

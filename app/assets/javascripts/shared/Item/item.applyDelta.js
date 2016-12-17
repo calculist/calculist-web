@@ -10,7 +10,7 @@ calculist.register('item.applyDelta', ['_','getItemByGuid'], function (_, getIte
           if (!guid) return items;
           var item = getItemByGuid(guid);
           if (!item) throw new Error('cannot find item with guid ' + guid);
-          item.$parent = _this;
+          item.parent = _this;
           item.refreshDepth();
           items.push(item);
           return items;

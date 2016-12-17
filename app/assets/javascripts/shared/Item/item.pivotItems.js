@@ -20,14 +20,14 @@ calculist.register('item.pivotItems',['_','getNewGuid'], function (_, getNewGuid
           newChildrenByKey[grandchild.key] = new Item({
             guid: getNewGuid(),
             text: getNewText(grandchild, child),
-            $parent: parent,
+            parent: parent,
             items: []
           });
         }
         var newGrandchild = new Item({
           guid: getNewGuid(),
           text: getNewText(child, grandchild),
-          $parent: newChildrenByKey[grandchild.key],
+          parent: newChildrenByKey[grandchild.key],
           items: []
         });
 

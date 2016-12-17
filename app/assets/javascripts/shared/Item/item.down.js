@@ -3,7 +3,7 @@ calculist.register('item.down',['_','lmSessionStorage'], function (_, lmSessionS
   return function(skipChildren, maintainDepth) {
     var i, item, nextItem, nextSibling, _ref;
     if (maintainDepth) {
-      nextItem = this.$parent.getNextItemAtDepth(this, this.depth);
+      nextItem = this.parent.getNextItemAtDepth(this, this.depth);
       if (nextItem && nextItem.isWithinZoom()) {
         nextItem.focus();
       }
@@ -15,12 +15,12 @@ calculist.register('item.down',['_','lmSessionStorage'], function (_, lmSessionS
       }
       if (item && !skipChildren) {
         item.focus();
-      } else if (this.$parent) {
-        nextSibling = this.$parent.getNextSibling(this);
+      } else if (this.parent) {
+        nextSibling = this.parent.getNextSibling(this);
         if (nextSibling && nextSibling.isWithinZoom()) {
           nextSibling.focus();
         } else {
-          this.$parent.down(true);
+          this.parent.down(true);
         }
       }
     }

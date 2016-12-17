@@ -4,7 +4,7 @@ calculist.register('item.addChild',['_','getNewGuid','itemOfFocus'], function (_
     var child;
     child = new this.constructor({
       text: text,
-      $parent: this,
+      parent: this,
       guid: getNewGuid()
     });
     this.items.push(child);
@@ -24,7 +24,7 @@ calculist.register('item.addNewChildBefore',['_','getNewGuid','itemOfFocus'], fu
     }
     newChild = new this.constructor({
       text: text,
-      $parent: this,
+      parent: this,
       guid: getNewGuid()
     });
     this.insertBefore(newChild, beforeChild);
@@ -44,7 +44,7 @@ calculist.register('item.addNewChildAfter',['_','getNewGuid','itemOfFocus'], fun
     }
     newChild = new this.constructor({
       text: text,
-      $parent: this,
+      parent: this,
       guid: getNewGuid()
     });
     this.insertAfter(newChild, afterChild);

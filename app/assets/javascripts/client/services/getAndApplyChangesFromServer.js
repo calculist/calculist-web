@@ -6,7 +6,7 @@ calculist.register('getAndApplyChangesFromServer', ['_','http','getItemByGuid','
           guid: data.guid,
           text: data.text,
           collapsed: data.is_collapsed,
-          $parent: getItemByGuid(data.parent_guid),
+          parent: getItemByGuid(data.parent_guid),
           items: null
         });
       },
@@ -48,14 +48,14 @@ calculist.register('getAndApplyChangesFromServer', ['_','http','getItemByGuid','
         _.each(response.updated_items, function (updatedItemData) {
           var item = getItemByGuid(updatedItemData.guid);
           if (updatedItemData.is_deleted) {
-            item.$parent.removeChild(item);
-            parentsByGuid[item.$parent.guid] = item.$parent;
+            item.parent.removeChild(item);
+            parentsByGuid[item.parent.guid] = item.parent;
             needToReRender = true;
             return;
           }
-          if (item.$parent && item.$parent.guid !== updatedItemData.parent_guid) {
-            item.$parent.removeChild(item);
-            parentsByGuid[item.$parent.guid] = item.$parent;
+          if (item.parent && item.parent.guid !== updatedItemData.parent_guid) {
+            item.parent.removeChild(item);
+            parentsByGuid[item.parent.guid] = item.parent;
             var newParent = getItemByGuid(updatedItemData.parent_guid);
             addToParentItemsAtCorrectIndex(item, newParent);
             parentsByGuid[newParent.guid] = newParent;
@@ -63,9 +63,9 @@ calculist.register('getAndApplyChangesFromServer', ['_','http','getItemByGuid','
           }
           if (item.sort_order !== updatedItemData.sort_order) {
             item.sort_order = updatedItemData.sort_order;
-            item.$parent.removeChild(item);
-            addToParentItemsAtCorrectIndex(item, item.$parent);
-            parentsByGuid[item.$parent.guid] = item.$parent;
+            item.parent.removeChild(item);
+            addToParentItemsAtCorrectIndex(item, item.parent);
+            parentsByGuid[item.parent.guid] = item.parent;
             needToReRender = true;
           }
           if (item.text !== updatedItemData.text) {

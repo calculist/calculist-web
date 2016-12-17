@@ -71,9 +71,9 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
       } else if (e.altKey && anchorOffset === 0) {
         e.preventDefault();
         transaction(function () {
-          if (!this.$parent) return;
-          var i = _.indexOf(this.$parent.items, this);
-          var itemAbove = this.$parent.items[i - 1] || this.$parent;
+          if (!this.parent) return;
+          var i = _.indexOf(this.parent.items, this);
+          var itemAbove = this.parent.items[i - 1] || this.parent;
           var newText = itemAbove.text + this.text;
           var newCursorOffset = itemAbove.text.length;
           itemAbove.changeText(newText);

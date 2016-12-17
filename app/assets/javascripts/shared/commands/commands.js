@@ -30,7 +30,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     goto: function (_this, item) {
       if (!isItem(item)) item = _this.$item(item) || _this.$$item(item);
       // if (!zoomPage.isInPage(item)) return;
-      item.$parent ? item.$parent.expand(true).then(function () {
+      item.parent ? item.parent.expand(true).then(function () {
         item.focus();
       }) : item.focus();
     },
@@ -160,7 +160,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
           text: 'templates',
           guid: getNewGuid(),
           items: [],
-          $parent: topItem
+          parent: topItem
         });
         topItem.items.unshift(templates);
         topItem.renderChildren();
@@ -174,7 +174,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       _this.save();
     },
     newItem: function (_this) {
-      var parent = _this.$parent;
+      var parent = _this.parent;
       if (parent) {
         parent.addNewChildAfter(_this, "");
       } else {
@@ -190,7 +190,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
           text: ('' + text) || '',
           guid: getNewGuid(),
           items: [],
-          $parent: _this
+          parent: _this
         });
       }
       _this.items.push(newItem);
@@ -216,7 +216,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
             text: text,
             guid: getNewGuid(),
             items: [],
-            $parent: _this
+            parent: _this
           });
         }
         _this.items.push(newItem);
@@ -238,14 +238,14 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
           item = new Item({
             guid: getNewGuid(),
             text: row[labelIndex],
-            $parent: _this,
+            parent: _this,
             collapsed: true
           });
           item.items = _.map(row, function(val, i) {
             return new Item({
               guid: getNewGuid(),
               text: "" + headerRow[i] + " [:] " + val,
-              $parent: item
+              parent: item
             });
           });
           return item;
@@ -273,7 +273,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       _this.text = tree.text;
       _this.items = _.map(tree.items, function (itemData) {
         var item = new Item(itemData);
-        item.$parent = _this;
+        item.parent = _this;
         return item;
       });
       _this.refreshDepth();
@@ -410,10 +410,10 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     // exportAsHTML: ,
     duplicate: function (_this) {
       var dup;
-      dup = _this.clone(_this.$parent);
-      _this.$parent.insertAfter(dup, _this);
+      dup = _this.clone(_this.parent);
+      _this.parent.insertAfter(dup, _this);
       dup.refreshSortOrder();
-      _this.$parent.renderChildren();
+      _this.parent.renderChildren();
       dup.focus();
       _this.handleBlur();
       _this.softRenderAll();
@@ -429,7 +429,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       _this.collapseRecursive(true);
     },
     collapseSiblings: function(_this) {
-      _.each(_this.$parent.items, function(item) {
+      _.each(_this.parent.items, function(item) {
         item.collapse();
       });
       _this.save();
@@ -458,7 +458,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       }
     },
     expandSiblings: function (_this) {
-      _.each(_this.$parent.items, function(item) {
+      _.each(_this.parent.items, function(item) {
         item.expand();
       });
       _this.save();
@@ -466,7 +466,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     },
     // TODO make this an item instance method
     indentSiblings: function (_this) {
-      var parent = _this.$parent;
+      var parent = _this.parent;
       if (!parent) return;
       var index = parent.items.indexOf(_this) + 1;
       _.invokeMap(parent.items.slice(index), 'indent');
@@ -478,7 +478,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     outdentStraight: function (_this) {
       commands.indentSiblings(_this);
       _this.outdent();
-      _this.$parent.renderChildren();
+      _this.parent.renderChildren();
       _this.save();
       _this.focus();
     },
@@ -487,7 +487,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     },
     outdentItems: function (_this) {
       _.eachRight(_this.items.slice(), _.method('outdent'));
-      _this.$parent.renderChildren();
+      _this.parent.renderChildren();
       _this.save();
     },
     sortItems: function(_this, order) {
@@ -565,7 +565,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       recurse(_this.items.slice());
     },
     flatten: function (_this) {
-      var parent = _this.$parent;
+      var parent = _this.parent;
       if (!parent) return; // TODO
       // parent.items.splice = _this._flatten();
     },
@@ -582,12 +582,12 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       _this.renderChildren();
     },
     moveToList: function (_this, listName) {
-      var oldParent = _this.$parent,
+      var oldParent = _this.parent,
           newParent = _this.$$item(listName) || window.topItem.$item(listName);
       if (newParent) {
-        _this.$parent.removeChild(_this);
+        _this.parent.removeChild(_this);
         newParent.items.push(_this);
-        _this.$parent = newParent;
+        _this.parent = newParent;
         _this.refreshDepth();
         _this.refreshSortOrder();
         oldParent.renderChildren();
@@ -599,7 +599,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     },
     splitToList: function (_this, splitter, replacer) {
       _this.splitToList(splitter, replacer);
-      _this.$parent.renderChildren();
+      _this.parent.renderChildren();
       _this.save();
     },
     _delete: function(_this) {
@@ -620,11 +620,11 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     headsOrTails: function (_this) {
       var outcome = _.sample(['heads','tails']);
       if (_this.text) {
-        var parent = _this.$parent || _this;
+        var parent = _this.parent || _this;
         parent.insertAfter(new Item({
           text: outcome,
           items: [],
-          $parent: parent,
+          parent: parent,
           guid: getNewGuid()
         }), _this);
         parent.save();
@@ -660,7 +660,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     },
     selectParent: function (_this) {
       window.requestAnimationFrame(function () {
-        _this.$parent && _this.$parent.focus();
+        _this.parent && _this.parent.focus();
       });
     },
     down: function (_this) {

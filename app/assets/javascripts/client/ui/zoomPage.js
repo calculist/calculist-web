@@ -13,7 +13,7 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
 
   return {
     isTopOfAPage: function (item) {
-      return _.some(stack, function (data) { return data.item === item; }) || !item.$parent;
+      return _.some(stack, function (data) { return data.item === item; }) || !item.parent;
     },
     getTopItem: function () {
       var topItem = (_.last(stack) || {}).item || window.topItem;
@@ -31,10 +31,10 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
       var topItem = (_.last(stack) || {}).item;
       if (!topItem || item === topItem) return true;
       if (item.depth <= topItem.depth) return false;
-      var parent = item.$parent;
+      var parent = item.parent;
       while (parent && parent.depth >= topItem.depth) {
         if (parent === topItem) return true;
-        parent = parent.$parent;
+        parent = parent.parent;
       }
       return false;
     },

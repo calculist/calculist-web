@@ -31,7 +31,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
 
       if (includeScope) {
         var parents = [],
-            nextParent = item.$parent,
+            nextParent = item.parent,
             previousParent,
             assignVar = function (sibling) {
               var key = sibling.key.replace(/\s/g, '_');
@@ -47,7 +47,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
             };
         while (nextParent) {
           parents.unshift(nextParent);
-          nextParent = nextParent.$parent;
+          nextParent = nextParent.parent;
         }
         while (parents.length) {
           previousParent = nextParent;
@@ -60,7 +60,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
           }
         }
         this.$index = 0;
-        var siblings = item.$parent && item.$parent.items;
+        var siblings = item.parent && item.parent.items;
         if (siblings && siblings.length) {
           _.find(siblings, function (sibling, i) {
             if (sibling === item) {
@@ -72,8 +72,8 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
         }
       }
 
-      this.$parent = item.$parent;
-      this.$index = item.$parent ? item.$parent.items.indexOf(item) : 0;
+      this.$parent = item.parent;
+      this.$index = item.parent ? item.parent.items.indexOf(item) : 0;
       this.$items = item.items;
       this.$key = item.key;
       this.$name = item.key;
@@ -184,7 +184,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   };
   proto.itemsOf = _.property('items');
   proto.nameOf = _.property('key');
-  proto.parentOf = _.property('$parent');
+  proto.parentOf = _.property('parent');
   proto.pluckItems = function (items, key) {
     var condition;
     if (_.isFunction(key)) {
