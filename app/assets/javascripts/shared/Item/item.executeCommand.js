@@ -1,3 +1,10 @@
+calculist.register('item.executeCommand', ['_','executeCommand'], function (_, executeCommand) {
+  return _.rest(function (args) {
+    args.unshift(this);
+    return executeCommand.apply(null, args);
+  });
+});
+
 calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead'], function (_, commands, transaction, computeItemValue, commandTypeahead) {
 
   return function (contextItem, commandString) {
