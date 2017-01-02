@@ -225,6 +225,61 @@ class UserPreferencesManager
     }]
   }
 
+  LIST_STATS =     {
+    text: "stats",
+    items: [
+      {
+        text: "list count [=] count(lists)",
+      },{
+        text: "total update count [=] sum(lists[\"update_count\"])",
+      },{
+        text: "total item count [=] sum(lists[\"item_count\"])",
+      },{
+        text: "list with most items [=] $item(\"list\") + \" (\" + $item(\"max item count\") + \" items)\"",
+        collapsed: true,
+        items: [
+          {
+            text: "max item count [=] max(lists[\"item_count\"])",
+          },{
+            text: "finding function [=] flow(item(\"item_count\"), eq(max_item_count))",
+          },{
+            text: "list [=] find(lists, finding_function)",
+          }
+        ],
+      },{
+        text: "list with fewest items [=] $item(\"list\") + \" (\" + $item(\"min item count\") + \" items)\"",
+        collapsed: true,
+        items: [
+          {
+            text: "min item count [=] min(lists[\"item_count\"])",
+          },{
+            text: "finding function [=] flow(item(\"item_count\"), eq(min_item_count))",
+          },{
+            text: "list [=] parentOf(min(lists[\"item_count\"]))",
+          }
+        ],
+      },{
+        text: "average items per list [=] round(mean(lists[\"item_count\"]), 2)",
+      },{
+        text: "median items per list [=] median(lists[\"item_count\"])",
+      },{
+        text: "standard deviation [=] round(standardDeviation(lists[\"item_count\"]), 2)",
+      },{
+        text: "most updated list [=] $item(\"list\") + \" (\" + $item(\"max update count\") + \" updates)\"",
+        collapsed: true,
+        items: [
+          {
+            text: "max update count [=] max(lists[\"update_count\"])",
+          },{
+            text: "finding function [=>] list | item(\"update_count\", list) == max_update_count",
+          },{
+            text: "list [=] find(lists, finding_function)",
+          }
+        ],
+      }
+    ],
+  }
+
   def initialize(user_id)
     @user_id = user_id
   end
@@ -233,7 +288,7 @@ class UserPreferencesManager
     im = ItemManager.new(user.primary_list.id)
     im.create_items_from_tree({
       text: user.primary_list.title,
-      items: [OOBE_WELCOME_MESSAGE]
+      items: [LIST_STATS, OOBE_WELCOME_MESSAGE]
     })
   end
 
