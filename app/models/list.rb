@@ -23,4 +23,13 @@ class List < ActiveRecord::Base
     @content = im.get_tree
     @content
   end
+
+  def is_user_primary?
+    list_type == 'user_primary'
+  end
+
+  def is_user_preferences?
+    list_type == 'user_preferences'
+  end
+  
 end

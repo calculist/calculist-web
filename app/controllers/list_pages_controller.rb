@@ -24,6 +24,7 @@ class ListPagesController < ApplicationController
     unless current_user_can_read?
       return show_non_existent
     end
+    return redirect_to(profile_page_path(username: @list_owner.username)) if @list.is_user_primary?
     @lists = current_user.lists
     @other_lists = get_title_handle_path_id(@lists, current_user)
     @theme = @list_owner.default_theme
