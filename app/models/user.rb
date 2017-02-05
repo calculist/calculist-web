@@ -43,6 +43,11 @@ class User < ApplicationRecord
 
   def save_invite_code
     @beta_access ||= BetaAccess.where(code: @invite_code).first
+    if @beta_access.notes == 'promo'
+      @beta_access = BetaAccess.create(notes: "promo:#{@invite_code}")
+      @invite_code = @beta_access.code
+    end
+
     if @beta_access && @beta_access.claimed_by.nil?
       @beta_access.claimed_by = id
       @beta_access.claimed_at = DateTime.now
