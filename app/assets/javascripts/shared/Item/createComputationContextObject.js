@@ -85,8 +85,10 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   var mathKeys = ['E','LN2','LN10','LOG2E','LOG10E','PI','SQRT1_2','SQRT2','abs','acos','acosh','asin','asinh','atan','atan2','atanh','cbrt','ceil','clz32','cos','cosh','exp','expm1','floor','fround','hypot','imul','log','log1p','log2','log10','max','min','pow','random','round','sign','sin','sinh','sqrt','tan','tanh','trunc'];
 
   _.each(mathKeys, function(key) { proto[key] = Math[key]; });
-  _.extend(proto, ss);
-  proto.mixin = null;
+
+  var ssKeys = ['median','mode','product','variance','sampleVariance','standardDeviation','sampleStandardDeviation','medianAbsoluteDeviation','interquartileRange','harmonicMean','geometricMean','rootMeanSquare','sampleSkewness','factorial'];
+
+  _.each(ssKeys, function(key) { proto[key] = ss[key]; });
 
   var lodashKeys = ['difference','intersection','reverse','union','uniq','xor',
                     'filter','find','findLast','map','reduce','zip','unzip',
@@ -96,7 +98,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
                     'toUpper','truncate','upperCase','words','times','identity'];
   _.each(lodashKeys, function (key) { proto[key] = _[key]; });
 
-  var valIfItem = function (item) { return isItem(item) ? item.val : item; };
+  var valIfItem = function (item) { return isItem(item) ? item.valueOf() : item; };
 
   var conditionals = ['isArray','isNumber','isFunction','isString'];
 
@@ -121,6 +123,15 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
       var val = item.valueOf();
       return sum + (_.isNumber(val) ? val : NaN);
     }, 0);
+  };
+
+  proto.quantile = function (sample, p) {
+    if (_.isNumber(p)) return ss.quantile(sample, p);
+  };
+
+  proto.interquartileRange = function (items) {
+    var values = _.map(items, valIfItem);
+    return ss.interquartileRange(values);
   };
 
   // var multiOps =
