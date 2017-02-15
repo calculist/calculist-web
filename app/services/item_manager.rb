@@ -40,6 +40,13 @@ class ItemManager
       end
     end
     raise('no top item found') if top_item.nil?
+    missing_parent_guids = get_missing_parent_guids
+    if missing_parent_guids
+      missing_parent_guids.each do |missing_parent_guid|
+        foster_item = create_foster_item(missing_parent_guid, top_item.guid)
+        children_by_parent_guid[top_item.guid].unshift(foster_item)
+      end
+    end
     generate_tree(top_item, children_by_parent_guid)
   end
 
@@ -84,6 +91,34 @@ class ItemManager
         items: trees
       }
     end
+  end
+
+  def get_missing_parent_guids
+    missing_parent_guids = Item.connection.select_all("
+      select distinct i0.parent_guid
+      from items i0
+      left join items i1
+      on i0.parent_guid = i1.guid
+      where
+        i0.list_id = #{@list_id.to_i} and
+        i0.is_deleted = 0 and
+        i0.parent_guid is not null
+        and i1.guid is null
+    ")
+    return missing_parent_guids.map {|o| o['parent_guid'] } if missing_parent_guids.any?
+  end
+
+  def create_foster_item(guid, parent_guid)
+    Item.create!(guid: guid,
+                  list_id: @list_id,
+                  parent_guid: parent_guid,
+                  sort_order: 100 / 2,
+                  text: 'SYSTEM MESSAGE: Something went wrong and these items were found without a parent item. Please notify dan@calculist.io, and include any details that might help with troubleshooting the issue.',
+                  is_collapsed: false,
+                  is_deleted: false,
+                  is_top_item: false,
+                  list_update_id: 0,
+                  initial_list_update_id: 0)
   end
 
   def create_items_from_tree(tree)
