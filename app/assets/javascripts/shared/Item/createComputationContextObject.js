@@ -99,6 +99,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   _.each(lodashKeys, function (key) { proto[key] = _[key]; });
 
   var valIfItem = function (item) { return isItem(item) ? item.valueOf() : item; };
+  var itemsIfItem = function (item) { return isItem(item) ? item.items : item; };
 
   var conditionals = ['isArray','isNumber','isFunction','isString'];
 
@@ -196,6 +197,10 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   proto.itemsOf = _.property('items');
   proto.nameOf = _.property('key');
   proto.parentOf = _.property('parent');
+  proto.indexOf = function (array, item) {
+    array = itemsIfItem(array);
+    return array.indexOf(item);
+  };
   proto.pluckItems = function (items, key) {
     var condition;
     if (_.isFunction(key)) {
@@ -203,10 +208,12 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
     } else {
       condition = { key: key };
     }
-    if (isItem(items)) items = items.items;
-    return items.map(function (item) {
-      return _.find(item.items, condition);
-    });
+    items = itemsIfItem(items);
+    return items.reduce(function (pluckedItems, item) {
+      var pluckedItem = _.find(item.items, condition);
+      if (pluckedItem) pluckedItems.push(pluckedItem);
+      return pluckedItems;
+    }, []);
   };
 
   proto.flowMap = function () {
@@ -334,7 +341,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   });
 
   proto.flatten = function (items) {
-    if (isItem(items)) items = items.items;
+    items = itemsIfItem(items);
     if (isItem(items[0])) {
       return _.reduce(items, function (flatItems, item) {
         flatItems.push(item);
@@ -347,7 +354,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   }
 
   proto.uniq = proto.unique = function (items) {
-    if (isItem(items)) items = items.items;
+    items = itemsIfItem(items);
     items = _.map(items, proto.valueOf);
     return _.uniq(items);
   };
