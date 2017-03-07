@@ -14,7 +14,7 @@
 <input type="file" style="display:none;">
 
 <script>
-  var LIST_TITLE = "<%= raw(@list.title) %>",
+  var LIST_TITLE = "<%= @list.title.gsub("\n", '') %>",
       LIST_DATA = <%= raw(@list.content.to_json) %>,
       LIST_ID = <%= @list.id %>,
       INITIAL_LAST_SAVE = <%= @list.update_count || 0 %>,
