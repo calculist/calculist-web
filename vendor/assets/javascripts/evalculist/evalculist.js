@@ -1,7 +1,7 @@
 /**
  * @license
- * evalculist 0.1.0
- * Copyright 2016 Dan Allison <dan@calculist.io> and Calculist LLC <http://calculist.io>
+ * evalculist 0.2.0
+ * Copyright 2017 Dan Allison <dan@calculist.io> and Calculist LLC <http://calculist.io>
  * Released under MIT license
  */
 (function (global) {
@@ -13,6 +13,7 @@
   var OPEN_SQUARE = '[';
   var CLOSE_SQUARE = ']';
   var DOT = '.';
+  var EQUALS_SIGN = '=';
   var TOKEN_TYPE_INDEX = 0;
   var TOKEN_STRING_INDEX = 1;
   var PAREN_DEPTH_INDEX = 2;
@@ -20,6 +21,7 @@
   var VAR_FUNCTION_NAME = 'variable';
   var DOT_ACC_FUNCTION_NAME = 'dotAccessor';
   var SQUARE_ACC_FUNCTION_NAME = 'bracketAccessor';
+  var ASSIGN_FUNCTION_NAME = 'assignment';
   var ESCAPED_DOUBLE_QUOTES_PLACEHOLDER = "______adsfasdfrtrssgoivdfoijwpdfoijdfg_______";
   var ESCAPED_DOUBLE_QUOTES_PATTERN = new RegExp(ESCAPED_DOUBLE_QUOTES_PLACEHOLDER, 'g');
   var ESCAPED_SINGLE_QUOTES_PLACEHOLDER = "______oiwjefoijfviojdfhweoiufhoihsdfoi_______";
@@ -78,7 +80,25 @@
           expressions.push(exp);
         }
       } else if (t[TOKEN_TYPE_INDEX] === VAR_TOKEN) {
-        expressions.push(VAR_FUNCTION_NAME + '("' + t[TOKEN_STRING_INDEX] + '")');
+        var varName = t[TOKEN_STRING_INDEX];
+        var nextT = tokens[i + 1];
+        while (nextT && (/^\s+$/).test(nextT[TOKEN_STRING_INDEX])) nextT = tokens[++i + 1];
+        if (nextT && nextT[TOKEN_TYPE_INDEX] === EQUALS_SIGN) {
+          nextT = tokens[++i];
+          var nextExp = '';
+          if (nextT && nextT[PAREN_DEPTH_INDEX] >= pd) {
+            nextExp = compile(tokens, ++i);
+            while (nextT && nextT[PAREN_DEPTH_INDEX] >= pd) nextT = tokens[++i];
+          }
+          var exp = ASSIGN_FUNCTION_NAME + '("' + varName + '",' + nextExp + ')';
+          if (expressions.length) {
+            expressions[expressions.length - 1] += exp;
+          } else {
+            expressions.push(exp);
+          }
+        } else {
+          expressions.push(VAR_FUNCTION_NAME + '("' + varName + '")');
+        }
       } else {
         expressions.push(t[TOKEN_STRING_INDEX]);
       }
@@ -104,7 +124,7 @@
             tokens.push([EXPRESSION_TOKEN, sqChunk, parenDepth, sqrBrktDepth]);
           }
         } else {
-          sqChunk.split(/(\(|\)|\[|\]|\.|(?:[a-zA-Z\d_\$]+))/g).forEach(function (token) {
+          sqChunk.split(/(\(|\)|\[|\]|\.|\=|(?:[a-zA-Z\d_\$]+))/g).forEach(function (token) {
             if (!token) return;
             if (/[a-zA-Z\d_\$]+/.test(token)) {
               if (isDigit(token[0])) {
@@ -130,6 +150,8 @@
               tokens.push([CLOSE_SQUARE, token, parenDepth, sqrBrktDepth]);
             } else if (token === DOT) {
               tokens.push([DOT, token, parenDepth, sqrBrktDepth]);
+            } else if (token === EQUALS_SIGN) {
+              tokens.push([EQUALS_SIGN, token, parenDepth, sqrBrktDepth]);
             } else {
               if (tokens.length && tokens[tokens.length - 1][0] === EXPRESSION_TOKEN){
                 tokens[tokens.length - 1][TOKEN_STRING_INDEX] += token;
@@ -149,23 +171,27 @@
       VAR_FUNCTION_NAME,
       SQUARE_ACC_FUNCTION_NAME,
       DOT_ACC_FUNCTION_NAME,
+      ASSIGN_FUNCTION_NAME,
       "'use strict';return " + string
     );
     if (!handlers) return function (handlers) {
       var variable = handlers.variable;
       var bracketAccessor =  handlers.bracketAccessor || handlers.accessor;
       var dotAccessor =  handlers.dotAccessor || handlers.accessor;
-      return fn(variable, bracketAccessor, dotAccessor);
+      var assignment =  handlers.assignment;
+      return fn(variable, bracketAccessor, dotAccessor, assignment);
     };
     var variable = handlers.variable;
     var bracketAccessor =  handlers.bracketAccessor || handlers.accessor;
     var dotAccessor =  handlers.dotAccessor || handlers.accessor;
-    return fn(variable, bracketAccessor, dotAccessor);
+    var assignment =  handlers.assignment;
+    return fn(variable, bracketAccessor, dotAccessor, assignment);
   };
 
   evalculist.context = {};
   evalculist.variable = function (name) { return evalculist.context[name]; };
   evalculist.accessor = function (object, key) { return object[key]; };
+  evalculist.assignment = function (name, val) { return evalculist.context[name] = val; };
 
   evalculist.new = function (handlers) {
     return function (code) { return evalculist(code, handlers); };
@@ -174,7 +200,8 @@
   evalculist.newFromContext = function (context) {
     var handlers = {
       variable: function (name) { return context[name]; },
-      accessor: function (object, key) { return object[key]; }
+      accessor: function (object, key) { return object[key]; },
+      assignment: function (name, val) { return context[name] = val; }
     };
     return function (code) { return evalculist(code, handlers); };
   };
