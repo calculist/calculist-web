@@ -14,6 +14,7 @@
   var CLOSE_SQUARE = ']';
   var DOT = '.';
   var EQUALS_SIGN = '=';
+  var SEMICOLON = ';';
   var TOKEN_TYPE_INDEX = 0;
   var TOKEN_STRING_INDEX = 1;
   var PAREN_DEPTH_INDEX = 2;
@@ -110,6 +111,7 @@
 
   function evalculist (code, handlers) {
     var tokens = [];
+    var lines = [tokens];
     var parenDepth = 0;
     var sqrBrktDepth = 0;
     code.replace(/\\"/g , ESCAPED_DOUBLE_QUOTES_PLACEHOLDER)
@@ -124,7 +126,7 @@
             tokens.push([EXPRESSION_TOKEN, sqChunk, parenDepth, sqrBrktDepth]);
           }
         } else {
-          sqChunk.split(/(\(|\)|\[|\]|\.|\=|(?:[a-zA-Z\d_\$]+))/g).forEach(function (token) {
+          sqChunk.split(/(\(|\)|\[|\]|\.|\=|\;|(?:[a-zA-Z\d_\$]+))/g).forEach(function (token) {
             if (!token) return;
             if (/[a-zA-Z\d_\$]+/.test(token)) {
               if (isDigit(token[0])) {
@@ -152,6 +154,9 @@
               tokens.push([DOT, token, parenDepth, sqrBrktDepth]);
             } else if (token === EQUALS_SIGN) {
               tokens.push([EQUALS_SIGN, token, parenDepth, sqrBrktDepth]);
+            } else if (token === SEMICOLON && parenDepth === 0 && sqrBrktDepth === 0) {
+              tokens = [];
+              lines.push(tokens);
             } else {
               if (tokens.length && tokens[tokens.length - 1][0] === EXPRESSION_TOKEN){
                 tokens[tokens.length - 1][TOKEN_STRING_INDEX] += token;
@@ -163,16 +168,24 @@
         }
       });
     });
-    var string = compile(tokens, 0)
-                .replace(ESCAPED_DOUBLE_QUOTES_PATTERN, '\\"')
-                .replace(ESCAPED_SINGLE_QUOTES_PATTERN, "\\'");
-    if (handlers === true) return string;
+    lines = lines.reduce(function (lines, tokens) {
+      if (tokens.length) {
+        lines.push(
+          compile(tokens, 0)
+            .replace(ESCAPED_DOUBLE_QUOTES_PATTERN, '\\"')
+            .replace(ESCAPED_SINGLE_QUOTES_PATTERN, "\\'")
+        );
+      }
+      return lines;
+    }, []);
+    if (handlers === true) return lines.join(SEMICOLON);
+    lines[lines.length - 1] = 'return ' + lines[lines.length - 1];
     var fn = new Function(
       VAR_FUNCTION_NAME,
       SQUARE_ACC_FUNCTION_NAME,
       DOT_ACC_FUNCTION_NAME,
       ASSIGN_FUNCTION_NAME,
-      "'use strict';return " + string
+      "'use strict';" + lines.join(SEMICOLON)
     );
     if (!handlers) return function (handlers) {
       var variable = handlers.variable;
