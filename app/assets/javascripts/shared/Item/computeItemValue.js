@@ -39,6 +39,8 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
           return val;
         },
         assignment: function (name, val) {
+          isForCommand || (item.hasVariableReference = true);
+          item.assignLocalVar(name, val);
           if (!variables) variables = {};
           return variables[name] = val;
         }

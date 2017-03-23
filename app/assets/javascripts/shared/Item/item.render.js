@@ -16,6 +16,7 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
     };
     this.$el.html(this.template(templateData));
     this.addOrRemoveClasses();
+    this.applyLocalStyle();
     this.renderChildren();
     this.delegateEvents();
     return this;
@@ -52,6 +53,7 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
       this.computedDisplayIsVisible = false;
     }
     this.addOrRemoveClasses();
+    this.applyLocalStyle();
     if (!this.collapsed) {
       _.each(this.items, _.method('softRender'));
     }
