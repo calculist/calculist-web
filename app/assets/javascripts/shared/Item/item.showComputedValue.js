@@ -9,7 +9,7 @@ calculist.require(['Item','itemOfFocus'], function (Item, itemOfFocus) {
     if (itemOfFocus.is(this)) {
       this.valueOf();
       val = this.val;
-      if (this.valIsComputed) {
+      if (this.valIsComputed && this.hasVal) {
         val = this.formatVal(val);
         $cd = this.$("#computed-display" + this.id);
         $cd.text("" + val).css({

@@ -7,11 +7,10 @@ calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasCh
   };
 
   Item.prototype.valueOf = function () {
-    if ((this.parsedText || {}).text !== this.text || (this.hasVariableReference && this.lastAnimationFrame !== syncAnimationFrame() && somethingHasChanged())) {
+    var parsedText = this.parsedText || {};
+    if (parsedText.text !== this.text || (this.hasVariableReference && this.lastAnimationFrame !== syncAnimationFrame() && somethingHasChanged())) {
       this.lastAnimationFrame = syncAnimationFrame();
-      var prevKey = this.key;
-      var parsedText = this.parsedText;
-      if (!parsedText || parsedText.text !== this.text) {
+      if (parsedText.text !== this.text) {
         this.evalFn = null;
         parsedText = (this.parsedText = parseItemText(this.text));
       }
@@ -49,6 +48,13 @@ calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasCh
             this.val.toString = _.constant( parsedText.val);
             this._valueOf = this.val;
             break;
+          case ('[=#]'):
+            this.hasVal = false;
+            this.valIsComputed = true;
+            this.val = null;
+            this._valueOf = this.parsedText.key;
+            computeItemValue(parsedText.val, this);
+            break;
           case ('[:]'):
             this.hasVal = true;
             this.val = _.trim(parsedText.val);
@@ -64,7 +70,6 @@ calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasCh
         this.val = null;
         this._valueOf = this.text;
       }
-      if (this.key !== prevKey) eventHub.trigger('keychange', prevKey, this.key);
     }
 
     return this._valueOf;

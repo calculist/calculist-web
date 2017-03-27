@@ -4,11 +4,12 @@ calculist.register('parseItemText', ['_'], function (_) {
 
   var TEMPORARY_PLACEHOLDER = 'DSFGSpRGBoSAERSFDGSDrFGDFGSDFwGWESRTBGFzAE';
 
-  var separators = ['[=]','[=>]','[:]'],
+  var separators = ['[:]','[=]','[=>]','[=#]'],
       splitters = {
+        '[:]': /(\[:\])/,
         '[=]': /(\[=\])/,
         '[=>]': /(\[=\>\])/,
-        '[:]': /(\[:\])/,
+        '[=#]': /(\[=\#\])/,
       };
 
   var parseWithSeparator = function (text, separator) {

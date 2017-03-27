@@ -89,13 +89,14 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
       }
     } else if (e.which === 68 && e.ctrlKey && e.shiftKey) { // 68 = d
       transaction(executeCommand, null, this, 'duplicate');
-    } else if (e.which === 190 && e.shiftKey && !e.ctrlKey && !e.altKey) { // 190 = >
+    } else if ((e.which === 51 || e.which === 190) && e.shiftKey && !e.ctrlKey && !e.altKey) { // 51 = # and 190 = >
       if (this.text.substring(anchorOffset - 3, anchorOffset) === '[=]') {
         e.preventDefault();
         (function () {
           var $input = this.$('#input' + this.id);
           var textArray = _.toArray($input.text());
-          textArray.splice(anchorOffset - 3, anchorOffset, '[=>]');
+          var char = e.which === 51 ? '#' : '>';
+          textArray.splice(anchorOffset - 3, anchorOffset, '[=' + char + ']');
           $input.text(textArray.join(''));
           var range = document.createRange();
           var sel = window.getSelection();
