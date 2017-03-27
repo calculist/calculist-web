@@ -8,8 +8,11 @@ calculist.register('item.assignLocalVar',['_'], function (_) {
   return function(name, val) {
     var name = possibleNames[name];
     if (!name) return;
-    if (name === '$name' && val != null && this.key !== val) {
-      this.changeText(val + ' ' + this.parsedText.separator + this.parsedText.val);
+    if (name === '$name') {
+      if (val == null || this.key === val) return;
+      if (this.parsedText.separator) val += ' ' + this.parsedText.separator + this.parsedText.val;
+      this.changeText(val);
+      return;
     }
     this.localVars || (this.localVars = {});
     var prevVal = this.localVars[name];
