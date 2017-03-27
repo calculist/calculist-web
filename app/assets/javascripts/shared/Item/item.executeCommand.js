@@ -8,6 +8,7 @@ calculist.register('item.executeCommand', ['_','executeCommand'], function (_, e
 calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead'], function (_, commands, transaction, computeItemValue, commandTypeahead) {
 
   return function (contextItem, commandString) {
+    if (commandString[0] === '(') commandString = 'noop' + commandString;
     var commandStringPieces = commandString.split(/([^\w\s]|\d)/);
     commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
     if (commandStringPieces[0] === 'delete') commandStringPieces[0] = '_delete';
