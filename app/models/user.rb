@@ -17,6 +17,10 @@ class User < ApplicationRecord
   validates_format_of :username, with: /^[a-zA-Z0-9_]*$/, multiline: true
   validates :invite_code, with: :validate_invite_code
 
+  def must_confirm_email?
+    self.confirmed_at.nil? && (Time.now - self.created_at) > 48.hours
+  end
+
   def setup_account
     save_invite_code
     create_initial_lists
@@ -116,10 +120,14 @@ class User < ApplicationRecord
     share ? share.access_type : 'no_access'
   end
 
+  def self.find_by_login(login)
+    where(["username = :value OR email = :value", { value: login.downcase }]).first
+  end
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions.to_h).where(["username = :value OR email = :value", { :value => login.downcase }]).first
+      where(conditions.to_h).find_by_login(login)
     elsif conditions.has_key?(:username) || conditions.has_key?(:email)
       conditions[:email].downcase! if conditions[:email]
       where(conditions.to_h).first

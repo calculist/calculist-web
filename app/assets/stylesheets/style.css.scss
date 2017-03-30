@@ -49,6 +49,15 @@ body {
       margin: 5px 0 0 5px;
       font-size: 14px;
     }
+    .header-message {
+      display: block;
+      margin: 0 auto;
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
     .header-right {
       float: right;
       margin-right: 24px;
