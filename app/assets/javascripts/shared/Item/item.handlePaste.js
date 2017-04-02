@@ -1,6 +1,6 @@
-calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfFocus'], function (Item, _, parseTextDoc, getNewGuid, transaction, itemOfFocus) {
+calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfFocus','itemsByGuid','calculistFileFormatter'], function (Item, _, parseTextDoc, getNewGuid, transaction, itemOfFocus, itemsByGuid, calculistFileFormatter) {
 
-  Item.prototype.handlePaste = function(e) {
+  Item.prototype.handlePaste = function(e, options) {
     if (this.mode === 'command') return;
     var content, selectionEnd, selectionStart, _ref, _ref1;
     // content =  ? e : e.originalEvent.clipboardData.getData('text/plain');
@@ -13,17 +13,22 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfF
     }
     if (content.split('\n').length > 1) {
       transaction(function () {
-        var items = parseTextDoc(content),
-            firstItem = items.shift();
+        var isCalculistFile = options && options.isCalculistFile;
+        var items = isCalculistFile ? calculistFileFormatter.parseFile(content) : parseTextDoc(content);
+        var firstItem = items.shift();
         if (itemOfFocus.is(this)) {
           this.insertTextAtCursor(firstItem.text);
         } else {
           this.changeText(firstItem.text);
         }
+        if (isCalculistFile) {
+          this.guid = firstItem.guid;
+          itemsByGuid[this.guid] = this;
+        }
         newChildren = firstItem.items.map((function(_this) {
           return function(item) {
             item.parent = _this;
-            item.guid = getNewGuid();
+            item.guid || (item.guid = getNewGuid());
             return new Item(item);
           };
         })(this));

@@ -1,5 +1,5 @@
 // TODO refactor
-calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndApplyChangesFromServer','jsonToItemTree','getNewGuid','userPreferences','executeCommand'], function (foo, Item, _, $, Backbone, lmDiff, saveButton, getAndApplyChangesFromServer, jsonToItemTree, getNewGuid, userPreferences, executeCommand) {
+calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndApplyChangesFromServer','jsonToItemTree','getNewGuid','userPreferences','executeCommand','calculistFileFormatter'], function (foo, Item, _, $, Backbone, lmDiff, saveButton, getAndApplyChangesFromServer, jsonToItemTree, getNewGuid, userPreferences, executeCommand, calculistFileFormatter) {
   window.DEV_MODE = window.localStorage.DEV_MODE;
   var jsonView = window.location.search.split('?json=')[1];
   if (jsonView) {
@@ -20,7 +20,7 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
         console.log(filePath)
         _.defer(function () {
           var fs = require('fs');
-          window.topItem.handlePaste(fs.readFileSync(filePath, 'utf8'));
+          window.topItem.handlePaste(fs.readFileSync(filePath, 'utf8'), {isCalculistFile: _.endsWith(filePath, '.calculist') });
           var markAsCollapsed = function (item) {
             if (item.items.length) {
               item.collapsed = item.parent && true;
@@ -72,7 +72,8 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
         if (window.READ_ONLY) return resolve();
         if (filePath) {
           var fs = require('fs');
-          fs.writeFileSync(filePath, window.topItem.toText(0, false), 'utf8');
+          var fileContent = _.endsWith(filePath, '.calculist') ? calculistFileFormatter.toCalculistFile(window.topItem) : window.topItem.toText(0, {computed: false});
+          fs.writeFileSync(filePath, fileContent, 'utf8');
           saveButton.changeStatus('saved');
           return window.topItem.waitingBeforeSave = false;
         }

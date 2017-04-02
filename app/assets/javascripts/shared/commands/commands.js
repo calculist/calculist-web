@@ -307,7 +307,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       if (itemsOnly) {
         text = _.map(_this.items, _.method('toText', 0, computed, hideCollapsed)).join('');
       } else {
-        text = _this.toText(0, computed, hideCollapsed);
+        text = _this.toText(0, {computed: computed, hideCollapsed: hideCollapsed});
       }
       copyToClipboard(text).then(function () {
         _this.focus();
@@ -397,14 +397,14 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     },
     downloadAsTxt: function (_this, filename, computed) {
       filename || (filename =  _this.text);
-      downloadFile(_this.toText(0, computed), 'text/txt', filename + '.txt');
+      downloadFile(_this.toText(0, {computed: computed}), 'text/txt', filename + '.txt');
     },
     downloadAsComputedTxt: function (_this, filename) {
       commands.downloadAsTxt(_this, filename, true);
     },
     downloadBackup: function (_this, filename) {
       filename || (filename =  window.topItem.text + '_' + (new Date()).toJSON().substring(0, 10));
-      downloadFile(window.topItem.toText(0, false), 'text/txt', filename + '.txt');
+      downloadFile(window.topItem.toText(0, {computed: false}), 'text/txt', filename + '.txt');
     },
     // exportAsPDF: ,
     // exportAsHTML: ,

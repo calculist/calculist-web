@@ -222,8 +222,14 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
       return new Item(options);
     };
 
-    Item.prototype.toText = function(depth, computed, hideCollapsed) {
+    Item.prototype.toText = function(depth, options) {
       eventHub.trigger('somethingHasChanged');
+      var computed, hideCollapsed, prependGuid;
+      if (options) {
+        computed = options.computed;
+        hideCollapsed = options.hideCollapsed;
+        prependGuid = options.prependGuid;
+      }
       var nestedText, text;
       if (!depth) depth = 0;
       if (computed !== false) computed = true;
@@ -231,9 +237,9 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
       if ((hideCollapsed && this.collapsed) || this.items.length === 0) {
         nestedText = '';
       } else {
-        nestedText = _.map(this.items, _.method('toText', depth + 2, computed, hideCollapsed)).join('');
+        nestedText = _.map(this.items, _.method('toText', depth + 2, options)).join('');
       }
-      return _.repeat(' ', depth) + _.trim(text) + '\n' + nestedText;
+      return (prependGuid ? (this.guid + '|') : '') + _.repeat(' ', depth) + _.trim(text) + '\n' + nestedText;
     };
 
     Item.prototype.deleteItem = function(youAreSure) {
