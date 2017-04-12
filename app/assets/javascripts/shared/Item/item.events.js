@@ -11,8 +11,11 @@ calculist.require(['Item','_','isReadOnly'], function (Item, _, isReadOnly) {
     events["focus #input" + id] = 'handleFocus';
     events["blur #input" + id] = 'handleBlur';
     events["paste #input" + id] = 'handlePaste';
+    events["mousemove .input-container:first"] = 'handleMousemove';
+    events["mouseout .input-container:first"] = 'handleMouseout';
     if (isReadOnly()) events["click #input" + id] = 'focus';
     events["click #dot" + id] = 'handleDotClick';
+    events["mousedown #dot" + id] = 'handleDotMousedown';
     events["dblclick #input" + id] = 'enterCommandMode';
     return events;
   };

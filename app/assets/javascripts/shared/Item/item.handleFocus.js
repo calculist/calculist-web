@@ -1,6 +1,8 @@
-calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus'], function (Item, cursorPosition, isReadOnly, itemOfFocus) {
+calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus','itemOfDrag'], function (Item, cursorPosition, isReadOnly, itemOfFocus, itemOfDrag) {
 
-  Item.prototype.handleFocus = function() {
+  Item.prototype.handleFocus = function(e) {
+    var dragItem = itemOfDrag.get();
+    if (dragItem && itemOfDrag !== this) return e.preventDefault();
     itemOfFocus.change(this);
     sessionStorage.focusGuid = this.guid;
     if (isReadOnly()) return;
