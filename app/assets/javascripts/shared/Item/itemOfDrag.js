@@ -6,7 +6,7 @@ calculist.register('itemOfDrag', ['transaction','$'], function (transaction, $) 
     $mainContainer || ($mainContainer = $('#main-container'));
     $mainContainer.addClass('dragging');
     itemOfDrag.$el.addClass('dragging').css({
-      top: e.clientY - 10,
+      top: (e.clientY + document.body.scrollTop) - 10,
       left: e.clientX + 3,
     });
   });
