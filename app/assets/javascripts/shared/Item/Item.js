@@ -187,8 +187,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
       if (i === -1) {
         return false;
       }
-      this.items.splice(i + 1, 0, child);
-      child.refreshSortOrder();
+      this.insertAt(child, i + 1);
       return true;
     };
 
@@ -198,8 +197,7 @@ calculist.register('Item', ['_','Backbone','$','getNewGuid','eventHub'], functio
       if (i === -1) {
         return;
       }
-      this.items.splice(i, 0, child);
-      child.refreshSortOrder();
+      this.insertAt(child, i);
     };
 
     Item.prototype.refreshDepth = function() {

@@ -14,6 +14,12 @@ body {
   margin: 0;
   padding: 50px 0;
   min-height: calc(100vh - 50px * 2);
+  &.dragging {
+    cursor: move;
+    .dot {
+      cursor: move;
+    }
+  }
   a {
     color: $light-color;
     cursor: pointer;
@@ -77,6 +83,12 @@ body {
     &.top-level {
       margin-left: 0;
     }
+    &.drop-target-above {
+      border-top: 16px solid rgba(0,0,0,0.3);
+    }
+    &.drop-target-below {
+      border-bottom: 16px solid rgba(0,0,0,0.3);
+    }
   }
   li {
     // list-style-type: circle;
@@ -92,6 +104,12 @@ body {
     &.top-level {
       list-style-type: none;
       margin-left: -22px;
+    }
+    &.dragging {
+      pointer-events: none;
+      outline: 1px solid $computed-color;
+      background: #fff;
+      position: absolute;
     }
   }
   #list-of-lists-container {
@@ -289,6 +307,9 @@ body {
       &.collapsed {
         color: rgba(255,255,255,1);
       }
+      &.dragging {
+        background: rgb(36,36,36);
+      }
     }
     .input {
       color: rgba(255,255,255,0.5);
@@ -333,6 +354,9 @@ body {
       &.collapsed {
         color: rgba(0,0,0,1);
       }
+      &.dragging {
+        background: #fff;
+      }
     }
     .input {
       background-color: rgba(255,255,255,0);
@@ -371,6 +395,9 @@ body {
       color: rgba(0,0,0,0.5);
       &.collapsed {
         color: rgba(0,0,0,1);
+      }
+      &.dragging {
+        background: rgba(251,251,248,1);
       }
     }
     .input {
