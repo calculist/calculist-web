@@ -235,7 +235,7 @@ class UserPreferencesManager
       },{
         text: "total item count [=] sum(lists[\"item_count\"])",
       },{
-        text: "list with most items [=] $item(\"list\") + \" (\" + $item(\"max item count\") + \" items)\"",
+        text: "list with most items [=] $items.list + \" (\" + $items.max_item_count + \" items)\"",
         collapsed: true,
         items: [
           {
@@ -247,7 +247,7 @@ class UserPreferencesManager
           }
         ],
       },{
-        text: "list with fewest items [=] $item(\"list\") + \" (\" + $item(\"min item count\") + \" items)\"",
+        text: "list with fewest items [=] $items.list + \" (\" + $items.min_item_count + \" items)\"",
         collapsed: true,
         items: [
           {
@@ -265,13 +265,13 @@ class UserPreferencesManager
       },{
         text: "standard deviation [=] round(standardDeviation(lists[\"item_count\"]), 2)",
       },{
-        text: "most updated list [=] $item(\"list\") + \" (\" + $item(\"max update count\") + \" updates)\"",
+        text: "most updated list [=] $items.list + \" (\" + $items.max_update_count + \" updates)\"",
         collapsed: true,
         items: [
           {
             text: "max update count [=] max(lists[\"update_count\"])",
           },{
-            text: "finding function [=>] list | item(\"update_count\", list) == max_update_count",
+            text: "finding function [=>] list | list.update_count == max_update_count",
           },{
             text: "list [=] find(lists, finding_function)",
           }
