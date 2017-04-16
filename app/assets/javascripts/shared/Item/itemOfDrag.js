@@ -24,7 +24,7 @@ calculist.register('itemOfDrag', ['transaction','$'], function (transaction, $) 
       $standin.insertAfter(itemOfDrag.$el);
       itemOfDrag.$el.addClass('dragging');
     }
-    itemOfDrag.$el.css({
+    itemOfDrag.$el.offset({
       top: (e.clientY + document.body.scrollTop) - 10,
       left: e.clientX + 3,
     });
