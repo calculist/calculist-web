@@ -1,21 +1,46 @@
 calculist.register('itemOfDrag', ['transaction','$'], function (transaction, $) {
-  var itemOfDrag, dropTarget, dropDirection, $mainContainer;
+  var itemOfDrag, dropTarget, dropDirection, $mainContainer, $standin;
+
+  var removeClassesAndStandin = function () {
+    $mainContainer || ($mainContainer = $('#main-container'));
+    $mainContainer.removeClass('dragging');
+    if ($standin) $standin.remove();
+    $standin = null;
+    itemOfDrag.$el.removeClass('dragging').removeAttr('style');
+  };
+
+  var resetVariables = function () {
+    itemOfDrag = null;
+    dropTarget = null;
+    dropDirection = null;
+  };
 
   document.addEventListener('mousemove', function (e) {
     if (!itemOfDrag) return;
     $mainContainer || ($mainContainer = $('#main-container'));
     $mainContainer.addClass('dragging');
-    itemOfDrag.$el.addClass('dragging').css({
+    if (!$standin) {
+      $standin = $('<li class="dragging-standin"></li>').height(itemOfDrag.$el.height());
+      $standin.insertAfter(itemOfDrag.$el);
+      itemOfDrag.$el.addClass('dragging');
+    }
+    itemOfDrag.$el.css({
       top: (e.clientY + document.body.scrollTop) - 10,
       left: e.clientX + 3,
     });
   });
 
+  document.addEventListener('keydown', function (e) {
+    if (itemOfDrag && e.which === 27) { // 27 = esc
+      removeClassesAndStandin();
+      itemOfDrag.parent.render();
+      resetVariables();
+    }
+  });
+
   document.addEventListener('mouseup', function () {
     if (itemOfDrag) {
-      $mainContainer || ($mainContainer = $('#main-container'));
-      $mainContainer.removeClass('dragging');
-      itemOfDrag.$el.removeClass('dragging').removeAttr('style');
+      removeClassesAndStandin();
     }
     if (itemOfDrag && dropTarget && itemOfDrag !== dropTarget) {
       var previousParent = itemOfDrag.parent;
@@ -23,9 +48,7 @@ calculist.register('itemOfDrag', ['transaction','$'], function (transaction, $) 
       var nextNewParent = newParent;
       while (nextNewParent) {
         if (nextNewParent === itemOfDrag) {
-          itemOfDrag = null;
-          dropTarget = null;
-          dropDirection = null;
+          resetVariables();
           return;
         }
         nextNewParent = nextNewParent.parent;
@@ -38,9 +61,7 @@ calculist.register('itemOfDrag', ['transaction','$'], function (transaction, $) 
       if (newParent !== previousParent) newParent.render();
       itemOfDrag.focus();
     }
-    itemOfDrag = null;
-    dropTarget = null;
-    dropDirection = null;
+    resetVariables();
   });
 
   return {

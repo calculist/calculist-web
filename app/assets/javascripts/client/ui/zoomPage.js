@@ -44,7 +44,7 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
         dimensions[attr] = item.$el[attr]();
         return dimensions;
       }, {});
-      $standin = $('<li id=standin"' + item.id + '"></li>').height(originalDimensions.height);
+      $standin = $('<li></li>').height(originalDimensions.height);
       stack.push({
         $page: $page,
         item: item,
