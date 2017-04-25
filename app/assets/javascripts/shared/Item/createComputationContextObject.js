@@ -361,6 +361,13 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
     return _.uniq(items);
   };
 
+  proto.slice = function (items, start, end) {
+    items = itemsIfItem(items);
+    var result = _.slice(items, start, end);
+    if (_.isString(items)) return result.join('');
+    return result;
+  };
+
   var doubleIterators = ['difference','intersection','union','xor','zip'];
 
   _.each(doubleIterators, function (methodName) {
