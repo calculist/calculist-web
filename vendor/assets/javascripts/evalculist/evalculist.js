@@ -1,6 +1,6 @@
 /**
  * @license
- * evalculist 0.2.0
+ * evalculist 0.2.2
  * Copyright 2017 Dan Allison <dan@calculist.io> and Calculist LLC <http://calculist.io>
  * Released under MIT license
  */
@@ -31,6 +31,7 @@
   var compile = function (tokens, i) {
     var expressions = [];
     var t = tokens[i];
+    if (!t) return '';
     var pd = t[PAREN_DEPTH_INDEX];
     var sqd = t[SQUARE_DEPTH_INDEX];
     while (t && t[PAREN_DEPTH_INDEX] >= pd && t[SQUARE_DEPTH_INDEX] >= sqd) {
@@ -126,7 +127,7 @@
             tokens.push([EXPRESSION_TOKEN, sqChunk, parenDepth, sqrBrktDepth]);
           }
         } else {
-          sqChunk.split(/(\(|\)|\[|\]|\.|\=|\;|(?:[a-zA-Z\d_\$]+))/g).forEach(function (token) {
+          sqChunk.split(/(\(|\)|\[|\]|\.|\={2,3}|\!\={1,2}|\=\>|\=|\;|(?:[a-zA-Z\d_\$]+))/g).forEach(function (token) {
             if (!token) return;
             if (/[a-zA-Z\d_\$]+/.test(token)) {
               if (isDigit(token[0])) {
