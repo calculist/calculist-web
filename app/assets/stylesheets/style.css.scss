@@ -16,6 +16,12 @@ body {
   min-height: calc(100vh - 50px * 2);
   &.dragging {
     cursor: move;
+    * {
+      -webkit-user-select: none; /* Safari */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none;
+    }
     .dot {
       cursor: move;
     }
