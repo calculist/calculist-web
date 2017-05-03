@@ -33,12 +33,15 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
         this.up(true, true);
       } else {
         (function () {
-          var lineWidth = Math.max(this.getLineWidthInCharacters(), 1),
-              lineCount = Math.ceil(this.text.length / lineWidth),
+          var lines = this.getInputLines(),
+              lineCount = lines.length,
               currentCursorPosition = cursorPosition.getWithCurrentOffset(this.text, this.depth),
-              currentLine = Math.floor(currentCursorPosition / (lineWidth || Infinity));
-          // console.log('up', lineWidth, lineCount, currentCursorPosition, currentLine);
-          if (true || currentLine === 0 || lineCount <= 1) {
+              currentLine = lines.reduce(function (cl, line, i) {
+                cl.charCount += line.length;
+                if (cl.index == null && currentCursorPosition < cl.charCount) cl.index = i;
+                return cl;
+              }, {charCount: 0, index: null}).index || 0;
+          if (currentLine === 0 || lineCount <= 1) {
             e.preventDefault();
             this.up();
           }
@@ -53,12 +56,19 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
         this.down(true, true);
       } else {
         (function () {
-          var lineWidth = this.getLineWidthInCharacters(),
-              lineCount = Math.ceil(this.text.length / lineWidth),
+          var lines = this.getInputLines(),
+              lineCount = lines.length,
               currentCursorPosition = cursorPosition.getWithCurrentOffset(this.text, this.depth),
-              currentLine = Math.floor(currentCursorPosition / (lineWidth || Infinity));
-          // console.log('down', lineWidth, lineCount, currentCursorPosition, currentLine);
-          if (true || currentLine >= (lineCount - 1) || lineCount <= 1 || currentCursorPosition >= this.text.length) {
+              currentLine = lines.reduce(function (cl, line, i) {
+                cl.charCount += line.length;
+                if (cl.index == null && currentCursorPosition < cl.charCount) cl.index = i;
+                return cl;
+              }, {charCount: 0, index: null}).index || 0;
+          if (currentLine >= (lineCount - 1) || lineCount <= 1 || currentCursorPosition >= this.text.length) {
+            if (lineCount > 1) {
+              var adjustedCursorPosition = currentCursorPosition - (this.text.length - lines[lineCount - 1].length);
+              cursorPosition.set(lines[lineCount - 1], this.depth, adjustedCursorPosition);
+            }
             e.preventDefault();
             this.down();
           }

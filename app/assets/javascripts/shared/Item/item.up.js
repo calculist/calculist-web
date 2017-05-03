@@ -1,9 +1,7 @@
-calculist.register('item.up', ['_','lmSessionStorage'], function (_, lmSessionStorage) {
+calculist.register('item.up', ['_','zoomPage'], function (_, zoomPage) {
 
   return function(skipChildren, maintainDepth) {
-    if (!this.parent) return;
-    if (lmSessionStorage.get('zoomGuid') === this.guid) return;
-    if (this.isMultiline() && !this.onTopLine()) return;
+    if (zoomPage.isTopOfAPage(this)) return;
     var nextUp;
     if (maintainDepth) {
       nextUp = this.parent.getUpperItemAtDepth(this, this.depth);

@@ -1,12 +1,25 @@
-calculist.register('item.getLineWidthInCharacters', ['_'], function (_) {
+calculist.register('item.getLineWidthInCharacters', ['zoomPage'], function (zoomPage) {
 
-  var CHAR_WIDTH = 8, PADDING = 8, FUDGE = 32;
+  var FONT_SIZE = 16, TOP_ITEM_FONT_SIZE = 32;
+
+  var ruler = $('<span style="visibility: hidden;white-space:nowrap;"></span>');
+
+  $('#main-container').append(ruler);
+
+  var getCharWidth = function (text, isTopLevel) {
+    // FIXME
+    return isTopLevel ? 16 : 8;
+    // text || (text = '.'); // Need at least one character
+    // ruler.css({
+    //   fontSize: isTopLevel ? TOP_ITEM_FONT_SIZE : FONT_SIZE
+    // }).text(text);
+    // return ruler.width() / text.length;
+  }
 
   return function () {
-    this.$input || (this.$input = this.$('#input' + this.id));
-    var inputWidth = this.$input.width(),
-        isTopLevel = sessionStorage.zoomGuid === this.guid || !this.parent,
-        charWidth = isTopLevel ? (CHAR_WIDTH * 2) : CHAR_WIDTH,
+    var $input = this.$('#input' + this.id);
+    var inputWidth = $input.width(),
+        charWidth = getCharWidth(this.text, zoomPage.isTopOfAPage(this)),
         widthInCharacters = inputWidth / charWidth;
 
     return widthInCharacters;
