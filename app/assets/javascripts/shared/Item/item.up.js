@@ -1,4 +1,4 @@
-calculist.register('item.up', ['_','zoomPage'], function (_, zoomPage) {
+calculist.register('item.up', ['_','zoomPage','cursorPosition'], function (_, zoomPage, cursorPosition) {
 
   return function(skipChildren, maintainDepth) {
     if (zoomPage.isTopOfAPage(this)) return;
@@ -17,10 +17,21 @@ calculist.register('item.up', ['_','zoomPage'], function (_, zoomPage) {
       }
     }
     if (nextUp && nextUp.isWithinZoom()) {
-      nextUp.focus();
+      // nextUp = nextUp
     } else if (this.parent && !maintainDepth) {
-      this.parent.focus();
+      nextUp = this.parent;
+    } else {
+      return;
     }
+    var nextUpLines = nextUp.getInputLines();
+    if (nextUpLines.length > 1) {
+      var lastLine = nextUpLines.pop(); // Remove last line
+      var otherLinesLength = nextUpLines.reduce(function (sum, line) { return sum + line.length; }, 0);
+      var currentCursorPosition = cursorPosition.getWithCurrentOffset(this.text, this.depth);
+      var adjustedCursorPosition = currentCursorPosition + otherLinesLength;
+      cursorPosition.set(otherLinesLength + lastLine.length, nextUp.depth, adjustedCursorPosition);
+    }
+    nextUp.focus();
   };
 
 });
