@@ -2,10 +2,11 @@ calculist.register('cursorPosition', ['_'], function (_) {
 
   var DEPTH_UNIT = 5;
 
+  var previousCursorPosition = 0;
   var cursorPosition = 0;
 
   var calculateCursorPosition = function (text, depth, position) {
-    return text.length === position ? Infinity : (depth - 1) * DEPTH_UNIT + position;
+    return (depth - 1) * DEPTH_UNIT + position;
   };
 
   var cursorPositionMinusDepth = function (depth, position) {
@@ -23,10 +24,14 @@ calculist.register('cursorPosition', ['_'], function (_) {
       //     extentOffset = selection.extentOffset,
       //     focusOffset = selection.focusOffset,
       //     rangeCount = selection.rangeCount;
+      previousCursorPosition = cursorPosition;
       cursorPosition = calculateCursorPosition(text, depth, offset);
     },
     get: function (depth) {
       return Math.max(0, cursorPositionMinusDepth(depth));
+    },
+    getPrevious: function (depth) {
+      return Math.max(0, cursorPositionMinusDepth(depth, previousCursorPosition));
     },
     getWithCurrentOffset: function (text, depth) {
       return Math.max(0, cursorPositionMinusDepth(depth, calculateCursorPosition(text, depth, document.getSelection().baseOffset)));

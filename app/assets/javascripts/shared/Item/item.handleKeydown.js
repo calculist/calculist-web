@@ -40,7 +40,8 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
                 cl.charCount += line.length;
                 if (cl.index == null && currentCursorPosition < cl.charCount) cl.index = i;
                 return cl;
-              }, {charCount: 0, index: null}).index || 0;
+              }, {charCount: 0, index: null}).index;
+          if (currentLine == null) currentLine = lineCount - 1;
           if (currentLine === 0 || lineCount <= 1) {
             e.preventDefault();
             this.up();
@@ -63,7 +64,8 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
                 cl.charCount += line.length;
                 if (cl.index == null && currentCursorPosition < cl.charCount) cl.index = i;
                 return cl;
-              }, {charCount: 0, index: null}).index || 0;
+              }, {charCount: 0, index: null}).index;
+          if (currentLine == null) currentLine = lineCount - 1;
           if (currentLine >= (lineCount - 1) || lineCount <= 1 || currentCursorPosition >= this.text.length) {
             if (lineCount > 1) {
               var adjustedCursorPosition = currentCursorPosition - (this.text.length - lines[lineCount - 1].length);
@@ -77,6 +79,7 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
     } else if (e.which === 8) { // 8 = delete
       if (!this.text) {
         e.preventDefault();
+        cursorPosition.set('', 1, Infinity);
         transaction(this.deleteItem, this);
       } else if (e.altKey && anchorOffset === 0) {
         e.preventDefault();
