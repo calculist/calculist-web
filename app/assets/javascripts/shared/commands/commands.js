@@ -339,50 +339,6 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         _this.focus();
       });
     },
-    exportItemsAsText: function (_this, options) {
-      var computed, hideCollapsed;
-      if (options == null) {
-        options = {};
-      }
-      computed = options.computed, hideCollapsed = options.hideCollapsed;
-      var text = _.map(_this.items, _.method('toText', 0, computed, hideCollapsed)).join('');
-      $('#export-display')
-        .val(text)
-        .show();
-
-      _.defer(function () {
-        $('#export-display').focus().select();
-      });
-    },
-    exportAsMarkdown: function(_this, options) {
-      var computed, hideCollapsed;
-      if (options == null) {
-        options = {};
-      }
-      computed = options.computed, hideCollapsed = options.hideCollapsed;
-      $('#export-display')
-        .val(_this.toMarkdown(0, computed, hideCollapsed))
-        .show();
-
-      _.defer(function () {
-        $('#export-display').focus().select();
-      });
-    },
-    exportItemsAsMarkdown: function (_this, options) {
-      var computed, hideCollapsed;
-      if (options == null) {
-        options = {};
-      }
-      computed = options.computed, hideCollapsed = options.hideCollapsed;
-      var text = _.map(_this.items, _.method('toMarkdown', 0, computed, hideCollapsed)).join('\n');
-      $('#export-display')
-        .val(text)
-        .show();
-
-      _.defer(function () {
-        $('#export-display').focus().select();
-      });
-    },
     downloadAsCsv: function (_this) {
       var rows = _.map(_this.items, function (item) {
         return _.reduce(item.items, function (row, it) {

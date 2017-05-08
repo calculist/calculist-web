@@ -166,16 +166,6 @@ body {
   #test {
     padding: 0;
   }
-  #export-display {
-    display: none;
-    background-color: rgba(255,255,255,1);
-    color: #000;
-    position: absolute;
-    width: 50%;
-    min-height: 1200px;
-    top: 20px;
-    left: 25%;
-  }
   #command-typeahead-menu {
     margin: 0;
     padding: 4px;
@@ -301,10 +291,6 @@ body {
     .page {
       background-color: rgb(36,36,36);
     }
-    #export-display {
-      background-color: rgba(255,255,255,1);
-      color: #000;
-    }
     ul {
       border-left: 1px solid rgba(255,255,255,0.09);
       &.top-level {
@@ -357,10 +343,6 @@ body {
     .page {
       background-color: #fff;
     }
-    #export-display {
-      background-color: #fff;
-      color: #000;
-    }
     li {
       color: rgba(0,0,0,0.5);
       &.collapsed {
@@ -398,10 +380,6 @@ body {
     // }
     .page {
       background-color: rgba(251,251,248,1);
-    }
-    #export-display {
-      background-color: rgba(255,255,255,1);
-      color: #000;
     }
     li {
       color: rgba(0,0,0,0.5);
