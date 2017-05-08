@@ -62,9 +62,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     addText: function (_this, text) {
       if (itemOfFocus.is(_this)) {
         var cursorIndex = cursorPosition.get(_this.depth);
-        if (_this.mode !== 'command' && (cursorIndex >= _this.text.length || !(cursorIndex >= 0))) {
-          _this.text += text;
-        } else if (_this.mode === 'command') {
+        if (_this.mode === 'command') {
           var $input = _this.$('#input' + _this.id);
           var textArray = _.toArray($input.text());
           textArray.splice(cursorIndex, 0, text);
