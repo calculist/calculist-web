@@ -1,4 +1,4 @@
-calculist.require(['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','itemOfFocus'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, itemOfFocus) {
+calculist.require(['_','$','transaction','computeItemValue','cursorPosition','commandTypeahead','getNewGuid','copyToClipboard','downloadFile','isItem','userPreferences','undoManager','jsonToItemTree','importFile','urlFinder','Item','itemOfFocus','zoomPage'], function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, itemOfFocus, zoomPage) {
 
   var commands = {
     hideHeader: function (_this) {
@@ -173,7 +173,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     },
     newItem: function (_this) {
       var parent = _this.parent;
-      if (parent) {
+      if (parent && _this !== zoomPage.getTopItem()) {
         parent.addNewChildAfter(_this, "");
       } else {
         _this.addNewChildBefore(_this.items[0], "");
