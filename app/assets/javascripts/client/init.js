@@ -20,13 +20,24 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
         console.log(filePath)
         _.defer(function () {
           var fs = require('fs');
-          window.topItem.handlePaste(fs.readFileSync(filePath, 'utf8'), {isCalculistFile: _.endsWith(filePath, '.calculist') });
-          var markAsCollapsed = function (item) {
-            if (item.items.length) {
-              item.collapsed = item.parent && true;
-              _.each(item.items, markAsCollapsed);
-            }
-          };
+          var isCalculistFile = _.endsWith(filePath, '.calculist');
+          var file = fs.readFileSync(filePath, 'utf8');
+          var markAsCollapsed;
+          try {
+            var fileData = JSON.parse(file);
+            window.topItem.initialize(fileData);
+            markAsCollapsed = _.noop;
+          } catch (e) {
+            // NOTE If JSON.parse fails, we assume the deprecated format.
+            // This will be removed in future versions.
+            window.topItem.handlePaste(file, {isCalculistFile: isCalculistFile });
+            markAsCollapsed = function (item) {
+              if (item.items.length) {
+                item.collapsed = item.parent && true;
+                _.each(item.items, markAsCollapsed);
+              }
+            };
+          }
           markAsCollapsed(window.topItem);
           window.topItem.render();
           window.topItem.focus();

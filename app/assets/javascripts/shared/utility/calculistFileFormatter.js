@@ -2,7 +2,7 @@ calculist.register('calculistFileFormatter', ['_', 'parseTextDoc'], function (_,
 
   return {
     toCalculistFile: function (topItem) {
-      return topItem.toText(0, {computed: false, prependGuid: true});
+      return JSON.stringify(topItem, null, ' ');
     },
     parseFile: function (fileString) {
       return parseTextDoc(fileString, {withGuids: true});

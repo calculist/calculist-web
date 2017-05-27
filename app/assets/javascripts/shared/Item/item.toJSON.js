@@ -3,10 +3,10 @@ calculist.require(['Item','_','getNewGuid'], function (Item, _, getNewGuid) {
   var toJSON = function(mapper) {
     return {
       text: this.text,
-      items: _.map(this.items, mapper),
       collapsed: !!this.collapsed,
       sort_order: this.sort_order,
-      guid: this.guid
+      guid: this.guid,
+      items: _.map(this.items, mapper),
     };
   };
 
