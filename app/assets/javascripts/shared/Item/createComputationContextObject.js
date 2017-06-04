@@ -395,7 +395,8 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
     };
   });
 
-  _.each(proto, function (fn) {
+  _.each(proto, function (fn, key) {
+    proto[_.snakeCase(key)] = fn;
     if (_.isFunction(fn)) fn.toString = fnToString;
   });
 
