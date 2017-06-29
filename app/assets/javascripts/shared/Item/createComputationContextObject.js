@@ -8,7 +8,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   // as the computed value while the user is typing
   var fnToString = _.constant('[Function]');
 
-  function ContextObject (item, includeScope) {
+  function ContextObject (item) {
     if (item) {
       var _this = this;
       _.each(itemMethods, function(method) {
@@ -17,60 +17,6 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
         };
         _this[method].toString = fnToString;
       });
-
-      // var fns = item.$$item('functions');
-
-      // if (fns && fns.items.length) {
-      //   _.each(fns.items, function (fn) {
-      //     _this[fn.key] = function () {
-      //       return evalculist(fn.val)(_this);
-      //     };
-      //     _this[fn.key].toString = fnToString;
-      //   });
-      // }
-
-      if (includeScope) {
-        var parents = [],
-            nextParent = item.parent,
-            previousParent,
-            assignVar = function (sibling) {
-              var key = sibling.key.replace(/\s/g, '_');
-              if (sibling.hasVal) {
-                _this[key] = sibling.valueOf();
-                var loops = 0;
-                while (_this[key] && isItem(_this[key]) && _this[key].hasVal && ++loops < 100) {
-                  _this[key] = _this[key].valueOf();
-                }
-              } else {
-                _this[key] = sibling;
-              }
-            };
-        while (nextParent) {
-          parents.unshift(nextParent);
-          nextParent = nextParent.parent;
-        }
-        while (parents.length) {
-          previousParent = nextParent;
-          nextParent = parents.shift();
-          if (previousParent && nextParent) {
-            _.find(previousParent.items, function (sibling, i) {
-              assignVar(sibling);
-              return sibling === nextParent;
-            });
-          }
-        }
-        this.$index = 0;
-        var siblings = item.parent && item.parent.items;
-        if (siblings && siblings.length) {
-          _.find(siblings, function (sibling, i) {
-            if (sibling === item) {
-              _this.$index = i;
-              return true;
-            }
-            assignVar(sibling);
-          });
-        }
-      }
 
       this.$parent = item.parent;
       this.$index = item.parent ? item.parent.items.indexOf(item) : 0;
