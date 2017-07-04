@@ -9,9 +9,10 @@ class ListsController < ApplicationController
       new_items = @list.items
                         .where(is_deleted: false)
                         .where('initial_list_update_id > ?', last_save)
+                        .order(:sort_order)
       updated_items = @list.items
-                        .where(is_deleted: false)
                         .where('list_update_id > ? and (initial_list_update_id <= ? or initial_list_update_id is null)', last_save, last_save)
+                        .order(:sort_order)
       render json: {
         last_save: @list.update_count,
         new_items: new_items.map(&:main_attributes_hash),
