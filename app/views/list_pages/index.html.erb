@@ -1,6 +1,6 @@
 <header id="header">
   <a href="/"><img id="logo" src="/logo-blue-black.svg"></a>
-  <span id="version">beta</span>
+  <span id="version"><%= Rails.application.config.calculist_version %></span>
   <% if current_user.must_confirm_email? %>
     <div class="header-message">Make sure to <a href="confirmation/new">confirm your email</a> so you do not lose access to your account.</div>
   <% end %>
