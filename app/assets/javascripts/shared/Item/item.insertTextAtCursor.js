@@ -11,13 +11,10 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorP
         );
 
     var start = Math.min(selection.anchorOffset, selection.extentOffset),
-        end = Math.max(selection.anchorOffset, selection.extentOffset),
-        range = _.range(start, end),
+        count = Math.max(selection.anchorOffset, selection.extentOffset) - start,
         textArray = _.toArray(this.text);
 
-    _.pullAt(textArray, range);
-
-    textArray.splice(start, 0, insertingText);
+    textArray.splice(start, count, insertingText);
 
     transaction(function () {
       this.text = textArray.join('');
