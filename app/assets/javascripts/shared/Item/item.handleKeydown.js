@@ -109,7 +109,7 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
           var $input = this.$('#input' + this.id);
           var textArray = _.toArray($input.text());
           var char = e.which === 51 ? '#' : '>';
-          textArray.splice(anchorOffset - 3, anchorOffset, '[=' + char + ']');
+          textArray.splice(anchorOffset - 3, 3, '[=' + char + ']');
           $input.text(textArray.join(''));
           var range = document.createRange();
           var sel = window.getSelection();
