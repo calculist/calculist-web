@@ -303,7 +303,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       var itemsOnly = _.includes(options, 'items only');
       var text;
       if (itemsOnly) {
-        text = _.map(_this.items, _.method('toText', 0, computed, hideCollapsed)).join('');
+        text = _.map(_this.items, _.method('toText', 0, {computed: computed, hideCollapsed: hideCollapsed})).join('');
       } else {
         text = _this.toText(0, {computed: computed, hideCollapsed: hideCollapsed});
       }
