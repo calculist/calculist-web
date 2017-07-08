@@ -1,6 +1,6 @@
 calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorPosition','itemOfFocus'], function (Item, _, parseTextDoc, getNewGuid, transaction, cursorPosition, itemOfFocus) {
 
-  Item.prototype.insertTextAtCursor = function(insertingText, skipRender) {
+  Item.prototype.insertTextAtCursor = function(insertingText) {
     if (!itemOfFocus.is(this)) return;
     var selection = _.pick(document.getSelection(),
         'anchorOffset',
@@ -10,22 +10,35 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorP
         // 'rangeCount'
         );
 
+    var text = this.text;
+    var $input;
+    if (this.mode === 'command') {
+      $input = this.$('#input' + this.id);
+      text = $input.text();
+    }
     var start = Math.min(selection.anchorOffset, selection.extentOffset),
         count = Math.max(selection.anchorOffset, selection.extentOffset) - start,
-        textArray = _.toArray(this.text);
+        textArray = _.toArray(text);
 
     textArray.splice(start, count, insertingText);
 
     transaction(function () {
-      this.text = textArray.join('');
-      if (!skipRender) {
+      if (this.mode === 'command') {
+        $input.text(textArray.join(''));
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.collapse(true);
+        range.setStart($input[0].childNodes[0], start + insertingText.length);
+        range.setEnd($input[0].childNodes[0], start + insertingText.length);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      } else {
+        this.text = textArray.join('');
         cursorPosition.set(this.text, this.depth, start + insertingText.length);
         this.render();
         this.focus();
       }
     }, this);
-
-    // console.log(selection, text);
   };
 
 });

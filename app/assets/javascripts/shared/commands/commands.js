@@ -61,26 +61,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     },
     addText: function (_this, text) {
       if (itemOfFocus.is(_this)) {
-        var cursorIndex = cursorPosition.get(_this.depth);
-        if (_this.mode === 'command') {
-          var $input = _this.$('#input' + _this.id);
-          var textArray = _.toArray($input.text());
-          textArray.splice(cursorIndex, 0, text);
-          $input.text(textArray.join(''));
-          var range = document.createRange();
-          var sel = window.getSelection();
-          range.collapse(true);
-          range.setStart($input[0].childNodes[0], cursorIndex + text.length);
-          range.setEnd($input[0].childNodes[0], cursorIndex + text.length);
-          sel.removeAllRanges();
-          sel.addRange(range);
-        } else {
-          var textArray = _.toArray(_this.text);
-          textArray.splice(cursorIndex, 0, text);
-          _this.text = textArray.join('');
-          cursorPosition.set(_this.text, _this.depth, cursorIndex + text.length);
-        }
-        if (_this.mode !== 'command') _this.focus();
+        _this.insertTextAtCursor(text);
       } else {
         _this.text += text;
       }
