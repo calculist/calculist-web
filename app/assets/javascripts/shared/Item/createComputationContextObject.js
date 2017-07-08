@@ -136,6 +136,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
     var gcd = proto.gcd(numerator,denominator);
     return '' + (numerator / gcd) + '/' +  (denominator / gcd);
   };
+  proto.mod = proto.modulo = function(a, b) { return (+a % (b = +b) + b) % b; };
   proto.polarToCartesian = function (r, theta) {
     var x = r * Math.cos(theta),
         y = r * Math.sin(theta);
