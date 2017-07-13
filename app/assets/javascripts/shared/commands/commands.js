@@ -608,22 +608,6 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         _this.up();
       });
     },
-    shareListWith: function (_this) {
-
-    },
-    unshareListWith: function (_this) {
-
-    },
-    unshareList: function (_this) {
-
-    },
-    // moveToTop:
-    // moveToBottom:
-    // randomWord:
-    // randomAdjective:
-    // randomNoun:
-    // randomAdverb:
-    // randomVerb:
   };
   var itemMethods = [
     'zoomIn','zoomOut','moveUp','moveDown','toggleCollapse',
