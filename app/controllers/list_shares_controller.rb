@@ -3,7 +3,7 @@ class ListSharesController < ApplicationController
 
   def index
     @list = List.find(params[:list_id])
-    if @list.user_id == current_user.id
+    if can_share?
       shares = ListShare.where(list_id: @list.id)
       if params[:usernames]
         usernames = JSON.parse(params[:usernames]) rescue params[:usernames]
@@ -16,7 +16,7 @@ class ListSharesController < ApplicationController
 
   def create
     @list = List.find(params[:list_id])
-    if @list.user_id == current_user.id
+    if can_share?
       existing_shares = ListShare.where(list_id: @list.id)
       user_ids = User.where(username: params[:usernames]).pluck(:id) - existing_shares.pluck(:user_id)
       shares = existing_shares.to_a + user_ids.map do |user_id|
@@ -33,7 +33,7 @@ class ListSharesController < ApplicationController
 
   def show
     @list = List.find(params[:list_id])
-    if @list.user_id == current_user.id
+    if can_share?
       share = ListShare.where(list_id: @list.id, id: params[:id]).first
       render json: format_shares([share])[0]
     end
@@ -44,20 +44,18 @@ class ListSharesController < ApplicationController
 
   def destroy
     @list = List.find(params[:list_id])
-    if @list.user_id == current_user.id
-      shares = ListShare.where(list_id: @list.id)
-      if params[:id]
-        shares = shares.where(id: params[:id])
-      elsif params[:usernames]
-        user_ids = usernames_to_user_ids(params[:usernames])
-        shares = shares.where(user_id: user_ids)
-      end
-      ListShare.delete(shares.pluck(:id))
-      render json: []
+    if can_share?
+      share = ListShare.where(list_id: @list.id, id: params[:id]).first
+      share.delete
+      render json: message: "successfully deleted list_share #{params[:id]}"
     end
   end
 
   private
+
+  def can_share?
+    @list.user_id == current_user.id && !['user_preferences', 'user_primary'].include?(@list.list_type)
+  end
 
   def usernames_to_user_ids(usernames)
     User.where(username: usernames).pluck(:id)
