@@ -27,7 +27,7 @@ calculist.register('item.up', ['_','zoomPage','cursorPosition'], function (_, zo
     if (nextUpLines.length > 1) {
       var lastLine = nextUpLines.pop(); // Remove last line
       var otherLinesLength = nextUpLines.reduce(function (sum, line) { return sum + line.length; }, 0);
-      var currentCursorPosition = cursorPosition.get(this.depth);
+      var currentCursorPosition = cursorPosition.get(nextUp.depth);
       var adjustedCursorPosition = currentCursorPosition + otherLinesLength;
       cursorPosition.set(nextUp.text, nextUp.depth, adjustedCursorPosition);
     }

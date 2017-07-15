@@ -1,4 +1,4 @@
-calculist.register('getAndApplyChangesFromServer', ['_','http','getItemByGuid','Item'], function (_, http, getItemByGuid, Item) {
+calculist.register('getAndApplyChangesFromServer', ['_','http','getItemByGuid','Item','itemOfFocus'], function (_, http, getItemByGuid, Item, itemOfFocus) {
   var lastSave = window.INITIAL_LAST_SAVE,
       url = function (path) { return window.location.origin + path; },
       newItemFromData = function (data) {
@@ -86,6 +86,8 @@ calculist.register('getAndApplyChangesFromServer', ['_','http','getItemByGuid','
           _.each(parentsByGuid, function (parent) {
             parent.render();
           });
+          var iof = itemOfFocus.get();
+          iof && iof.focus();
         }
       }
       return response;

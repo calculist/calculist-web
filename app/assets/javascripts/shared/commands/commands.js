@@ -12,6 +12,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       commands.addItems.apply(commands, arguments);
     },
     newList: function (_this, title, handle) {
+      if (!window.LIST_ID /* desktop app */) return;
       if (!title) return alert('New lists need titles.');
       handle || (handle = _.lowerCase(title).replace(/\s/g,''));
       window.topItem.saveNow().then(function () {
@@ -260,6 +261,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       _this.renderChildren();
     },
     followLink: function (_this, link) {
+      if (!window.LIST_ID /* desktop app */) return;
       if (!link) {
         var val = _this.valueOf();
         if (_.isString(val) && urlFinder.hasUrl(val)) {
@@ -569,21 +571,11 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         _this.save();
       }
     },
-    randomNumberBetween: function (_this, x, y) {
-
-    },
-    // randomName
-    randomTip: function (_this) {
-
-    },
     noop: _.noop,
     log: function (_this) {
       var args = _.toArray(arguments);
       args.unshift(_this.toJSON());
       console.log.apply(console, args);
-    },
-    search: function (_this, query) {
-
     },
     select: function (_this, item) {
       if (_.isString(item) || _.isNumber(item)) {
@@ -608,22 +600,6 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         _this.up();
       });
     },
-    shareListWith: function (_this) {
-
-    },
-    unshareListWith: function (_this) {
-
-    },
-    unshareList: function (_this) {
-
-    },
-    // moveToTop:
-    // moveToBottom:
-    // randomWord:
-    // randomAdjective:
-    // randomNoun:
-    // randomAdverb:
-    // randomVerb:
   };
   var itemMethods = [
     'zoomIn','zoomOut','moveUp','moveDown','toggleCollapse',

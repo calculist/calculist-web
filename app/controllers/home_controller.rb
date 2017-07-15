@@ -4,7 +4,7 @@ class HomeController < ApplicationController
     if current_user
       redirect_to profile_page_path(username: current_user.username)
     else
-      redirect_to 'http://calculist.io'
+      redirect_to new_session_path(:user)
     end
   end
 

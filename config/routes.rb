@@ -11,7 +11,9 @@ Rails.application.routes.draw do
 
   get 'list/new' => 'list_pages#create'
 
-  resources :lists
+  resources :lists do
+    resources :list_shares
+  end
 
   get 'blankpage' => 'list_pages#blankpage'
 
