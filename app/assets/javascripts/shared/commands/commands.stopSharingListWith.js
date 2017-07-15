@@ -5,9 +5,14 @@ calculist.register('commands.stopSharingListWith', ['http', '_'], function (http
     var url = '/lists/' + window.LIST_ID  + '/list_shares';
     var getUrl = usernames.length === 0 ? url : url + '?usernames=' + encodeURIComponent(JSON.stringify(usernames));
     http.get(getUrl).then(function (response) {
-      _.each(response, function (share) {
-        http.delete(url + '/' + share.id);
-      })
+      return Promise.all(_.map(
+        response, function (share) { return http.delete(url + '/' + share.id); }
+      )).then(function () {
+        usernames = _.map(response, 'username');
+        alert('successfully stopped sharing with ' + usernames.join(', '));
+      });
+    }).catch(function () {
+      alert('something went wrong.');
     });
   });
 });

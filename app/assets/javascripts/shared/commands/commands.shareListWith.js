@@ -6,8 +6,14 @@ calculist.register('commands.shareListWith', ['Backbone', '_'], function (Backbo
       usernames: usernames
     });
     shares.url = '/lists/' + window.LIST_ID  + '/list_shares';
-    shares.save({
-      success: function (m, response) { alert(response.message); }
+    shares.save(null, {
+      success: function (m, response) {
+        usernames = _.map(response, 'username');
+        alert('successfully shared with ' + usernames.join(', '));
+      },
+      error: function () {
+        alert('something went wrong. sharing failed.')
+      }
     });
   });
 });

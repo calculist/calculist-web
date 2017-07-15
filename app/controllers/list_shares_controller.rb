@@ -47,7 +47,7 @@ class ListSharesController < ApplicationController
     if can_share?
       share = ListShare.where(list_id: @list.id, id: params[:id]).first
       share.delete
-      render json: message: "successfully deleted list_share #{params[:id]}"
+      render json: {message: "successfully deleted list_share #{params[:id]}"}
     end
   end
 
