@@ -15,11 +15,12 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
         'shuffle items', 'for each item,','for each item recursively,','reverse items','delete items',
         'move to list ""','split to list ""','delete',
         'zoom in','zoom out','move up','move down','up','down',
+        'move to top','move to bottom','undo','redo',
         'toggle collapse','indent','outdent',
         'expand','collapse','freeze computed value',
-        'goto list','go home','goto item ""','follow link',
+        'goto item ""','follow link',
         'download as txt','download as computed txt','download as csv','download backup',
-        'new list ""','copy to clipboard','copy to clipboard "computed"','copy to clipboard "formatted"',
+        'copy to clipboard','copy to clipboard "computed"','copy to clipboard "formatted"',
         'copy to clipboard "hide collapsed"','copy items to clipboard',
         'change theme "dark"','change theme "light"','change theme "sandcastle"',
         'search for ""','change font ""','change font "Courier New"','change font "Source Code Pro"',
@@ -33,10 +34,18 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
       selectedCommandIndex = -1,
       $el = null;
 
-  _.each(window.OTHER_LISTS, function (otherList) {
-    availableCommands.push('goto list "' + otherList.title + '"');
-    if (otherList.handle !== 'preferences') availableCommands.push('permanently delete list "' + otherList.title  + '"');
-  });
+  if (window.LIST_ID) {
+    // NOTE These commands only make sense in the web app (not desktop),
+    // which is why they are added conditionally.
+    availableCommands.push(
+      'new list ""','goto list','go home','follow link',
+      'share list with ""','stop sharing list','stop sharing list with ""',
+    );
+    _.each(window.OTHER_LISTS, function (otherList) {
+      availableCommands.push('goto list "' + otherList.title + '"');
+      if (otherList.handle !== 'preferences') availableCommands.push('permanently delete list "' + otherList.title  + '"');
+    });
+  }
 
   var getEl = function () {
     if ($el) return $el;
