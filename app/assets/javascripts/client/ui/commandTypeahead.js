@@ -39,7 +39,7 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
     // which is why they are added conditionally.
     availableCommands.push(
       'new list ""','goto list','go home','follow link',
-      'share list with ""','stop sharing list','stop sharing list with ""',
+      'share list with ""','stop sharing list','stop sharing list with ""'
     );
     _.each(window.OTHER_LISTS, function (otherList) {
       availableCommands.push('goto list "' + otherList.title + '"');
