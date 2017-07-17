@@ -10,6 +10,7 @@ calculist.register('item.handleBlur', ['_','eventHub'], function (_, eventHub) {
     if (!item) return;
     _.pull(itemsToBlur, item);
     item.showComputedValue();
+    item.showLinkButtons();
     var $input = item.$("#input" + item.id);
     $input.removeClass('focus');
     eventHub.trigger('item.handleBlur', item);

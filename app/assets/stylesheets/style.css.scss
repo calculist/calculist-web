@@ -190,6 +190,13 @@ body {
       cursor: default;
     }
   }
+  .link-buttons {
+    display: inline-block;
+    position: absolute;
+    width: 100px;
+    right: calc(50% - 520px);
+    margin-top: -20px;
+  }
   .input {
     transition: font-size 100ms;
     overflow: hidden;

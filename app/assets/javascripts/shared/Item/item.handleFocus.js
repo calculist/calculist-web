@@ -8,6 +8,7 @@ calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus','itemOfDr
     if (isReadOnly()) return;
     this.showTrueValue();
     this.showComputedValue();
+    this.showLinkButtons();
     var $input = this.$("#input" + this.id);
     $input.addClass('focus');
     // $input[0].selectionStart = cursorPosition.get();

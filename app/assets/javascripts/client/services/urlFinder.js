@@ -35,11 +35,12 @@ calculist.register('urlFinder', [], function () {
     "(?:[/?#]\\S*)?";
 
   var hasUrlPattern = new RegExp(basePatternString, 'i');
+  var allUrlsPattern = new RegExp(basePatternString, 'ig');
   var isUrlPattern = new RegExp('^' + basePatternString + '$', 'i');
   return {
     hasUrl: function (string) { return hasUrlPattern.test(string); },
     isUrl: function (string) { return isUrlPattern.test(string); },
     replaceUrl: function (string, replacer) { return string.replace(hasUrlPattern, replacer); },
-    getUrls: function (string) { return string.match(hasUrlPattern); }
+    getUrls: function (string) { return string.match(allUrlsPattern); }
   }
 });
