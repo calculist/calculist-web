@@ -10,7 +10,7 @@ calculist.register('item.showLinkButtons', ['_','$','urlFinder','itemOfFocus'], 
       if (!urls || !urls.length) return;
       if (!this.$linkButtons) {
         this.$linkButtons = $('<div class="link-buttons"></div>');
-        this.$el.append(this.$linkButtons);
+        this.$el.prepend(this.$linkButtons);
       }
       this.$linkButtons.html(
         _.map(urls, function (url) {
