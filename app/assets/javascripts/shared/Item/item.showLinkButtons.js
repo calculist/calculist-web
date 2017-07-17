@@ -4,7 +4,9 @@ calculist.register('item.showLinkButtons', ['_','$','urlFinder','itemOfFocus'], 
 
   return function () {
     if (itemOfFocus.is(this)) {
-      var urls = urlFinder.getUrls(this.text);
+      this.valueOf();
+      var text = this.key + ' ' + (this.val || '');
+      var urls = urlFinder.getUrls(text);
       if (!urls || !urls.length) return;
       if (!this.$linkButtons) {
         this.$linkButtons = $('<div class="link-buttons"></div>');
