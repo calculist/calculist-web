@@ -10,25 +10,26 @@ calculist.register('item.showLinkButtons', ['_','$','urlFinder','itemOfFocus'], 
   };
 
   return function () {
-    if (itemOfFocus.is(this)) {
-      this.valueOf();
-      var text = this.key + ' ' + (this.val || '');
-      var urls = urlFinder.getUrls(text);
-      if (!urls || !urls.length) {
-        removeLinkButtons(this);
-        return;
-      }
-      if (!this.$linkButtons) {
-        this.$linkButtons = $('<div class="link-buttons"></div>');
-        this.$el.prepend(this.$linkButtons);
-      }
-      this.$linkButtons.html(
-        _.map(urls, function (url) {
-          return '<a href="' + url + '" target="_blank" title="' + url + '">' + externalLinkIcon + '</a> ';
-        }).join('')
-      );
-    } else if (this.$linkButtons) {
+    this.valueOf();
+    var text = this.key + ' ' + (this.val || '');
+    var urls = urlFinder.getUrls(text);
+    if (!urls || !urls.length) {
       removeLinkButtons(this);
+      return;
+    }
+    if (!this.$linkButtons) {
+      this.$linkButtons = $('<div class="link-buttons"></div>');
+    }
+    this.$el.prepend(this.$linkButtons);
+    this.$linkButtons.html(
+      _.map(urls, function (url) {
+        return '<a href="' + url + '" target="_blank" title="' + url + '">' + externalLinkIcon + '</a> ';
+      }).join('')
+    );
+    if (itemOfFocus.is(this)) {
+      this.$linkButtons.addClass('focus');
+    } else {
+      this.$linkButtons.removeClass('focus');
     }
   };
 });

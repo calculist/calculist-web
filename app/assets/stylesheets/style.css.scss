@@ -193,9 +193,27 @@ body {
   .link-buttons {
     display: inline-block;
     position: absolute;
-    width: 100px;
-    right: calc(50% - 520px);
+    min-width: 16px;
+    left: calc(50% + 420px);
     margin-top: 4px;
+    opacity: 0;
+    white-space: nowrap;
+    a {
+      display: inline-block;
+      width: 16px;
+    }
+    &.focus {
+      opacity: 1;
+      a {
+        opacity: 0.7;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+    &:hover {
+      opacity: 1;
+    }
   }
   .input {
     transition: font-size 100ms;
