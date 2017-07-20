@@ -16,6 +16,12 @@ class UserPreferencesManager
           items: []
         }]
       },{
+        text: "alt + ;",
+        items: [{
+          text: "add text \"\\[:]\"",
+          items: []
+        }]
+      },{
         text: "alt + shift + ;",
         items: [{
           text: "add text \"\\[:]\"",
