@@ -1,13 +1,6 @@
 // TODO refactor
 calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndApplyChangesFromServer','jsonToItemTree','getNewGuid','userPreferences','executeCommand','calculistFileFormatter'], function (foo, Item, _, $, Backbone, lmDiff, saveButton, getAndApplyChangesFromServer, jsonToItemTree, getNewGuid, userPreferences, executeCommand, calculistFileFormatter) {
   window.DEV_MODE = window.localStorage.DEV_MODE;
-  var jsonView = window.location.search.split('?json=')[1];
-  if (jsonView) {
-    window.LIST_DATA = jsonToItemTree(decodeURIComponent(jsonView));
-    getAndApplyChangesFromServer = _.constant({then: _.noop});
-    saveButton.hide();
-  }
-
   if (!window.LIST_DATA) return;
   $(function() {
     if (!LIST_DATA.guid) {
@@ -232,31 +225,6 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
 
       }
     }
-    // window.addEventListener('storage', function(storageEvent) {
-    //   var data, item, key, newValue, oldValue, zoomGuid;
-    //   key = storageEvent.key, newValue = storageEvent.newValue, oldValue = storageEvent.oldValue;
-    //   if (key === 'items') {
-    //     localStorage.tabsOpen = +(localStorage.tabsOpen || '0') + 1;
-    //     if (newValue) {
-    //       data = JSON.parse(newValue);
-    //       window.topItem.initialize(data);
-    //       window.topItem.text = data.text;
-    //       zoomGuid = sessionStorage.zoomGuid;
-    //       if (zoomGuid && zoomGuid !== window.topItem.guid) {
-    //         item = window.topItem.$item(zoomGuid, 'guid');
-    //         item.zoomIn({
-    //           focus: false
-    //         });
-    //       } else {
-    //         window.topItem.render();
-    //       }
-    //       refocus();
-    //     }
-    //   }
-    // });
-    // window.addEventListener('unload', function() {
-    //   localStorage.tabsOpen = +(localStorage.tabsOpen || '1') - 1;
-    // });
 
     window.requestAnimationFrame(function () {
       // This fixes a bug where computed values
