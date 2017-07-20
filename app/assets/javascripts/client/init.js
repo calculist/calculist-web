@@ -88,6 +88,7 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
           saveButton.changeStatus('saved');
           return window.topItem.waitingBeforeSave = false;
         }
+        if (!window.LIST_ID) return resolve();
         window.topItem.ensureGuidsAreUnique();
         window.topItem.refreshDepth();
         var newContent = JSON.stringify(window.topItem);

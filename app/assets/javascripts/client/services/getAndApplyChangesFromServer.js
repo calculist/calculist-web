@@ -23,7 +23,10 @@ calculist.register('getAndApplyChangesFromServer', ['_','http','getItemByGuid','
         parent.insertAt(item, index);
       };
 
+  var resolvedPromise = new Promise(function (resolve) { resolve(); });
+
   return function (alternateLastSave) {
+    if (!window.LIST_ID) return resolvedPromise;
     if (alternateLastSave > lastSave) lastSave = alternateLastSave;
     return http.get(url('/lists/' + window.LIST_ID), {
       last_save: lastSave
