@@ -41,6 +41,9 @@ body {
     height: 0;
     width: 100%;
     z-index: 1000;
+    a {
+      text-decoration: none;
+    }
     &:hover {
       opacity: 1;
     }
