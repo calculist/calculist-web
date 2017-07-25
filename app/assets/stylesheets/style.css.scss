@@ -41,9 +41,6 @@ body {
     height: 0;
     width: 100%;
     z-index: 1000;
-    a {
-      text-decoration: none;
-    }
     &:hover {
       opacity: 1;
     }
@@ -70,6 +67,9 @@ body {
     .header-right {
       float: right;
       margin-right: 24px;
+      a {
+        text-decoration: none;
+      }
     }
   }
   ul {
