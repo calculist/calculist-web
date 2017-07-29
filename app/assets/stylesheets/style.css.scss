@@ -67,6 +67,9 @@ body {
     .header-right {
       float: right;
       margin-right: 24px;
+      a {
+        text-decoration: none;
+      }
     }
   }
   ul {
