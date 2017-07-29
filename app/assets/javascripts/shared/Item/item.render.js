@@ -52,6 +52,7 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
       this.$("#computed-display" + this.id).text('');
       this.computedDisplayIsVisible = false;
     }
+    this.showLinkButtons();
     this.addOrRemoveClasses();
     this.applyLocalStyle();
     if (!this.collapsed) {
