@@ -24,6 +24,7 @@ calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasCh
             this.hasVal = true;
             this.valIsComputed = true;
             this.val = computeItemValue(parsedText.val, this);
+            if (this.val === this) throw new Error('item cannot be its own value');
             this._valueOf = this.val;
             break;
           case ('[=>]'):

@@ -8,6 +8,8 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
       return '$$item';
     }).replace(/\*item/g, function () {
       return 'global_item';
+    }).replace(/\@item/g, function () {
+      return 'itemByGuid';
     }).replace(/\$siblings/g, function() {
       return '$siblings()';
     });
@@ -46,7 +48,7 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
         }
       });
       item.isComputingValue = false;
-      if (val == null) {
+      if (val == null || val === item) {
         return NaN;
       } else if (_.isArray(val)) {
         return val;

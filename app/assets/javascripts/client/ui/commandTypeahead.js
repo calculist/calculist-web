@@ -20,7 +20,7 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
         'expand','collapse','freeze computed value',
         'goto item ""','follow link',
         'download as txt','download as computed txt','download as csv','download backup',
-        'copy ( $items )','copy ( $value )','copy ( $name )',
+        'copy ( $items )','copy ( $value )','copy ( $name )','copy ( $guid )',
         'copy to clipboard','copy to clipboard "computed"','copy to clipboard "formatted"',
         'copy to clipboard "hide collapsed"','copy items to clipboard',
         'change theme "dark"','change theme "light"','change theme "sandcastle"',

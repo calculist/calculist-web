@@ -1,4 +1,4 @@
-calculist.register('createComputationContextObject', ['_','ss','evalculist','isItem','keyToVarName'], function (_, ss, evalculist, isItem, keyToVarName) {
+calculist.register('createComputationContextObject', ['_','ss','evalculist','isItem','keyToVarName','getItemByGuid'], function (_, ss, evalculist, isItem, keyToVarName, getItemByGuid) {
 
   'use strict';
 
@@ -22,6 +22,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
       this.$index = item.parent ? item.parent.items.indexOf(item) : 0;
       this.$items = item.items;
       this.$name = item.key;
+      this.$guid = item.guid;
     }
   }
 
@@ -182,6 +183,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   proto.itemsOf = _.property('items');
   proto.nameOf = _.property('key');
   proto.parentOf = _.property('parent');
+  proto.guidOf = _.property('guid');
   proto.indexOf = itemsFirst(function (array, item) {
     return array.indexOf(item);
   });
@@ -294,6 +296,10 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
 
   proto.global_item = function (key) {
     return window.topItem.$item(key);
+  };
+
+  proto.itemByGuid = function (guid) {
+    return getItemByGuid(guid);
   };
 
   // evalculist adds a special "accessor" function for things like a['b']
