@@ -205,8 +205,6 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       });
       _this.renderChildren();
     },
-    sort: function() {},
-    copy: function() {},
     // TODO abstract file import into service
     importFromCsv: function(_this, labelKey) {
       importFile().then(function (file) {
