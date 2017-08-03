@@ -21,20 +21,23 @@ calculist.require(['Item','_','$','lmSessionStorage','zoomPage'], function (Item
   Item.prototype.zoomOut = function() {
     if (lmSessionStorage.get('zoomGuid') === this.guid) {
       var _this = this;
-      zoomPage.detach(this).then(function () {
-        if (_this.wasCollapsed) {
-          _this.wasCollapsed = false;
-          _this.collapse(true).then(function () {
-            _this.focus();
-          });
-        }
-      });
-      this.alreadyZoomedIn = false;
-      this.getTopItem().zoomIn({
-        zoomOut: true
+      return new Promise(function (resolve, reject) {
+        zoomPage.detach().then(function () {
+          if (_this.wasCollapsed) {
+            _this.wasCollapsed = false;
+            _this.collapse(true).then(function () {
+              _this.focus();
+            });
+          }
+          resolve();
+        });
+        _this.alreadyZoomedIn = false;
+        _this.getTopItem().zoomIn({
+          zoomOut: true
+        });
       });
     } else {
-      this.parent.zoomOut();
+      return this.parent.zoomOut();
     }
   };
 

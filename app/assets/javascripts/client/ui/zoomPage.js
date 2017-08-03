@@ -27,6 +27,7 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
       }
       return lastItem;
     },
+    getZoomDepth: function () { return stack.length; },
     isInPage: function (item) {
       var topItem = (_.last(stack) || {}).item;
       if (!topItem || item === topItem) return true;

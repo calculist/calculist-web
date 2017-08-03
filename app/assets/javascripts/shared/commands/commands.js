@@ -28,13 +28,6 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       }
       commands.goto(_this, item);
     },
-    goto: function (_this, item) {
-      if (!isItem(item)) item = _this.$item(item) || _this.$$item(item);
-      // if (!zoomPage.isInPage(item)) return;
-      item.parent ? item.parent.expand(true).then(function () {
-        item.focus();
-      }) : item.focus();
-    },
     gotoItem: function (_this, item) {
       commands.goto(_this, item);
     },
