@@ -1,5 +1,6 @@
 calculist.register('commands.copy', ['_','copyToClipboard','commands.copyItemsToClipboard','isItem'], function (_, copyToClipboard, copyItemsCommand, isItem) {
   return _.rest(function (_this, thingToCopy, options) {
+    if (thingToCopy == null) thingToCopy = _this;
     if (isItem(thingToCopy)) {
       thingToCopy = [thingToCopy];
     }
