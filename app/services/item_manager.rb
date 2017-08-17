@@ -15,7 +15,7 @@ class ItemManager
     children_by_parent_guid = {}
     items = Item.where(list_id: @list_id, is_deleted: false).order(:sort_order)
     top_item = nil
-    if items.length == 0 && Item.where(list_id: @list_id).pluck('count(*)') == [0]
+    if items.length == 0 && Item.where(list_id: @list_id).count == 0
       top_item = Item.create!(guid: SecureRandom.uuid,
                               list_id: @list_id,
                               parent_guid: nil,
@@ -164,7 +164,17 @@ class ItemManager
     items
   end
 
-  def update_items(items_data, list_update_id = nil)
+  def update_items(items_data, list_update_id)
+    max_data_size = 1000
+    if items_data.length > max_data_size
+      # Guard against massive updates
+      Item.transaction do
+        while items_data.length > 0
+          update_items(items_data.slice!(0, max_data_size), list_update_id)
+        end
+      end
+      return
+    end
     items_data = items_data.select do |item_data|
       # FIXME This is hacky. Fix this.
       !item_data[:guid].starts_with?('do_not_save') &&
@@ -185,7 +195,7 @@ class ItemManager
       is_new_item = -> (guid) { new_guids.include?(guid) }
     end
     new_items_data = []
-    updated_items = []
+    updated_item_ids_by_attr_values = {}
     items_data.each do |item_data|
       if is_new_item.call(item_data[:guid])
         new_items_data << {
@@ -209,21 +219,19 @@ class ItemManager
         item.is_deleted = item_data[:is_deleted] if item_data.has_key?(:is_deleted)
         item.parent_guid = item_data[:parent_guid] if item_data[:parent_guid]
         item.sort_order = item_data[:sort_order] if item_data[:sort_order]
-        item.initial_list_update_id = list_update_id if item.initial_list_update_id.nil? && list_update_id
-        item.list_update_id = list_update_id if list_update_id
-        updated_items << item
+        raise 'item does not look valid' unless item.looks_valid?
+        item.changed.each do |_attr|
+          attr_val = { _attr => item.send(_attr) }
+          updated_item_ids_by_attr_values[attr_val] ||= []
+          updated_item_ids_by_attr_values[attr_val] << item.id
+        end
       end
     end
-    # TODO Determine if using a transaction is actually a good idea or not.
-    # Need a better understanding of what the tradeoffs are.
     Item.transaction do
       bulk_create_items(new_items_data, list_update_id)
-      updated_items.each do |item|
-        if item.looks_valid?
-          item.save!(validate: false) # Skipping full validation for perf
-        else
-          item.save!
-        end
+      update_metadata = { list_update_id: list_update_id, updated_at: Time.now }
+      updated_item_ids_by_attr_values.each do |attr_val, ids|
+        Item.where(id: ids).update_all(attr_val.merge(update_metadata))
       end
     end
   end
