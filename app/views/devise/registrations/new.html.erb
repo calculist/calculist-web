@@ -3,9 +3,7 @@
   <h2>Join Calculist</h2>
 
   <div style="text-align:center;margin: 20px 0;">
-    <div>Need an invite code?</div>
-    <a href="https://www.patreon.com/calculist"><img style="width:180px;margin: 20px 0 0 0;" src="/become-a-patron.png" alt="Become a Patron"/></a>
-    <div style="margin-top: 15px;"> or use <strong>freetrial</strong></div>
+    <div>Need an <a style="text-decoration:underline;" href="https://eepurl.com/cxt3mb">invite code</a>?</div>
   </div>
   <div class="form-inputs">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -50,7 +48,7 @@
 </div>
 
 <script>
-  var inviteCode = window.location.search.split('?invite_code=')[1] || 'freetrial';
+  var inviteCode = window.location.search.split('?invite_code=')[1];
   if (inviteCode) {
     var el = document.getElementById('user_invite_code');
     if (el) el.value = inviteCode;
