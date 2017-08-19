@@ -3,7 +3,7 @@
   <h2>Join Calculist</h2>
 
   <div style="text-align:center;margin: 20px 0;">
-    <div>Need an <a style="text-decoration:underline;" href="https://eepurl.com/cxt3mb">invite code</a>?</div>
+    <div id="message">Need an <a style="text-decoration:underline;" href="https://eepurl.com/cxt3mb">invite code</a>?</div>
   </div>
   <div class="form-inputs">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -48,9 +48,18 @@
 </div>
 
 <script>
-  var inviteCode = window.location.search.split('?invite_code=')[1];
-  if (inviteCode) {
-    var el = document.getElementById('user_invite_code');
-    if (el) el.value = inviteCode;
+  if (window.location.search) {
+    var pairs = window.location.search.substring(1).split('&');
+    var params = pairs.reduce(function (params, pair) {
+      if (pair) {
+        pair = pair.split('=');
+        params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+      }
+      return params;
+    }, {});
+    if (params.invite_code) {
+      document.getElementById('user_invite_code').value = params.invite_code;
+      document.getElementById('message').innerHTML = '';
+    }
   }
 </script>
