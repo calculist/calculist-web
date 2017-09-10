@@ -31,5 +31,13 @@ calculist.register('item.showLinkButtons', ['_','$','urlFinder','itemOfFocus','z
     } else {
       this.$linkButtons.removeClass('focus');
     }
+    if (window.FILE_PATH) {
+      // desktop
+      this.$linkButtons.find('a').on('click', function (e) {
+        e.preventDefault();
+        var shell = require('electron').shell;
+        shell.openExternal(e.currentTarget.href);
+      });
+    }
   };
 });
