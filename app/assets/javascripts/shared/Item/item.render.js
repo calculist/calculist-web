@@ -8,11 +8,12 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
     } else {
       this.undelegateEvents();
     }
+    var isFocused = itemOfFocus.is(this);
     var templateData = {
       id: this.id,
-      text: this.getComputedHTML(),
+      text: isFocused ? _.escape(this.text) : this.getComputedHTML(),
       collapsed: this.collapsed,
-      focus: itemOfFocus.is(this)
+      focus: isFocused
     };
     this.$el.html(this.template(templateData));
     this.addOrRemoveClasses();
