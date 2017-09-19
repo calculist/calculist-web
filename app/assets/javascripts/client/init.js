@@ -8,6 +8,7 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
     }
     window.topItem = new Item(LIST_DATA);
     var saveCount = 0, updateCount = 0;
+    var originalFilePath = window.FILE_PATH;
     if (window.FILE_PATH) {
       var openFile = function (filePath) {
         console.log(filePath)
@@ -52,16 +53,20 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
           // });
         });
       }
-      var electron = require('electron')
+      var electron = require('electron');
       electron.ipcRenderer.on('save', function (event, filePath) {
-        window.topItem.saveNow(filePath)
+        if (!filePath) return;
+        window.topItem.saveNow(filePath);
         window.FILE_PATH = filePath;
         window.LIST_TITLE = filePath.split('/').pop();
         window.document.title = window.LIST_TITLE;
-      })
+      });
       electron.ipcRenderer.on('open', function (event, filePath) {
         openFile(filePath);
-      })
+      });
+      electron.ipcRenderer.on('set-window-id', function (event, id) {
+        window.id = id;
+      });
       openFile(window.FILE_PATH)
     }
     var ul = document.getElementById('top-level');
@@ -172,8 +177,13 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
         }
       });
     });
-    saveButton.onClick(function () { window.topItem.saveNow(); });
-    // localStorage.tabsOpen = +(localStorage.tabsOpen || '0') + 1;
+    saveButton.onClick(function () {
+      if (window.FILE_PATH && window.FILE_PATH === originalFilePath) {
+        require('electron').ipcRenderer.send('save-attempt', window.id);
+      } else {
+        window.topItem.saveNow(window.FILE_PATH);
+      }
+    });
     var refocus = function() {
       _.defer(function() {
         if (!document.hidden) {
