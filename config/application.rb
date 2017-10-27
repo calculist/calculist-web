@@ -13,7 +13,7 @@ module Calculist
     # -- all .rb files in that directory are automatically loaded.
     config.autoload_paths += %W(#{config.root}/app/services)
 
-    # Corresponds to GitHub releases: https://github.com/calculist/app.calculist.io/releases
-    config.calculist_version = 'v0.2.1'
+    # Corresponds to GitHub releases: https://github.com/calculist/calculist-web/releases
+    config.calculist_version = 'v0.3.0'
   end
 end
