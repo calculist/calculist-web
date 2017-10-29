@@ -92,9 +92,10 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
     return partialFn;
   });
 
-  proto.average = proto.mean = function (items, defaultValue) {
+  proto.average = proto.mean = itemsFirst(function (items, defaultValue) {
     return proto.sum(items, defaultValue) / items.length;
-  };
+  });
+
   proto.sum = itemsFirst(function(items, defaultValue) {
     if (defaultValue != null) {
       return items.reduce(function(sum, item) {
