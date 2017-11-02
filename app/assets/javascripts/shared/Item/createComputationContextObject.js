@@ -60,7 +60,7 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
   _.each(lodashKeys, function (key) { proto[key] = _[key]; });
 
   var iterators = ['average','mean','median','mode','standardDeviation','products',
-                  'unzip','filter','find','findLast','map','reduce'];
+                  'unzip','filter','find','findLast','map','reduce','min','max','join'];
 
   _.each(iterators, function (methodName) {
     proto[methodName] = itemsFirst(proto[methodName]);
