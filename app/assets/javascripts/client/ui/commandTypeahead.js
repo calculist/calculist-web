@@ -18,7 +18,7 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
         'move to top','move to bottom','undo','redo',
         'toggle collapse','indent','outdent',
         'expand','collapse','freeze computed value',
-        'goto item ""','follow link',
+        'goto','add item ""', 'add items',
         'download as txt','download as computed txt','download as csv','download backup',
         'copy','copy ( $items )','copy ( $value )','copy ( $name )','copy ( $guid )',
         'change theme "dark"','change theme "light"','change theme "sandcastle"',
