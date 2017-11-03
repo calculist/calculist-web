@@ -1,4 +1,4 @@
-calculist.register('createComputationContextObject', ['_','ss','evalculist','isItem','keyToVarName','getItemByGuid'], function (_, ss, evalculist, isItem, keyToVarName, getItemByGuid) {
+calculist.register('createComputationContextObject', ['_','ss','evalculist','isItem','keyToVarName','getItemByGuid','urlFinder'], function (_, ss, evalculist, isItem, keyToVarName, getItemByGuid, urlFinder) {
 
   'use strict';
 
@@ -374,6 +374,20 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
       return _.flatten(items);
     }
   });
+
+  var imageToString = _.constant('[Image]');
+  proto.image = function (url, width, height) {
+    if (!urlFinder.isUrl(url)) return NaN;
+    var html = '<img src="' + url + '"';
+    if (_.isNumber(+width)) html += ' width="' + (+width) + '"';
+    if (_.isNumber(+height)) html += ' height="' + (+height) + '"';
+    html += '/>';
+    return {
+      mediaType: 'image',
+      toString: imageToString,
+      toHTML: _.constant(html),
+    };
+  };
 
   proto.uniq = proto.unique = itemsFirst(function (items) {
     items = _.map(items, proto.valueOf);

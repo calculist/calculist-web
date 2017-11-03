@@ -10,7 +10,7 @@ calculist.require(['Item','itemOfFocus'], function (Item, itemOfFocus) {
       this.valueOf();
       val = this.val;
       if (this.valIsComputed && this.hasVal) {
-        val = this.formatVal(val);
+        val = (_.isPlainObject(val) && val.toHTML) ? val.toString() : this.formatVal(val);
         $cd = this.$("#computed-display" + this.id);
         $cd.text("" + val).css({
           'margin-left': -$cd.width()
