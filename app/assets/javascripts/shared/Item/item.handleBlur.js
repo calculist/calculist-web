@@ -13,6 +13,7 @@ calculist.register('item.handleBlur', ['_','eventHub'], function (_, eventHub) {
     item.showLinkButtons();
     var $input = item.$("#input" + item.id);
     $input.removeClass('focus');
+    $input.css({minHeight: 'auto'});
     eventHub.trigger('item.handleBlur', item);
   };
 

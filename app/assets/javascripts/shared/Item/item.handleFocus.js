@@ -6,11 +6,13 @@ calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus','itemOfDr
     itemOfFocus.change(this);
     sessionStorage.focusGuid = this.guid;
     if (isReadOnly()) return;
+    var $input = this.$("#input" + this.id);
+    var previousHeight = $input.height();
     this.showTrueValue();
     this.showComputedValue();
     this.showLinkButtons();
-    var $input = this.$("#input" + this.id);
     $input.addClass('focus');
+    $input.css({minHeight: previousHeight});
     // $input[0].selectionStart = cursorPosition.get();
     // $input[0].selectionEnd = 0;
     var range = document.createRange();
