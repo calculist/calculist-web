@@ -20,6 +20,7 @@
 //= require simple_statistics/simple_statistics
 //= require clipboard/clipboard
 //= require katex/katex.min
+//= require d3/d3
 //= require evalculist/evalculist
 //= require acyclic/acyclic
 //= require calculist

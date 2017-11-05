@@ -1,4 +1,4 @@
-calculist.register('createComputationContextObject', ['_','ss','evalculist','isItem','keyToVarName','getItemByGuid','urlFinder','itemsToSVG'], function (_, ss, evalculist, isItem, keyToVarName, getItemByGuid, urlFinder, itemsToSVG) {
+calculist.register('createComputationContextObject', ['_','ss','d3','evalculist','isItem','keyToVarName','getItemByGuid','urlFinder','itemsToSVG'], function (_, ss, d3, evalculist, isItem, keyToVarName, getItemByGuid, urlFinder, itemsToSVG) {
 
   'use strict';
 
@@ -395,6 +395,91 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
     return {
       toString: svgToString,
       toHTML: _.constant(svg),
+    };
+  });
+
+  var plotDefaults = {
+    type: 'scatterplot',
+    width: 500,
+    height: 400,
+    margin: 10,
+    scatterplot: {
+      x: {
+        datum: function (item, i) { return proto.itemOf(item, 0).valueOf(); },
+        scale: 'linear',
+        domain: function (xValues) {
+          xValues = xValues.concat([0]);
+          return [_.min(xValues), _.max(xValues)];
+        }
+      },
+      y: {
+        datum: function (item, i) { return proto.itemOf(item, 1).valueOf(); },
+        scale: 'linear',
+        domain: function (yValues) {
+          yValues = yValues.concat([0]);
+          return [_.min(yValues), _.max(yValues)];
+        }
+      },
+      r: {
+        datum: _.constant(5),
+        scale: 'linear',
+        domain: function (rValues) {
+          rValues = rValues.concat([0]);
+          return [_.min(rValues), _.max(rValues)];
+        }
+      },
+      color: {
+        datum: _.constant('black'),
+        background: 'none',
+      }
+    }
+  };
+
+  proto.plot = itemsFirst(function (params) {
+    var acc = proto.dotAccessor;
+    var param = _.partial(acc, params);
+    var data = itemsIfItem(param('data')) || params;
+    if (data === params) param = _.noop;
+    var config = ['type','width','height','margin'].reduce(function (config, attr) {
+      config[attr] = param(attr) || plotDefaults[attr];
+      return config;
+    }, {});
+    _.each(plotDefaults[config.type], function (defaults, key) {
+      var properties = param(key);
+      config[key] = _.mapValues(defaults, function (_default, k) {
+        return (properties && acc(properties, k)) || _default;
+      });
+    });
+    var xValues = [], yValues = [];
+    data = data.map(function (item, i) {
+      var x = config.x.datum(item, i).valueOf();
+      var y = config.y.datum(item, i).valueOf();
+      var r = config.r.datum(item, i).valueOf();
+      var color = config.color.datum(item, i).valueOf();
+      xValues.push(x);
+      yValues.push(y);
+      return { x: x, y: y, r: r, color: color };
+    });
+
+    var scaleX = d3.scaleLinear()
+      .domain(config.x.domain(xValues))
+      .range([0 + config.margin, config.width - config.margin]);
+    var scaleY = d3.scaleLinear()
+      .domain(config.y.domain(yValues))
+      .range([config.height - config.margin, 0 + config.margin]);
+
+    var html = '<svg width="' + config.width + '" height="' + config.height + '">' +
+    '<line x1="0" y1="' + scaleY(0) + '" x2="' + config.width + '" y2="' + scaleY(0) + '" stroke-width="2" stroke="#000"/>' +
+    '<line x1="' + scaleX(0) + '" y1="0" x2="' + scaleX(0) + '" y2="' + config.height + '" stroke-width="2" stroke="#000"/>' +
+    data.map(function (datum, i) {
+      return '<circle cx="' + scaleX(datum.x) + '"' +
+        ' cy="' + scaleY(datum.y) + '" r="' + datum.r + '" fill="' + datum.color + '"/>';
+    }).join('') + '</svg>';
+    return {
+      toString: _.constant('[Plot]'),
+      toHTML: function () {
+        return html;
+      }
     };
   });
 
