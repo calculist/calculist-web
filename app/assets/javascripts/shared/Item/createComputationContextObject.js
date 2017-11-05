@@ -1,4 +1,4 @@
-calculist.register('createComputationContextObject', ['_','ss','evalculist','isItem','keyToVarName','getItemByGuid','urlFinder'], function (_, ss, evalculist, isItem, keyToVarName, getItemByGuid, urlFinder) {
+calculist.register('createComputationContextObject', ['_','ss','evalculist','isItem','keyToVarName','getItemByGuid','urlFinder','itemsToSVG'], function (_, ss, evalculist, isItem, keyToVarName, getItemByGuid, urlFinder, itemsToSVG) {
 
   'use strict';
 
@@ -388,6 +388,15 @@ calculist.register('createComputationContextObject', ['_','ss','evalculist','isI
       toHTML: _.constant(html),
     };
   };
+
+  var svgToString = _.constant('[SVG]');
+  proto.svg = itemsFirst(function (items) {
+    var svg = itemsToSVG(items);
+    return {
+      toString: svgToString,
+      toHTML: _.constant(svg),
+    };
+  });
 
   proto.uniq = proto.unique = itemsFirst(function (items) {
     items = _.map(items, proto.valueOf);
