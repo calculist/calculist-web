@@ -1,4 +1,4 @@
-calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasChanged','syncAnimationFrame','eventHub'], function (Item, _, parseItemText, computeItemValue, somethingHasChanged, syncAnimationFrame, eventHub) {
+calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasChanged','syncAnimationFrame','eventHub','computationIsPaused'], function (Item, _, parseItemText, computeItemValue, somethingHasChanged, syncAnimationFrame, eventHub, computationIsPaused) {
 
   'use strict';
 
@@ -7,6 +7,7 @@ calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasCh
   };
 
   Item.prototype.valueOf = function () {
+    if (computationIsPaused()) return this._valueOf;
     var parsedText = this.parsedText || {};
     if (parsedText.text !== this.text || (this.hasVariableReference && this.lastAnimationFrame !== syncAnimationFrame() && somethingHasChanged())) {
       this.lastAnimationFrame = syncAnimationFrame();

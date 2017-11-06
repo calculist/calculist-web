@@ -23,6 +23,7 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
         'copy','copy ( $items )','copy ( $value )','copy ( $name )','copy ( $guid )',
         'change theme "dark"','change theme "light"','change theme "sandcastle"',
         'search for ""','change font ""','change font "Courier New"','change font "Source Code Pro"',
+        'pause computation','resume computation',
       ],
       availableCommandsWithForEachPrefix = [
         'template ""','add text ""','add prefix ""','remove text ""','replace text "", ""','change text ""',
