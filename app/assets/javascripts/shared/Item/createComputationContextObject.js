@@ -407,6 +407,8 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       x: {
         datum: function (item, i) { return proto.itemOf(item, 0).valueOf(); },
         scale: 'linear',
+        ticks: 10,
+        tick_format: _.identity,
         domain: function (xValues) {
           xValues = xValues.concat([0]);
           return [_.min(xValues), _.max(xValues)];
@@ -415,6 +417,8 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       y: {
         datum: function (item, i) { return proto.itemOf(item, 1).valueOf(); },
         scale: 'linear',
+        ticks: 10,
+        tick_format: _.identity,
         domain: function (yValues) {
           yValues = yValues.concat([0]);
           return [_.min(yValues), _.max(yValues)];
@@ -430,6 +434,34 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       },
       color: {
         datum: _.constant('black'),
+        background: 'none',
+      }
+    },
+    barchart: {
+      x: {
+        datum: function (item, i) { return i; },
+        bar_width: _.constant(0.9),
+        scale: 'linear',
+        ticks: 10,
+        tick_format: _.identity,
+        domain: function (xValues) {
+          xValues = xValues.concat([0]);
+          return [_.min(xValues), _.max(xValues)];
+        }
+      },
+      y: {
+        datum: _.constant(0),
+        bar_height: function (item) { return item.valueOf(); },
+        scale: 'linear',
+        ticks: 10,
+        tick_format: _.identity,
+        domain: function (yValues) {
+          yValues = yValues.concat([0]);
+          return [_.min(yValues), _.max(yValues)];
+        }
+      },
+      color: {
+        datum: _.constant('steelblue'),
         background: 'none',
       }
     }
@@ -451,15 +483,30 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       });
     });
     var xValues = [], yValues = [];
-    data = data.map(function (item, i) {
-      var x = config.x.datum(item, i).valueOf();
-      var y = config.y.datum(item, i).valueOf();
-      var r = config.r.datum(item, i).valueOf();
-      var color = config.color.datum(item, i).valueOf();
-      xValues.push(x);
-      yValues.push(y);
-      return { x: x, y: y, r: r, color: color };
-    });
+    if (config.type === 'scatterplot') {
+      data = data.map(function (item, i) {
+        var x = config.x.datum(item, i).valueOf();
+        var y = config.y.datum(item, i).valueOf();
+        var r = config.r.datum(item, i).valueOf();
+        var color = config.color.datum(item, i).valueOf();
+        xValues.push(x);
+        yValues.push(y);
+        return { x: x, y: y, r: r, color: color };
+      });
+    } else if (config.type === 'barchart') {
+      data = data.map(function (item, i) {
+        var x = config.x.datum(item, i).valueOf();
+        var y = config.y.datum(item, i).valueOf();
+        var bar_width = config.x.bar_width(item, i).valueOf();
+        var bar_height = config.y.bar_height(item, i).valueOf();
+        var color = config.color.datum(item, i).valueOf();
+        xValues.push(x + bar_width);
+        yValues.push(y + bar_height);
+        return { x: x, y: y, bar_width: bar_width, bar_height: bar_height, color: color };
+      });
+    } else {
+      return NaN;
+    }
 
     var scaleX = d3.scaleLinear()
       .domain(config.x.domain(xValues))
@@ -467,14 +514,39 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     var scaleY = d3.scaleLinear()
       .domain(config.y.domain(yValues))
       .range([config.height - config.margin, 0 + config.margin]);
+    var scaleHeight = scaleY.copy()
+      .range(_.reverse(scaleY.range()));
+
+    var xTicks = scaleX.ticks(config.x.ticks);
+    var yTicks = scaleY.ticks(config.y.ticks);
 
     var html = '<svg width="' + config.width + '" height="' + config.height + '">' +
+    '<g>' +
+    (config.type === 'scatterplot' ?
+      data.map(function (datum, i) {
+        return '<circle cx="' + scaleX(datum.x) + '"' +
+          ' cy="' + scaleY(datum.y) + '" r="' + datum.r + '" fill="' + datum.color + '"/>';
+      }).join('') :
+    (config.type === 'barchart' ?
+      data.map(function (datum, i) {
+        return '<rect x="' + scaleX(datum.x) + '"' + ' y="' + (scaleY(datum.y) - scaleHeight(datum.bar_height)) +
+          '" width="' + (scaleX(datum.bar_width) - scaleX(0)) + '" height="' + scaleHeight(datum.bar_height) + '" fill="' + datum.color + '"/>';
+      }).join('') : '')
+    ) +
+    '</g>' +
+    '<g>' +
     '<line x1="0" y1="' + scaleY(0) + '" x2="' + config.width + '" y2="' + scaleY(0) + '" stroke-width="2" stroke="#000"/>' +
     '<line x1="' + scaleX(0) + '" y1="0" x2="' + scaleX(0) + '" y2="' + config.height + '" stroke-width="2" stroke="#000"/>' +
-    data.map(function (datum, i) {
-      return '<circle cx="' + scaleX(datum.x) + '"' +
-        ' cy="' + scaleY(datum.y) + '" r="' + datum.r + '" fill="' + datum.color + '"/>';
-    }).join('') + '</svg>';
+    xTicks.map(function (tick) {
+      return '<line x1="' + scaleX(tick) + '" y1="' + (scaleY(0) - 5) + '" x2="' + scaleX(tick) + '" y2="' + (scaleY(0) + 5) + '" stroke-width="2" stroke="#000"/>' +
+              (tick === 0 ? '' : '<text x="' + scaleX(tick) + '" y="' + (scaleY(0) + 20) + '">' + config.x.tick_format(tick) + '</text>');
+    }).join('') +
+    yTicks.map(function (tick) {
+      return '<line x1="' + (scaleX(0) - 5) + '" y1="' + scaleY(tick) + '" x2="' + (scaleX(0) + 5) + '" y2="' + scaleY(tick) + '" stroke-width="2" stroke="#000"/>' +
+              (tick === 0 ? '' : '<text x="' + (scaleX(0) - 20) + '" y="' + scaleY(tick) + '">' + config.y.tick_format(tick) + '</text>');
+    }).join('') +
+    '</g>' +
+    '</svg>';
     return {
       toString: _.constant('[Plot]'),
       toHTML: function () {
