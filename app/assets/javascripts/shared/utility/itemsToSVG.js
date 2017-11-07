@@ -95,23 +95,47 @@ calculist.register('itemsToSVG', ['_'], function (_) {
     return _tags;
   }, {});
 
-  return function (items) {
+  var isXAttr = function (attr) {
+    return attr === 'x' || attr === 'x1' || attr === 'x2' || attr === 'cx' || attr === 'width';
+  };
+
+  var isYAttr = function (attr) {
+    return attr === 'y' || attr === 'y1' || attr === 'y2' || attr === 'cy';
+  };
+
+  return function (items, options) {
+    options || (options = {});
+    var topTag = options.topTag || 'svg';
+    var scaleX = options.scaleX || _.identity;
+    var scaleY = options.scaleY || _.identity;
+    var scaleHeight = options.scaleHeight || scaleY;
     var svg = '';
-    var addElement = function (item) {
-      svg += '<' + item.key + ' ';
-      _.each(item.items, function (_item) {
+    var addItems, addElement;
+    addItems = function (items, datum, i) {
+      _.each(items, function (_item) {
         var val = _item.valueOf();
         if (tags[_item.key]) {
           svg += '>';
-          addElement(_item);
+          addElement(_item, datum, i);
         } else if (attributes[_item.key]) {
+          if (_.isFunction(val)) val = val(datum, i);
+          if (isXAttr(_item.key)) val = scaleX(val);
+          if (isYAttr(_item.key)) val = scaleY(val);
           svg += _item.key + '="' + _.escape(val) + '" ';
+        } else if (_item.key === 'for each' && _.isArray(val)) {
+          _.each(val, function (_datum, _i) {
+            addItems(_item.items, _datum, _i);
+          });
         }
       });
-      if (svg[svg.length - 1] !== '>') svg += '>'
+    };
+    addElement = function (item, datum, i) {
+      svg += '<' + item.key + ' ';
+      addItems(item.items, datum, i);
+      if (svg[svg.length - 1] !== '>') svg += '>';
       svg += '</' + item.key + '>';
     };
-    addElement({key: 'svg', items: items });
+    addElement({key: topTag, items: items });
     return svg;
   };
 });

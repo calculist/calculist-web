@@ -403,6 +403,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     width: 500,
     height: 400,
     margin: 10,
+    draw: null,
     scatterplot: {
       x: {
         datum: function (item, i) { return proto.itemOf(item, 0).valueOf(); },
@@ -472,7 +473,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     var param = _.partial(acc, params);
     var data = itemsIfItem(param('data')) || params;
     if (data === params) param = _.noop;
-    var config = ['type','width','height','margin'].reduce(function (config, attr) {
+    var config = ['type','width','height','margin','draw'].reduce(function (config, attr) {
       config[attr] = param(attr) || plotDefaults[attr];
       return config;
     }, {});
@@ -508,14 +509,16 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       return NaN;
     }
 
+    var xDomain = config.x.domain(xValues);
+    var yDomain = config.y.domain(yValues);
     var scaleX = d3.scaleLinear()
-      .domain(config.x.domain(xValues))
+      .domain(xDomain)
       .range([0 + config.margin, config.width - config.margin]);
     var scaleY = d3.scaleLinear()
-      .domain(config.y.domain(yValues))
+      .domain(yDomain)
       .range([config.height - config.margin, 0 + config.margin]);
     var scaleHeight = scaleY.copy()
-      .range(_.reverse(scaleY.range()));
+      .range([0, config.height - (2 * config.margin)]);
 
     var xTicks = scaleX.ticks(config.x.ticks);
     var yTicks = scaleY.ticks(config.y.ticks);
@@ -534,6 +537,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       }).join('') : '')
     ) +
     '</g>' +
+    (config.draw ? itemsToSVG(itemsIfItem(config.draw), {topTag:'g',scaleX:scaleX,scaleY:scaleY,scaleHeight:scaleHeight}) : '') +
     '<g>' +
     '<line x1="0" y1="' + scaleY(0) + '" x2="' + config.width + '" y2="' + scaleY(0) + '" stroke-width="2" stroke="#000"/>' +
     '<line x1="' + scaleX(0) + '" y1="0" x2="' + scaleX(0) + '" y2="' + config.height + '" stroke-width="2" stroke="#000"/>' +
