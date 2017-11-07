@@ -104,12 +104,12 @@ calculist.register('itemsToSVG', ['_'], function (_) {
   };
 
   return function (items, options) {
+    var svg = '';
     options || (options = {});
     var topTag = options.topTag || 'svg';
     var scaleX = options.scaleX || _.identity;
     var scaleY = options.scaleY || _.identity;
     var scaleHeight = options.scaleHeight || scaleY;
-    var svg = '';
     var addItems, addElement;
     addItems = function (items, datum, i) {
       _.each(items, function (_item) {
@@ -122,7 +122,8 @@ calculist.register('itemsToSVG', ['_'], function (_) {
           if (isXAttr(_item.key)) val = scaleX(val);
           if (isYAttr(_item.key)) val = scaleY(val);
           svg += _item.key + '="' + _.escape(val) + '" ';
-        } else if (_item.key === 'for each' && _.isArray(val)) {
+        } else if (_item.key === 'for each') {
+          if (val.items) val = val.items;
           _.each(val, function (_datum, _i) {
             addItems(_item.items, _datum, _i);
           });
