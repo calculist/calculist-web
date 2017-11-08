@@ -96,7 +96,7 @@ calculist.register('itemsToSVG', ['_'], function (_) {
   }, {});
 
   var isXAttr = function (attr) {
-    return attr === 'x' || attr === 'x1' || attr === 'x2' || attr === 'cx' || attr === 'width';
+    return attr === 'x' || attr === 'x1' || attr === 'x2' || attr === 'cx';
   };
 
   var isYAttr = function (attr) {
@@ -111,6 +111,8 @@ calculist.register('itemsToSVG', ['_'], function (_) {
     var scaleY = options.scaleY || _.identity;
     var scaleHeight = options.scaleHeight || scaleY;
     var addItems, addElement;
+    var currentTag;
+    var currentRect;
     addItems = function (items, datum, i) {
       _.each(items, function (_item) {
         var val = _item.valueOf();
@@ -120,7 +122,22 @@ calculist.register('itemsToSVG', ['_'], function (_) {
         } else if (attributes[_item.key]) {
           if (_.isFunction(val)) val = val(datum, i);
           if (isXAttr(_item.key)) val = scaleX(val);
-          if (isYAttr(_item.key)) val = scaleY(val);
+          if (_item.key === 'width') val = scaleX(val) - scaleX(0);
+          if (isYAttr(_item.key) || _item.key === 'height') {
+            if (currentTag === 'rect') {
+              currentRect || (currentRect = {});
+              currentRect[_item.key] = val;
+              if (currentRect['y'] != null && currentRect['height'] != null) {
+                var height = scaleHeight(currentRect['height']);
+                var y = scaleY(currentRect['y']) - height;
+                svg += 'y="' + _.escape(y) + '" height="' + _.escape(height) + '" ';
+                currentRect = null;
+              }
+              return;
+            } else {
+              val = scaleY(val);
+            }
+          }
           svg += _item.key + '="' + _.escape(val) + '" ';
         } else if (_item.key === 'for each') {
           if (val.items) val = val.items;
@@ -132,6 +149,8 @@ calculist.register('itemsToSVG', ['_'], function (_) {
     };
     addElement = function (item, datum, i) {
       svg += '<' + item.key + ' ';
+      currentTag = item.key;
+      currentRect = null;
       addItems(item.items, datum, i);
       if (svg[svg.length - 1] !== '>') svg += '>';
       svg += '</' + item.key + '>';
