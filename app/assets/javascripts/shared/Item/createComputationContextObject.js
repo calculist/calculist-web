@@ -399,11 +399,33 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
   });
 
   var plotDefaults = {
-    type: 'scatterplot',
+    type: 'blank',
     width: 500,
     height: 400,
     margin: 10,
     draw: null,
+    blank: {
+      x: {
+        datum: function (item, i) { return i; },
+        scale: 'linear',
+        ticks: 0,
+        tick_format: _.identity,
+        domain: function (xValues) {
+          xValues = xValues.concat([0]);
+          return [_.min(xValues), _.max(xValues)];
+        }
+      },
+      y: {
+        datum: function (item) { return item.valueOf(); },
+        scale: 'linear',
+        ticks: 0,
+        tick_format: _.identity,
+        domain: function (yValues) {
+          yValues = yValues.concat([0]);
+          return [_.min(yValues), _.max(yValues)];
+        }
+      }
+    },
     scatterplot: {
       x: {
         datum: function (item, i) { return proto.itemOf(item, 0).valueOf(); },
@@ -471,8 +493,8 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
   proto.plot = itemsFirst(function (params) {
     var acc = proto.dotAccessor;
     var param = _.partial(acc, params);
-    var data = itemsIfItem(param('data')) || params;
-    if (data === params) param = _.noop;
+    var data = itemsIfItem(param('data'));
+    if (!data) return NaN;
     var config = ['type','width','height','margin','draw'].reduce(function (config, attr) {
       config[attr] = param(attr) || plotDefaults[attr];
       return config;
@@ -506,7 +528,13 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
         return { x: x, y: y, bar_width: bar_width, bar_height: bar_height, color: color };
       });
     } else {
-      return NaN;
+      data = data.map(function (item, i) {
+        var x = config.x.datum(item, i).valueOf();
+        var y = config.y.datum(item, i).valueOf();
+        xValues.push(x);
+        yValues.push(y);
+        return { x: x, y: y };
+      });
     }
 
     var xDomain = config.x.domain(xValues);
