@@ -11,6 +11,19 @@ body {
   margin: 0;
   padding: 50px 0;
   min-height: calc(100vh - 50px * 2);
+  &.computation-paused {
+    .page {
+      outline: 3px dashed #777;
+    }
+    .input {
+      span.value {
+        color: transparent;
+      }
+    }
+    .computed-display {
+      color: transparent;
+    }
+  }
   &.dragging {
     cursor: move;
     * {

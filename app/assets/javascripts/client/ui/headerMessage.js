@@ -17,11 +17,13 @@ calculist.register('headerMessage', ['_','eventHub'], function (_, eventHub) {
     var el = getElement();
     previousMessages.push(el.html());
     el.html(COMPUTATION_IS_PAUSED);
+    $('#main-container').addClass('computation-paused');
   });
 
   eventHub.on('resumeComputation', function () {
     var el = getElement();
     el.html(previousMessages.pop() || '');
+    $('#main-container').removeClass('computation-paused');
   });
 
   eventHub.on('copyToClipboard', function () {
