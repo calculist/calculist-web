@@ -193,9 +193,6 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
   proto.false = false;
   proto.null = null;
 
-  proto.itemOf = function (item, name) {
-    return item.$item(name);
-  };
   proto.itemsOf = _.property('items');
   proto.nameOf = _.property('key');
   proto.parentOf = _.property('parent');
@@ -337,6 +334,10 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       condition = { key: key };
     }
     return _.find(list, condition);
+  });
+
+  proto.itemOf = curry2(function (list, key) {
+    return proto.item(key, list);
   });
 
   proto.global_item = function (key) {
