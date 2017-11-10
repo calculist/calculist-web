@@ -548,8 +548,12 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     var scaleHeight = scaleY.copy()
       .range([0, config.height - (2 * config.margin)]);
 
-    var xTicks = scaleX.ticks(config.x.ticks);
-    var yTicks = scaleY.ticks(config.y.ticks);
+    var xTicks = config.x.ticks;
+    var yTicks = config.y.ticks;
+    if (_.isFunction(xTicks)) xTicks = xTicks(xValues);
+    if (_.isFunction(yTicks)) yTicks = yTicks(yValues);
+    if (_.isNumber(xTicks)) xTicks = scaleX.ticks(xTicks);
+    if (_.isNumber(yTicks)) yTicks = scaleY.ticks(yTicks);
 
     var html = '<svg width="' + config.width + '" height="' + config.height + '">' +
     '<g>' +
@@ -569,13 +573,13 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     '<g>' +
     '<line x1="0" y1="' + scaleY(0) + '" x2="' + config.width + '" y2="' + scaleY(0) + '" stroke-width="2" stroke="#000"/>' +
     '<line x1="' + scaleX(0) + '" y1="0" x2="' + scaleX(0) + '" y2="' + config.height + '" stroke-width="2" stroke="#000"/>' +
-    xTicks.map(function (tick) {
+    xTicks.map(function (tick, i) {
       return '<line x1="' + scaleX(tick) + '" y1="' + (scaleY(0) - 5) + '" x2="' + scaleX(tick) + '" y2="' + (scaleY(0) + 5) + '" stroke-width="2" stroke="#000"/>' +
-              (tick === 0 ? '' : '<text x="' + scaleX(tick) + '" y="' + (scaleY(0) + 20) + '">' + config.x.tick_format(tick) + '</text>');
+              (tick === 0 ? '' : '<text x="' + scaleX(tick) + '" y="' + (scaleY(0) + 20) + '">' + _.escape(config.x.tick_format(tick, i)) + '</text>');
     }).join('') +
-    yTicks.map(function (tick) {
+    yTicks.map(function (tick, i) {
       return '<line x1="' + (scaleX(0) - 5) + '" y1="' + scaleY(tick) + '" x2="' + (scaleX(0) + 5) + '" y2="' + scaleY(tick) + '" stroke-width="2" stroke="#000"/>' +
-              (tick === 0 ? '' : '<text x="' + (scaleX(0) - 20) + '" y="' + scaleY(tick) + '">' + config.y.tick_format(tick) + '</text>');
+              (tick === 0 ? '' : '<text x="' + (scaleX(0) - 20) + '" y="' + scaleY(tick) + '">' + _.escape(config.y.tick_format(tick, i)) + '</text>');
     }).join('') +
     '</g>' +
     '</svg>';
