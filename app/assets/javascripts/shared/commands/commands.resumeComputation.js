@@ -3,3 +3,5 @@ calculist.register('commands.resumeComputation', ['computationIsPaused'], functi
     computationIsPaused.resume();
   };
 });
+
+calculist.register('commands.unpauseComputation', ['commands.resumeComputation'], _.identity);
