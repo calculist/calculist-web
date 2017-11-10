@@ -6,7 +6,7 @@ calculist.require(['Item','replaceTeX','_','userIsTyping'], function (Item, repl
     if (_.isNaN(val)) {
       val = userIsTyping() ? '' : ERROR_VAL;
     } else if (_.isFunction(val)) {
-      val = val.toString() || '[Function]';
+      val = _.escape(val.toString()) || '[Function]';
     } else if (_.isArray(val)) {
       val = '[Array] ' + val.length;
     } else if (val !== '' && !_.isNaN(+val)) {
