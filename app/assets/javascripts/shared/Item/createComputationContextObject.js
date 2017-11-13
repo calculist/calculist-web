@@ -538,8 +538,10 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       });
     }
 
-    var xDomain = config.x.domain(xValues);
-    var yDomain = config.y.domain(yValues);
+    var xDomain = config.x.domain;
+    var yDomain = config.y.domain;
+    if (_.isFunction(xDomain)) xDomain = xDomain(xValues);
+    if (_.isFunction(yDomain)) yDomain = yDomain(yValues);
     var scaleX = d3.scaleLinear()
       .domain(xDomain)
       .range([0 + config.margin, config.width - config.margin]);
