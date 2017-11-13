@@ -431,7 +431,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       x: {
         datum: function (item, i) { return proto.itemOf(item, 0).valueOf(); },
         scale: 'linear',
-        ticks: 10,
+        ticks: function (values) { return Math.min(10, values.length); },
         tick_format: _.identity,
         domain: function (xValues) {
           xValues = xValues.concat([0]);
@@ -441,7 +441,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       y: {
         datum: function (item, i) { return proto.itemOf(item, 1).valueOf(); },
         scale: 'linear',
-        ticks: 10,
+        ticks: function (values) { return Math.min(10, values.length); },
         tick_format: _.identity,
         domain: function (yValues) {
           yValues = yValues.concat([0]);
@@ -466,7 +466,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
         datum: function (item, i) { return i; },
         bar_width: _.constant(0.9),
         scale: 'linear',
-        ticks: 10,
+        ticks: function (values) { return Math.min(10, values.length); },
         tick_format: _.identity,
         domain: function (xValues) {
           xValues = xValues.concat([0]);
@@ -477,7 +477,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
         datum: _.constant(0),
         bar_height: function (item) { return item.valueOf(); },
         scale: 'linear',
-        ticks: 10,
+        ticks: function (values) { return Math.min(10, values.length); },
         tick_format: _.identity,
         domain: function (yValues) {
           yValues = yValues.concat([0]);
