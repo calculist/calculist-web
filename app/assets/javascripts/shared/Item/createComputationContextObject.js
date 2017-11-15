@@ -214,7 +214,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     }, []);
   });
 
-  proto.function = proto.fn = _.rest(function (string, partialArgs) {
+  proto.lambda = proto.function = proto.fn = _.rest(function (string, partialArgs) {
     var pieces = ('' + string).split('|');
     var argNames = pieces.length > 1 ? pieces.shift().split(',') : [];
     var fnBody = pieces.join('|')
