@@ -614,7 +614,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
         '<tr>' +
           '<th class="index-column"></th>' +
           columns.map(function (column) {
-            return '<th>' + column + '</th>';
+            return '<th>' + _.escape(column) + '</th>';
           }).join('') +
         '</tr>' +
       '</thead>' +
@@ -625,7 +625,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
             columns.map(function (column) {
               var val = columnValues[column] ? columnValues[column][i] : '';
               if (val == null) val = '';
-              return '<td>' + val + '</td>';
+              return '<td>' + _.escape(val) + '</td>';
             }).join('') +
           '</tr>';
         }).join('') +
