@@ -594,6 +594,49 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     };
   });
 
+  proto.table = itemsFirst(function (items, columns) {
+    var columnValues = {};
+    _.each(items, function (rowItem, i) {
+      _.each(rowItem.items, function (cellItem) {
+        var val = cellItem.valueOf();
+        var column = cellItem.key;
+        columnValues[column] || (columnValues[column] = []);
+        columnValues[column][i] = val;
+      });
+    });
+    if (columns) {
+      columns = itemsIfItem(columns).map(proto.valueOf);
+    } else {
+      columns = _.keys(columnValues);
+    }
+    var html = '<table>' +
+      '<thead>' +
+        '<tr>' +
+          '<th class="index-column"></th>' +
+          columns.map(function (column) {
+            return '<th>' + column + '</th>';
+          }).join('') +
+        '</tr>' +
+      '</thead>' +
+      '<tbody>' +
+        items.map(function (item, i) {
+          return '<tr>' +
+            '<td class="index-column">' + i + '</td>' +
+            columns.map(function (column) {
+              var val = columnValues[column] ? columnValues[column][i] : '';
+              if (val == null) val = '';
+              return '<td>' + val + '</td>';
+            }).join('') +
+          '</tr>';
+        }).join('') +
+      '</tbody>' +
+    '</table>';
+    return {
+      toString: _.constant('[Table]'),
+      toHTML: _.constant(html)
+    };
+  });
+
   proto.uniq = proto.unique = itemsFirst(function (items) {
     items = _.map(items, proto.valueOf);
     return _.uniq(items);
