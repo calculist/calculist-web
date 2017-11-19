@@ -129,7 +129,8 @@ body {
   table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
-    padding: 10px;
+    padding: 8px;
+    font-weight: normal;
   }
   table {
     width: 100%;
@@ -142,6 +143,7 @@ body {
       width: 1px;
       background-color: rgba(0,0,0,0.1);
       color: #000;
+      text-align: center;
     }
   }
   .page {
