@@ -122,6 +122,7 @@ calculist.register('itemsToSVG', ['_'], function (_) {
         } else if (attributes[_item.key]) {
           if (_.isFunction(val)) val = val(datum, i);
           if (isXAttr(_item.key)) val = scaleX(val);
+          // TODO Fix scaling for negative widths
           if (_item.key === 'width') val = scaleX(val) - scaleX(0);
           if (isYAttr(_item.key) || _item.key === 'height') {
             if (currentTag === 'rect') {
@@ -129,7 +130,7 @@ calculist.register('itemsToSVG', ['_'], function (_) {
               currentRect[_item.key] = val;
               if (currentRect['y'] != null && currentRect['height'] != null) {
                 var height = scaleHeight(currentRect['height']);
-                var y = scaleY(currentRect['y']) - height;
+                var y = currentRect['height'] < 0 ? scaleY(currentRect['y']) : (scaleY(currentRect['y']) - height);
                 svg += 'y="' + _.escape(y) + '" height="' + _.escape(height) + '" ';
                 currentRect = null;
               }

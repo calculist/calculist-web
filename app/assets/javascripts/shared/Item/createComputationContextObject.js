@@ -542,14 +542,13 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     var yDomain = config.y.domain;
     if (_.isFunction(xDomain)) xDomain = xDomain(xValues);
     if (_.isFunction(yDomain)) yDomain = yDomain(yValues);
-    var scaleX = d3.scaleLinear()
-      .domain(xDomain)
-      .range([0 + config.margin, config.width - config.margin]);
-    var scaleY = d3.scaleLinear()
-      .domain(yDomain)
-      .range([config.height - config.margin, 0 + config.margin]);
-    var scaleHeight = scaleY.copy()
-      .range([0, config.height - (2 * config.margin)]);
+    var xRange = [0 + config.margin, config.width - config.margin];
+    var yRange = [config.height - config.margin, 0 + config.margin];
+    var scaleX = d3.scaleLinear().domain(xDomain).range(xRange);
+    var scaleY = d3.scaleLinear().domain(yDomain).range(yRange);
+    // TODO Fix scaling for negative widths also
+    var _scaleHeight = d3.scaleLinear().domain([0, yDomain[1]]).range([0, yRange[0] - scaleY(0)]);
+    var scaleHeight = _.flow(Math.abs, _scaleHeight);
 
     var xTicks = config.x.ticks;
     var yTicks = config.y.ticks;
@@ -567,8 +566,12 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       }).join('') :
     (config.type === 'barchart' ?
       data.map(function (datum, i) {
-        return '<rect x="' + scaleX(datum.x) + '"' + ' y="' + (scaleY(datum.y) - scaleHeight(datum.bar_height)) +
-          '" width="' + (scaleX(datum.bar_width) - scaleX(0)) + '" height="' + scaleHeight(datum.bar_height) + '" fill="' + datum.color + '"/>';
+        var scaledX = scaleX(datum.x);
+        var scaledY = scaleY(datum.y);
+        var scaledWidth = scaleX(datum.bar_width);
+        var scaledHeight = scaleHeight(datum.bar_height);
+        return '<rect x="' + scaledX + '"' + ' y="' + (datum.bar_height < 0 ? scaledY : (scaledY - scaledHeight)) +
+          '" width="' + (scaledWidth - scaleX(0)) + '" height="' + scaledHeight + '" fill="' + datum.color + '"/>';
       }).join('') : '')
     ) +
     '</g>' +
