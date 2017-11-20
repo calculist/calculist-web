@@ -547,7 +547,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     var scaleX = d3.scaleLinear().domain(xDomain).range(xRange);
     var scaleY = d3.scaleLinear().domain(yDomain).range(yRange);
     // TODO Fix scaling for negative widths also
-    var _scaleHeight = d3.scaleLinear().domain([0, yDomain[1]]).range([0, yRange[0] - scaleY(0)]);
+    var _scaleHeight = d3.scaleLinear().domain([0, yDomain[1]]).range([0, scaleY(0) - yRange[1]]);
     var scaleHeight = _.flow(Math.abs, _scaleHeight);
 
     var xTicks = config.x.ticks;
