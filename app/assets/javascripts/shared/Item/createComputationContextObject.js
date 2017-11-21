@@ -546,7 +546,8 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     var yRange = [config.height - config.margin, 0 + config.margin];
     var scaleX = d3.scaleLinear().domain(xDomain).range(xRange);
     var scaleY = d3.scaleLinear().domain(yDomain).range(yRange);
-    // TODO Fix scaling for negative widths also
+    var _scaleWidth = d3.scaleLinear().domain([0, 1]).range([0, scaleX(1) - scaleX(0)]);
+    var scaleWidth = _.flow(Math.abs, _scaleWidth);
     var _scaleHeight = d3.scaleLinear().domain([0, 1]).range([0, scaleY(0) - scaleY(1)]);
     var scaleHeight = _.flow(Math.abs, _scaleHeight);
 
@@ -568,14 +569,15 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       data.map(function (datum, i) {
         var scaledX = scaleX(datum.x);
         var scaledY = scaleY(datum.y);
-        var scaledWidth = scaleX(datum.bar_width);
+        var scaledWidth = scaleWidth(datum.bar_width);
         var scaledHeight = scaleHeight(datum.bar_height);
-        return '<rect x="' + scaledX + '"' + ' y="' + (datum.bar_height < 0 ? scaledY : (scaledY - scaledHeight)) +
-          '" width="' + (scaledWidth - scaleX(0)) + '" height="' + scaledHeight + '" fill="' + datum.color + '"/>';
+        return '<rect x="' + (datum.bar_width < 0 ? (scaledX - scaledWidth) : scaledX) + '"' +
+          ' y="' + (datum.bar_height < 0 ? scaledY : (scaledY - scaledHeight)) +
+          '" width="' + scaledWidth + '" height="' + scaledHeight + '" fill="' + datum.color + '"/>';
       }).join('') : '')
     ) +
     '</g>' +
-    (config.draw ? itemsToSVG(itemsIfItem(config.draw), {topTag:'g',scaleX:scaleX,scaleY:scaleY,scaleHeight:scaleHeight}) : '') +
+    (config.draw ? itemsToSVG(itemsIfItem(config.draw), {topTag:'g',scaleX:scaleX,scaleY:scaleY,scaleWidth:scaleWidth,scaleHeight:scaleHeight}) : '') +
     '<g>' +
     '<line x1="0" y1="' + scaleY(0) + '" x2="' + config.width + '" y2="' + scaleY(0) + '" stroke-width="2" stroke="#000"/>' +
     '<line x1="' + scaleX(0) + '" y1="0" x2="' + scaleX(0) + '" y2="' + config.height + '" stroke-width="2" stroke="#000"/>' +

@@ -109,6 +109,7 @@ calculist.register('itemsToSVG', ['_'], function (_) {
     var topTag = options.topTag || 'svg';
     var scaleX = options.scaleX || _.identity;
     var scaleY = options.scaleY || _.identity;
+    var scaleWidth = options.scaleWidth || scaleX;
     var scaleHeight = options.scaleHeight || scaleY;
     var addItems, addElement;
     var currentTag;
@@ -121,17 +122,21 @@ calculist.register('itemsToSVG', ['_'], function (_) {
           addElement(_item, datum, i);
         } else if (attributes[_item.key]) {
           if (_.isFunction(val)) val = val(datum, i);
-          if (isXAttr(_item.key)) val = scaleX(val);
-          // TODO Fix scaling for negative widths
-          if (_item.key === 'width') val = scaleX(val) - scaleX(0);
-          if (isYAttr(_item.key) || _item.key === 'height') {
+          if (isXAttr(_item.key) || _item.key === 'width' || isYAttr(_item.key) || _item.key === 'height') {
             if (currentTag === 'rect') {
               currentRect || (currentRect = {});
               currentRect[_item.key] = val;
-              if (currentRect['y'] != null && currentRect['height'] != null) {
+              var allRectCoordinatesHaveBeenSpecified = currentRect['x'] != null &&
+                                                        currentRect['width'] != null &&
+                                                        currentRect['y'] != null &&
+                                                        currentRect['height'] != null;
+              if (allRectCoordinatesHaveBeenSpecified) {
+                var width = scaleWidth(currentRect['width']);
+                var x = currentRect['width'] < 0 ? (scaleX(currentRect['x']) - width) : scaleX(currentRect['x']);
                 var height = scaleHeight(currentRect['height']);
                 var y = currentRect['height'] < 0 ? scaleY(currentRect['y']) : (scaleY(currentRect['y']) - height);
-                svg += 'y="' + _.escape(y) + '" height="' + _.escape(height) + '" ';
+                svg += 'x="' + _.escape(x) + '" width="' + _.escape(width) + '" ' +
+                    'y="' + _.escape(y) + '" height="' + _.escape(height) + '" ';
                 currentRect = null;
               }
               return;
