@@ -141,7 +141,7 @@ calculist.register('itemsToSVG', ['_'], function (_) {
               }
               return;
             } else {
-              val = scaleY(val);
+              val = isXAttr(_item.key) ? scaleX(val) : scaleY(val);
             }
           }
           svg += _item.key + '="' + _.escape(val) + '" ';
