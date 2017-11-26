@@ -151,7 +151,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       denominator = Math.round(denominator * adjustor);
     }
     var gcd = proto.gcd(numerator, denominator);
-    return returnFn(numerator / gcd, denominator / gcd); 
+    return returnFn(numerator / gcd, denominator / gcd);
   };
   proto.wordCount = function (item) {
     var count = 0;
