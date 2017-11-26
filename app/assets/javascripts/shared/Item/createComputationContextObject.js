@@ -655,6 +655,17 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     return _.uniq(items);
   });
 
+  proto.ungrouped = itemsFirst(function (items, depth) {
+    depth = +(depth == null ? 1 : depth);
+    if (_.isNaN(depth)) return depth;
+    while (--depth >= 0) {
+      items = _.reduce(items, function (ungroupedItems, item) {
+        return ungroupedItems.concat(item.items);
+      }, []);
+    }
+    return items;
+  });
+
   proto.slice = itemsFirst(function (items, start, end) {
     var result = _.slice(items, start, end);
     if (_.isString(items)) return result.join('');
