@@ -133,8 +133,16 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     return NaN;
   };
   proto.lcm = function (a, b) { return Math.abs(a) * (Math.abs(b) / proto.gcd(a, b)); };
-  proto.fraction = function (numerator, denominator) {
-    if (denominator == null) denominator = 1;
+  proto.fraction = function (numerator, denominator, returnFn) {
+    if (_.isFunction(denominator) && !returnFn) {
+      returnFn = denominator;
+      denominator = 1;
+    } else if (denominator == null) {
+      denominator = 1;
+    }
+    if (!returnFn) {
+      returnFn = function (n, d) { return '' + n + '/' +  d; };
+    }
     var ndec = numerator.toString().split('.')[1] || '';
     var ddec = denominator.toString().split('.')[1] || '';
     if (ndec || ddec) {
@@ -143,7 +151,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       denominator = Math.round(denominator * adjustor);
     }
     var gcd = proto.gcd(numerator, denominator);
-    return '' + (numerator / gcd) + '/' +  (denominator / gcd);
+    return returnFn(numerator / gcd, denominator / gcd); 
   };
   proto.wordCount = function (item) {
     var count = 0;
