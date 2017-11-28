@@ -655,7 +655,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     return _.uniq(items);
   });
 
-  proto.ungrouped = itemsFirst(function (items, depth) {
+  proto.ungroup = itemsFirst(function (items, depth) {
     depth = +(depth == null ? 1 : depth);
     if (_.isNaN(depth)) return depth;
     while (--depth >= 0) {
