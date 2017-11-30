@@ -411,7 +411,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     type: 'blank',
     width: 500,
     height: 400,
-    margin: 10,
+    margin: 30,
     draw: null,
     blank: {
       x: {
@@ -467,6 +467,28 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       color: {
         datum: _.constant('black'),
         background: 'none',
+      }
+    },
+    linegraph: {
+      x: {
+        datum: function (item, i) { return i; },
+        scale: 'linear',
+        ticks: function (values) { return Math.min(10, values.length); },
+        tick_format: _.identity,
+        domain: function (xValues) {
+          xValues = xValues.concat([0]);
+          return [_.min(xValues), _.max(xValues)];
+        }
+      },
+      y: {
+        datum: function (item) { return item.valueOf(); },
+        scale: 'linear',
+        ticks: function (values) { return Math.min(10, values.length); },
+        tick_format: _.identity,
+        domain: function (yValues) {
+          yValues = yValues.concat([0]);
+          return [_.min(yValues), _.max(yValues)];
+        }
       }
     },
     barchart: {
@@ -567,24 +589,37 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     if (_.isNumber(yTicks)) yTicks = scaleY.ticks(yTicks);
 
     var html = '<svg width="' + config.width + '" height="' + config.height + '">' +
-    '<g>' +
-    (config.type === 'scatterplot' ?
-      data.map(function (datum, i) {
-        return '<circle cx="' + scaleX(datum.x) + '"' +
-          ' cy="' + scaleY(datum.y) + '" r="' + datum.r + '" fill="' + datum.color + '"/>';
-      }).join('') :
-    (config.type === 'barchart' ?
-      data.map(function (datum, i) {
-        var scaledX = scaleX(datum.x);
-        var scaledY = scaleY(datum.y);
-        var scaledWidth = scaleWidth(datum.bar_width);
-        var scaledHeight = scaleHeight(datum.bar_height);
-        return '<rect x="' + (datum.bar_width < 0 ? (scaledX - scaledWidth) : scaledX) + '"' +
-          ' y="' + (datum.bar_height < 0 ? scaledY : (scaledY - scaledHeight)) +
-          '" width="' + scaledWidth + '" height="' + scaledHeight + '" fill="' + datum.color + '"/>';
-      }).join('') : '')
-    ) +
-    '</g>' +
+    '<g>' + (function () {
+      switch (config.type) {
+        case 'scatterplot':
+          return data.map(function (datum, i) {
+            return '<circle cx="' + scaleX(datum.x) + '"' +
+              ' cy="' + scaleY(datum.y) + '" r="' + datum.r + '" fill="' + datum.color + '"/>';
+          }).join('');
+        case 'linegraph':
+          var path = d3.path();
+          data.forEach(function (datum, i) {
+            if (i === 0) {
+              path.moveTo(scaleX(datum.x), scaleY(datum.y));
+            } else {
+              path.lineTo(scaleX(datum.x), scaleY(datum.y));
+            }
+          });
+          return '<path d="' + path + '" stroke="' + 'steelblue' + '" stroke-width="2" fill="none"/>';
+        case 'barchart':
+          return data.map(function (datum, i) {
+            var scaledX = scaleX(datum.x);
+            var scaledY = scaleY(datum.y);
+            var scaledWidth = scaleWidth(datum.bar_width);
+            var scaledHeight = scaleHeight(datum.bar_height);
+            return '<rect x="' + (datum.bar_width < 0 ? (scaledX - scaledWidth) : scaledX) + '"' +
+              ' y="' + (datum.bar_height < 0 ? scaledY : (scaledY - scaledHeight)) +
+              '" width="' + scaledWidth + '" height="' + scaledHeight + '" fill="' + datum.color + '"/>';
+          }).join('');
+        default:
+          return '';
+      }
+    })() + '</g>' +
     (config.draw ? itemsToSVG(itemsIfItem(config.draw), {topTag:'g',scaleX:scaleX,scaleY:scaleY,scaleWidth:scaleWidth,scaleHeight:scaleHeight}) : '') +
     '<g>' +
     '<line x1="0" y1="' + scaleY(0) + '" x2="' + config.width + '" y2="' + scaleY(0) + '" stroke-width="2" stroke="#000"/>' +
