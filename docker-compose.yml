@@ -4,13 +4,29 @@ services:
   db:
     image: mysql
     environment:
-      - MYSQL_ROOT_PASSWORD
+      - MYSQL_ROOT_PASSWORD=$CALCULIST_DATABASE_PASSWORD
+      - MYSQL_USER
+      - MYSQL_PASSWORD=$CALCULIST_DATABASE_PASSWORD
   web:
     build: .
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    command: bundle exec rails s -p 3000
     volumes:
       - .:/calculist-web
+    environment:
+      - RAILS_ENV
+      - RAILS_SERVE_STATIC_FILES
+      - SECRET_KEY_BASE
+      - CALCULIST_DATABASE_PASSWORD
+      - VIRTUAL_HOST
+      - VIRTUAL_PORT
+      - LETSENCRYPT_HOST
+      - LETSENCRYPT_EMAIL
     ports:
       - "3000:3000"
     depends_on:
       - db
+# https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion
+networks:
+  default:
+    external:
+      name: webproxy
