@@ -3,10 +3,13 @@ version: '3'
 services:
   db:
     image: mysql
+    volumes:
+      - /var/mysql_volume:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=$CALCULIST_DATABASE_PASSWORD
-      - MYSQL_USER
+      - MYSQL_USER=$CALCULIST_DATABASE_USER
       - MYSQL_PASSWORD=$CALCULIST_DATABASE_PASSWORD
+      - MYSQL_DATABASE=$CALCULIST_DATABASE
   web:
     build: .
     command: bundle exec rails s -p 3000
@@ -16,6 +19,8 @@ services:
       - RAILS_ENV
       - RAILS_SERVE_STATIC_FILES
       - SECRET_KEY_BASE
+      - CALCULIST_DATABASE
+      - CALCULIST_DATABASE_USER
       - CALCULIST_DATABASE_PASSWORD
       - VIRTUAL_HOST
       - VIRTUAL_PORT

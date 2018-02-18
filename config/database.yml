@@ -51,6 +51,6 @@ test:
 #
 production:
   <<: *default
-  database: calculist_production
-  username: calculist
+  database: <%= ENV['CALCULIST_DATABASE'] %>
+  username: <%= ENV['CALCULIST_DATABASE_USER'] %>
   password: <%= ENV['CALCULIST_DATABASE_PASSWORD'] %>
