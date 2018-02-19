@@ -57,18 +57,18 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "calculist_#{Rails.env}"
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: 'app.calculist.io' }
+  config.action_mailer.default_url_options = { host: ENV['VIRTUAL_HOST'] }
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.smtp_settings = {
     :authentication => :plain,
-    :address => "smtp.sendgrid.net",
+    :address => "smtp.mailgun.net",
     :port => 587,
-    :domain => 'app.calculist.io',
-    :user_name => Rails.application.secrets.sendgrid_username,
-    :password => Rails.application.secrets.sendgrid_password
+    :domain => ENV['VIRTUAL_HOST'],
+    :user_name => Rails.application.secrets.mailgun_username,
+    :password => Rails.application.secrets.mailgun_password
   }
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
