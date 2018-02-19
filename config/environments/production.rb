@@ -64,7 +64,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.smtp_settings = {
     :authentication => :plain,
-    :address => "smtp.mailgun.net",
+    :address => "smtp.mailgun.org",
     :port => 587,
     :domain => ENV['VIRTUAL_HOST'],
     :user_name => Rails.application.secrets.mailgun_username,
