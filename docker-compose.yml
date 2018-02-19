@@ -26,6 +26,8 @@ services:
       - VIRTUAL_PORT
       - LETSENCRYPT_HOST
       - LETSENCRYPT_EMAIL
+      - MAILGUN_USERNAME
+      - MAILGUN_PASSWORD
     ports:
       - "3000:3000"
     depends_on:
