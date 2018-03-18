@@ -304,6 +304,9 @@ body {
           color: #000;
         }
       }
+      &.separator {
+        opacity: 0.2;
+      }
     }
     code {
       .hljs-string {

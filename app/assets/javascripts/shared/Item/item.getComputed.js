@@ -17,9 +17,8 @@ calculist.require(['Item','removeHTML','_'], function (Item, removeHTML, _) {
   };
 
   Item.prototype.getComputedHTML = function() {
-    var val;
     this.valueOf();
-    val = this.val;
+    var val = this.val;
     if (val != null) {
       if (_.isPlainObject(val) && val.toHTML) {
         val = val.toHTML();
@@ -28,7 +27,7 @@ calculist.require(['Item','removeHTML','_'], function (Item, removeHTML, _) {
       }
       val = "<span class='value'>" + val + "</span>";
       if (this.key) {
-        return "<span class='key'>" + (this.formatKey(this.key)) + "</span>: " + val;
+        return "<span class='key'>" + this.formatKey(this.key) + "</span> <span class='separator'>" + this.parsedText.separator + "</span> " + val;
       } else {
         return val;
       }
