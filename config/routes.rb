@@ -10,11 +10,13 @@ Rails.application.routes.draw do
               }
 
   get 'list/new' => 'list_pages#create'
+  get 'l/:hex_id' => 'list_pages#show', as: :list_page_by_hex_id
 
   resources :lists do
     resources :list_shares
   end
 
+  get 'home' => 'home#homepage'
   get 'blankpage' => 'list_pages#blankpage'
 
   get ':username' => 'list_pages#index', as: :profile_page

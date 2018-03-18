@@ -79,6 +79,7 @@ class User < ApplicationRecord
                                   user_id: id,
                                   update_count: 0,
                                   handle: username,
+                                  hex_id: SecureRandom.hex(4),
                                   list_type: 'user_primary')
       upm.create_primary_list_items
     end
@@ -92,6 +93,7 @@ class User < ApplicationRecord
                                   user_id: id,
                                   update_count: 0,
                                   handle: 'preferences',
+                                  hex_id: SecureRandom.hex(4),
                                   list_type: 'user_preferences')
       upm.create_preference_items
     end

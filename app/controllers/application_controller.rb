@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource_or_scope)
     if current_user
-      profile_page_path(username: current_user.username)
+      root_path
     else
       stored_location_for(resource_or_scope) || signed_in_root_path(resource_or_scope)
     end

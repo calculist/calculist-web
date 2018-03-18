@@ -17,13 +17,17 @@ class ListPagesController < ApplicationController
   end
 
   def show
-    @list_owner = User.where(username: params[:username]).first
-    return render_404 if @list_owner.nil?
-    @list = List.where(handle: params[:handle], user_id: @list_owner.id).first
-    return show_non_existent if @list.nil?
-    unless current_user_can_read?
-      return show_non_existent
+    if params[:hex_id]
+      @list = List.where(hex_id: params[:hex_id]).first
+      return render_404 if @list.nil?
+      @list_owner = User.find(@list.user_id)
+    else
+      @list_owner = User.where(username: params[:username]).first
+      return render_404 if @list_owner.nil?
+      @list = List.where(handle: params[:handle], user_id: @list_owner.id).first
+      return show_non_existent if @list.nil?
     end
+    return show_non_existent unless current_user_can_read?
     return redirect_to(profile_page_path(username: @list_owner.username)) if @list.is_user_primary?
     @lists = current_user.lists
     @other_lists = get_title_handle_path_id(@lists, current_user)
@@ -53,11 +57,16 @@ class ListPagesController < ApplicationController
   end
 
   def create
-    @list = List.create(user_id: current_user.id)
+    @list = List.new(user_id: current_user.id)
     @list.title = params[:title] if params[:title]
-    @list.handle = params[:handle] || @list.id
+    @list.handle = params[:handle] if params[:handle]
+    @list.default_values
     @list.save!
-    redirect_to list_page_path(username: current_user.username, handle: @list.handle)
+    if params[:handle]
+      redirect_to list_page_path(username: current_user.username, handle: @list.handle)
+    else
+      redirect_to list_page_by_hex_id_path(hex_id: @list.hex_id)
+    end
   end
 
   def blankpage
