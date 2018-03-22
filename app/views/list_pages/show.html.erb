@@ -5,7 +5,14 @@
     <div class="header-message">Make sure to <a href="<%= new_confirmation_path(:user) %>">confirm your email</a> so you do not lose access to your account.</div>
   <% end %>
   <div class="header-right">
-    <span id="save-status">saved</span>&nbsp;|&nbsp;<span id="username"><a href="/<%= current_user.username %>"><%= current_user.username %></a></span>&nbsp;|&nbsp;<span id="sign-out">sign out</span>
+    <span id="save-status">saved</span>&nbsp;|&nbsp;<span id="username"><a href="/<%= current_user.username %>"><%= current_user.username %></a>
+    <div class="nav-menu-container">
+      <ul class="nav-menu">
+        <li><a href="/settings">settings</a></li>
+        <li><a href="/preferences">preferences</a></li>
+        <li><span id="sign-out">sign out</span></li>
+      </ul>
+    </div>
   </div>
 </header>
 

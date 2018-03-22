@@ -1,0 +1,705 @@
+{
+ "text": "Welcome to Calculist!",
+ "collapsed": false,
+ "guid": "1307ea50-c21c-42be-b4b0-8b5fffe1e8ec",
+ "items": [
+  {
+   "text": "<-- Click on this dot to get started.",
+   "collapsed": true,
+   "sort_order": 100,
+   "guid": "5e316158-c687-4109-8681-214f20757007",
+   "items": [
+    {
+     "text": "Awesome! You just executed the \"expand\" command.",
+     "collapsed": false,
+     "sort_order": 100,
+     "guid": "58d54588-3ec4-48d6-b461-5fae5a70d5fc",
+     "items": [
+      {
+       "text": "In Calculist, commands are actions that get executed when you interact with the app.",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "aee845bb-0773-4d55-8167-27f328176546",
+       "items": []
+      },
+      {
+       "text": "You can execute commands directly using command mode.",
+       "collapsed": false,
+       "sort_order": 200,
+       "guid": "2737c361-8367-49c1-92d5-3a7dcbf1a197",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "Lets try another command, this time using command mode.",
+     "collapsed": false,
+     "sort_order": 200,
+     "guid": "b46e8404-2519-4e15-8954-39f068defc0f",
+     "items": [
+      {
+       "text": "Steps:",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "d2549e71-2126-42b3-983b-c88130c07d6a",
+       "items": [
+        {
+         "text": "1. Click on the text below that says \"More\" (but don't expand just yet).",
+         "collapsed": false,
+         "sort_order": 100,
+         "guid": "fcdc5986-f4f9-49ea-a881-4e26d6294d90",
+         "items": []
+        },
+        {
+         "text": "2. Press ctrl + enter to enter command mode (or double click the item).",
+         "collapsed": false,
+         "sort_order": 200,
+         "guid": "83668100-e201-4434-92fa-3e4fb5c3d86a",
+         "items": [
+          {
+           "text": "The item background will turn black.",
+           "collapsed": false,
+           "sort_order": 100,
+           "guid": "7edbd972-4aa3-4dc0-a283-a247ec123d90",
+           "items": []
+          }
+         ]
+        },
+        {
+         "text": "3. Type \"zoom in\" and press enter",
+         "collapsed": false,
+         "sort_order": 300,
+         "guid": "90271440-ca12-4e11-bf40-e54b59ea8393",
+         "items": []
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "text": "More",
+     "collapsed": true,
+     "sort_order": 300,
+     "guid": "9ab10a19-2002-4d1d-92f1-838be9da8ba3",
+     "items": [
+      {
+       "text": "Brilliant! You're getting pretty good at this. :)",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "9c011c63-81f6-4c4b-bc8e-e73c24fdf62a",
+       "items": []
+      },
+      {
+       "text": "By the way, there are also keyboard shortcuts for these commands.",
+       "collapsed": false,
+       "sort_order": 200,
+       "guid": "1a85f18d-81a6-4e9f-aa4d-660868d10258",
+       "items": [
+        {
+         "text": "expand or collapse [:] ctrl + spacebar",
+         "collapsed": false,
+         "sort_order": 100,
+         "guid": "c54511db-788c-41b4-90b2-d6757cae91ad",
+         "items": []
+        },
+        {
+         "text": "zoom in [:] ctrl + right arrow",
+         "collapsed": false,
+         "sort_order": 200,
+         "guid": "86232a67-b1dd-4361-85fa-8e9bf22d6bf6",
+         "items": []
+        },
+        {
+         "text": "zoom out [:] ctrl + left arrow",
+         "collapsed": false,
+         "sort_order": 300,
+         "guid": "99a2da45-1714-4648-b0f2-ccb26b02aee1",
+         "items": []
+        }
+       ]
+      },
+      {
+       "text": "Now lets do some calculating.",
+       "collapsed": false,
+       "sort_order": 300,
+       "guid": "395b5127-dbec-4ca2-81f1-667d65da8fd4",
+       "items": [
+        {
+         "text": "Select \"one plus one\" below and change the zero to a one.",
+         "collapsed": false,
+         "sort_order": 100,
+         "guid": "57de74e7-5ffe-4131-9a12-4d3916914092",
+         "items": []
+        },
+        {
+         "text": "one plus one [=] 1 + 0",
+         "collapsed": false,
+         "sort_order": 200,
+         "guid": "1239a53e-5ec0-4bf5-abb0-fe43014077f4",
+         "items": []
+        },
+        {
+         "text": "equals two? [=] one_plus_one == 2 ? $items.yes : $items.no",
+         "collapsed": true,
+         "sort_order": 300,
+         "guid": "69beead4-a9c0-449a-a495-202947490445",
+         "items": [
+          {
+           "text": "yes [:] Yes!",
+           "collapsed": false,
+           "sort_order": 100,
+           "guid": "202f0f37-080d-4ac9-b38b-9c624941c7be",
+           "items": []
+          },
+          {
+           "text": "no [:] not yet ...",
+           "collapsed": false,
+           "sort_order": 200,
+           "guid": "eb643922-140c-47bc-8d3f-d101d43f7a5d",
+           "items": []
+          }
+         ]
+        },
+        {
+         "text": "[=] one_plus_one == 2 ? $items.yes : $items.no",
+         "collapsed": true,
+         "sort_order": 400,
+         "guid": "6790f523-7246-4a47-b00a-dfc958542326",
+         "items": [
+          {
+           "text": "yes [:] Now that you've got the basics down, expand the final item below.",
+           "collapsed": false,
+           "sort_order": 100,
+           "guid": "b51ce23f-7d56-42ec-a636-848586089ab0",
+           "items": []
+          },
+          {
+           "text": "no [:] ...",
+           "collapsed": false,
+           "sort_order": 200,
+           "guid": "72f9b309-f821-4713-b064-fb6193e6ff65",
+           "items": []
+          }
+         ]
+        },
+        {
+         "text": "[=] one_plus_one == 2 ? \"<-- Expand this item\" : \"...\"",
+         "collapsed": true,
+         "sort_order": 500,
+         "guid": "f35a3e52-4c51-4be8-9970-61d4fd30a633",
+         "items": [
+          {
+           "text": "Time to explore!",
+           "collapsed": false,
+           "sort_order": 100,
+           "guid": "5a31f686-2c50-4b8a-90d9-3885c5eb67dd",
+           "items": [
+            {
+             "text": "There are so many things you can do with Calculist.",
+             "collapsed": false,
+             "sort_order": 100,
+             "guid": "780ba726-b6f0-45b5-b16b-84cec0a9b922",
+             "items": []
+            },
+            {
+             "text": "Expand the items below to continue exploring.",
+             "collapsed": false,
+             "sort_order": 200,
+             "guid": "2d2b00ba-493d-4923-89c2-40f0626a31e5",
+             "items": []
+            },
+            {
+             "text": "To follow links, click the icon that appears on the right when you select an item that contains a link.",
+             "collapsed": false,
+             "sort_order": 300,
+             "guid": "a31f24aa-ad8e-4efe-ae43-cf912606a03f",
+             "items": []
+            }
+           ]
+          },
+          {
+           "text": "Create and delete items",
+           "collapsed": true,
+           "sort_order": 200,
+           "guid": "05d436db-88c6-425a-a928-4dc333bfcf29",
+           "items": [
+            {
+             "text": "Press enter to create a new item.",
+             "collapsed": false,
+             "sort_order": 100,
+             "guid": "5facd3a3-0b57-4215-9ba6-73edd7b1564a",
+             "items": []
+            },
+            {
+             "text": "Press alt + enter to create a new item without splitting the text of the current item.",
+             "collapsed": false,
+             "sort_order": 200,
+             "guid": "789d9240-24d9-45c3-8d57-84d3ce7d3f9a",
+             "items": []
+            },
+            {
+             "text": "Press alt + delete while the cursor is at the leftmost position to join the current item with the item above it.",
+             "collapsed": false,
+             "sort_order": 300,
+             "guid": "907897f1-98f7-4c94-b090-6343b354648b",
+             "items": []
+            },
+            {
+             "text": "Use the \"duplicate\" command or press ctrl + shift + d to duplicate the current item and sub-items.",
+             "collapsed": false,
+             "sort_order": 400,
+             "guid": "d1102613-7e19-445f-a28a-ee5303281a3b",
+             "items": []
+            },
+            {
+             "text": "Use the \"delete\" command or press ctrl + shift + delete to immediately delete the current item and all sub-items (ctrl + z to undo).",
+             "collapsed": false,
+             "sort_order": 500,
+             "guid": "2329479e-f1cd-488a-92aa-5b40216b299a",
+             "items": []
+            }
+           ]
+          },
+          {
+           "text": "Move items around",
+           "collapsed": true,
+           "sort_order": 300,
+           "guid": "82c07074-779a-4977-b75e-c7f81be98307",
+           "items": [
+            {
+             "text": "<-- Click and drag this dot.",
+             "collapsed": false,
+             "sort_order": 100,
+             "guid": "f9beb8bb-7a92-4fdf-a3e2-dd7a8af42635",
+             "items": []
+            },
+            {
+             "text": "move up [:] ctrl + shift + up arrow",
+             "collapsed": false,
+             "sort_order": 200,
+             "guid": "08a0b2e2-9b10-418c-ae3f-def2ead45576",
+             "items": []
+            },
+            {
+             "text": "move down [:] ctrl + shift + down arrow",
+             "collapsed": false,
+             "sort_order": 300,
+             "guid": "820e198e-7cd4-473a-8178-816c861fe8fa",
+             "items": []
+            },
+            {
+             "text": "indent [:] tab",
+             "collapsed": false,
+             "sort_order": 400,
+             "guid": "be298bf3-07e8-43d5-8fad-f6b7c301b177",
+             "items": []
+            },
+            {
+             "text": "outdent [:] shift + tab",
+             "collapsed": false,
+             "sort_order": 500,
+             "guid": "a555c08d-7afe-4100-9e66-188c5bdaf8a0",
+             "items": []
+            }
+           ]
+          },
+          {
+           "text": "Undo and redo",
+           "collapsed": true,
+           "sort_order": 400,
+           "guid": "b6dc5a00-f6bd-485b-8959-cd99beefa6f6",
+           "items": [
+            {
+             "text": "undo [:] ctrl + z",
+             "collapsed": false,
+             "sort_order": 100,
+             "guid": "cfd9fc69-8c1e-4b47-a41c-074e7fce8a5d",
+             "items": []
+            },
+            {
+             "text": "redo [:] ctrl + y",
+             "collapsed": false,
+             "sort_order": 200,
+             "guid": "138a8763-2ca1-4be2-a89e-69512e626044",
+             "items": []
+            }
+           ]
+          },
+          {
+           "text": "Copy and paste",
+           "collapsed": true,
+           "sort_order": 500,
+           "guid": "e6a551fb-527e-4d2c-90bb-acc108310d63",
+           "items": [
+            {
+             "text": "The \"copy\" command",
+             "collapsed": false,
+             "sort_order": 100,
+             "guid": "23595a0a-2d95-48d1-aeba-460919341b19",
+             "items": [
+              {
+               "text": "In Calculist, copying text to the clipboard is accomplished using the \"copy\" command.",
+               "collapsed": false,
+               "sort_order": 100,
+               "guid": "a39fa4b2-5e89-4928-9c71-9beeb091ffb7",
+               "items": []
+              },
+              {
+               "text": "To copy the currently selected item and its sub-items to the clipboard, simply enter command mode, type \"copy\" and hit enter.",
+               "collapsed": false,
+               "sort_order": 200,
+               "guid": "041b91b1-1c2f-4aa9-b64c-ba0022bdaf66",
+               "items": []
+              },
+              {
+               "text": "The copy command also accepts input, so you can copy computed values to the clipboard as well.",
+               "collapsed": false,
+               "sort_order": 300,
+               "guid": "7c37ec67-f2a5-4af2-bd21-bd21fb7d12ad",
+               "items": [
+                {
+                 "text": "For example \"copy ( $items )\" copies only the sub-items to the clipboard.",
+                 "collapsed": false,
+                 "sort_order": 100,
+                 "guid": "cd30cdf2-d067-45f2-bbd2-f4b44f9ee7e6",
+                 "items": []
+                }
+               ]
+              }
+             ]
+            },
+            {
+             "text": "Pasting into Calculist",
+             "collapsed": false,
+             "sort_order": 200,
+             "guid": "05892260-4829-4aed-b524-d29f2c62e862",
+             "items": [
+              {
+               "text": "When you paste text into Calculist, lines are converted to list items, taking indentation into account.",
+               "collapsed": false,
+               "sort_order": 100,
+               "guid": "f9c1edd5-5384-48b8-900b-391c494561f6",
+               "items": []
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "text": "Navigation shortcuts",
+           "collapsed": true,
+           "sort_order": 600,
+           "guid": "21dee971-c254-4a01-9f27-cdcc683b183f",
+           "items": [
+            {
+             "text": "goto ( $parent ) [:] alt + spacebar",
+             "collapsed": false,
+             "sort_order": 100,
+             "guid": "fb058bf4-165e-4c27-b9cd-5b1624386f3d",
+             "items": []
+            },
+            {
+             "text": "Hold down the alt key while pressing up or down to maintain the current indentation depth and skip over sub-items.",
+             "collapsed": false,
+             "sort_order": 200,
+             "guid": "78a2e91d-e261-4b84-81e6-b8c38ac31f33",
+             "items": []
+            },
+            {
+             "text": "toggle collapse siblings [:] ctrl + shift + spacebar",
+             "collapsed": false,
+             "sort_order": 300,
+             "guid": "29dd26b0-123c-4b9b-b3d0-d4909a292016",
+             "items": []
+            },
+            {
+             "text": "expand all [:] ctrl + down",
+             "collapsed": false,
+             "sort_order": 400,
+             "guid": "187621cc-1de5-4593-beca-e5e81f945003",
+             "items": []
+            },
+            {
+             "text": "collapse all [:] ctrl + up",
+             "collapsed": false,
+             "sort_order": 500,
+             "guid": "04efaf8a-549d-4379-835a-6206ddc83aa7",
+             "items": []
+            }
+           ]
+          },
+          {
+           "text": "More calculating",
+           "collapsed": true,
+           "sort_order": 700,
+           "guid": "a4d96a67-8b64-4483-a52d-1ee74374667e",
+           "items": [
+            {
+             "text": "Checkout the documentation to get an overview of how computation works in Calculist [:] https://github.com/calculist/calculist/wiki/Computation",
+             "collapsed": false,
+             "sort_order": 100,
+             "guid": "c3552dfb-b1c2-4673-9884-dd05fd36980b",
+             "items": []
+            },
+            {
+             "text": "adding up items [=] sum($items)",
+             "collapsed": true,
+             "sort_order": 200,
+             "guid": "71cf288f-34d4-45ba-844a-ec59ffa4985b",
+             "items": [
+              {
+               "text": "a [=] 2",
+               "collapsed": false,
+               "sort_order": 100,
+               "guid": "7b223e1c-58ed-41d3-adbb-cf4d5a603eb1",
+               "items": []
+              },
+              {
+               "text": "b [=] 4",
+               "collapsed": false,
+               "sort_order": 200,
+               "guid": "b25df83e-cdb7-4c21-9943-52ab0b1debab",
+               "items": []
+              },
+              {
+               "text": "c [=] 8",
+               "collapsed": false,
+               "sort_order": 300,
+               "guid": "6580c19c-e131-4a03-a542-00cf1bf21d55",
+               "items": []
+              }
+             ]
+            },
+            {
+             "text": "counting items [=] count($items)",
+             "collapsed": true,
+             "sort_order": 300,
+             "guid": "5fb6cc92-35fd-45b1-905d-410cac6f72f7",
+             "items": [
+              {
+               "text": "a",
+               "collapsed": false,
+               "sort_order": 100,
+               "guid": "2995684a-e19f-4658-b68e-b088fbc8f919",
+               "items": []
+              },
+              {
+               "text": "b",
+               "collapsed": false,
+               "sort_order": 200,
+               "guid": "70ae733d-8e49-49fe-8a5f-838541a82b05",
+               "items": []
+              },
+              {
+               "text": "c",
+               "collapsed": false,
+               "sort_order": 300,
+               "guid": "612c0fee-8d27-42c2-b7dd-57e55c466b37",
+               "items": []
+              }
+             ]
+            },
+            {
+             "text": "counting items recursively [=] rcount($items)",
+             "collapsed": true,
+             "sort_order": 400,
+             "guid": "5ef4143b-7fee-4a5f-bf01-cb3e4cacef13",
+             "items": [
+              {
+               "text": "a",
+               "collapsed": false,
+               "sort_order": 100,
+               "guid": "6f558a5c-0b0b-4fcb-b55e-0f7e2186ca04",
+               "items": [
+                {
+                 "text": "a1",
+                 "collapsed": false,
+                 "sort_order": 100,
+                 "guid": "d90cb461-6c6d-4d38-9101-287d8a7dd066",
+                 "items": []
+                },
+                {
+                 "text": "a2",
+                 "collapsed": false,
+                 "sort_order": 200,
+                 "guid": "5e6406ee-8212-44f1-ba86-3377ec1ac1bf",
+                 "items": []
+                }
+               ]
+              },
+              {
+               "text": "b",
+               "collapsed": false,
+               "sort_order": 200,
+               "guid": "933857e0-7a7c-467a-8457-812e6102430f",
+               "items": [
+                {
+                 "text": "b1",
+                 "collapsed": false,
+                 "sort_order": 100,
+                 "guid": "b8f575bf-a5d9-463b-aeb0-335b6f88cb8a",
+                 "items": []
+                },
+                {
+                 "text": "b2",
+                 "collapsed": false,
+                 "sort_order": 200,
+                 "guid": "5b810cbd-ef82-4c14-9084-0564892c3a68",
+                 "items": []
+                }
+               ]
+              },
+              {
+               "text": "c",
+               "collapsed": false,
+               "sort_order": 300,
+               "guid": "46b1fcad-607b-4539-9450-3528f1cd2c99",
+               "items": [
+                {
+                 "text": "c1",
+                 "collapsed": false,
+                 "sort_order": 100,
+                 "guid": "0fd7f6ee-f92a-4b20-8abf-61ce9549b54f",
+                 "items": []
+                },
+                {
+                 "text": "c2",
+                 "collapsed": false,
+                 "sort_order": 200,
+                 "guid": "95f22ac2-c226-42b2-a8f2-80d4aa567cb1",
+                 "items": []
+                }
+               ]
+              }
+             ]
+            },
+            {
+             "text": "using variables",
+             "collapsed": true,
+             "sort_order": 500,
+             "guid": "34bcfb08-c3ca-4070-b26e-621f6a397888",
+             "items": [
+              {
+               "text": "a [=] 1",
+               "collapsed": false,
+               "sort_order": 100,
+               "guid": "41b85987-6c95-488e-a7d8-0d59ba4db64a",
+               "items": []
+              },
+              {
+               "text": "b [=] 2",
+               "collapsed": false,
+               "sort_order": 200,
+               "guid": "d60a2176-6535-4aa0-bc10-40a74da66d1d",
+               "items": []
+              },
+              {
+               "text": "a plus b [=] a + b",
+               "collapsed": false,
+               "sort_order": 300,
+               "guid": "12b58dd4-5bd3-416c-9b94-a1d8b54adc3b",
+               "items": []
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "text": "Loops",
+           "collapsed": true,
+           "sort_order": 800,
+           "guid": "690b24e2-7600-4769-a022-c2bcbeeaf2c0",
+           "items": [
+            {
+             "text": "Prefix commands with \"for each item,\" or \"for each item recursively,\" to execute the command repeatedly on each sub-item.",
+             "collapsed": false,
+             "sort_order": 100,
+             "guid": "4bf9ff2d-e7ec-4501-b12d-d62a3a8862c9",
+             "items": []
+            }
+           ]
+          },
+          {
+           "text": "LaTeX",
+           "collapsed": true,
+           "sort_order": 900,
+           "guid": "545a2b16-0314-46ac-983f-e9f8914570ca",
+           "items": [
+            {
+             "text": "Expressions between double dollar signs are parsed and rendered as LaTeX.",
+             "collapsed": false,
+             "sort_order": 100,
+             "guid": "6609d5fe-f020-4e6b-9e75-64086a9d32f3",
+             "items": []
+            },
+            {
+             "text": "Read more [:] https://github.com/calculist/calculist/wiki/LaTeX-Expressions",
+             "collapsed": false,
+             "sort_order": 200,
+             "guid": "8f7fbece-a7b3-49dc-8be6-83e9f771d1e2",
+             "items": []
+            },
+            {
+             "text": "Example",
+             "collapsed": false,
+             "sort_order": 300,
+             "guid": "dbaf9e7e-fbf7-4495-910e-38c008094bfe",
+             "items": [
+              {
+               "text": "Let $$ \\sum a_n $$ be any series and suppose that",
+               "collapsed": false,
+               "sort_order": 100,
+               "guid": "550e7414-5856-4849-b51a-b7ced2500471",
+               "items": [
+                {
+                 "text": "$$ \\lim_{n\\to\\infty} \\sqrt[n]{|a_n|} = \\rho $$.",
+                 "collapsed": false,
+                 "sort_order": 100,
+                 "guid": "7d5e8bbc-611c-4b0a-b1ae-54e9aa8aac7a",
+                 "items": []
+                }
+               ]
+              },
+              {
+               "text": "Then",
+               "collapsed": false,
+               "sort_order": 200,
+               "guid": "2de70110-2d72-4378-9cf6-b873cfd93c58",
+               "items": [
+                {
+                 "text": "(a) the series converges absolutely if $$ \\rho < 1 $$,",
+                 "collapsed": false,
+                 "sort_order": 100,
+                 "guid": "c15318f8-2996-4c05-9adf-01cf2584279a",
+                 "items": []
+                },
+                {
+                 "text": "(b) the series diverges if $$ \\rho > 1 $$ or $$ \\rho $$ is infinite,",
+                 "collapsed": false,
+                 "sort_order": 200,
+                 "guid": "7bc0af20-2c25-4b8d-beec-4bb89dc98cb4",
+                 "items": []
+                },
+                {
+                 "text": "(c) the test is inconclusive if $$ \\rho = 1 $$",
+                 "collapsed": false,
+                 "sort_order": 300,
+                 "guid": "93fa3e38-450a-4014-b0fb-a309e299f9da",
+                 "items": []
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

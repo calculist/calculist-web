@@ -9,7 +9,7 @@ Rails.application.routes.draw do
                 edit: 'settings'
               }
 
-  get 'list/new' => 'list_pages#create'
+  get 'list/new' => 'list_pages#create', as: :new_list
   get 'l/:hex_id' => 'list_pages#show', as: :list_page_by_hex_id
 
   resources :lists do
@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get 'home' => 'home#homepage'
   get 'blankpage' => 'list_pages#blankpage'
 
+  get 'welcome' => 'list_pages#show', defaults: { handle: 'welcome' }, as: :welcome_list
+  get 'preferences' => 'list_pages#show', defaults: { handle: 'preferences' }, as: :preferences
   get ':username' => 'list_pages#index', as: :profile_page
   get ':username/:handle' => 'list_pages#show', as: :list_page
   get ':username/:handle/deleted' => 'list_pages#show_deleted', as: :list_page_deleted

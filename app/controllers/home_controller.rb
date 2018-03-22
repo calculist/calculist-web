@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 
   def index
     if current_user
-      redirect_to profile_page_path(username: current_user.username)
+      homepage
     else
       redirect_to new_session_path(:user)
     end
@@ -12,7 +12,7 @@ class HomeController < ApplicationController
 
   def homepage
     @user = current_user
-    @lists = @user.lists.where(list_type: nil).order('updated_at desc')
+    @lists = @user.lists.where(list_type: [nil, 'welcome']).order('updated_at desc')
     @theme = @user.default_theme
     @font = @user.default_font
     render template: 'home/index'

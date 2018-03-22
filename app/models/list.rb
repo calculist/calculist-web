@@ -7,7 +7,7 @@ class List < ActiveRecord::Base
 
   validates :handle, presence: true
   validates :hex_id, presence: true
-  validates :list_type, :inclusion => { :in => %w(user_preferences user_primary) }, :allow_nil => true
+  validates :list_type, :inclusion => { :in => %w(user_preferences user_primary welcome) }, :allow_nil => true
 
   def default_values
     self.title ||= 'Untitled List'

@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css" integrity="sha384-VP0GfisErC22dnswxVzLKdy1z+wIV3p/iGyahqdhsuFvfu9wrRUaXUAdLWPN7E8m" crossorigin="anonymous">
 <header id="header">
   <a href="/"><img id="logo" src="/logo-blue-black.svg"></a>
   <span id="version"><%= Rails.application.config.calculist_version %></span>
@@ -6,14 +6,20 @@
     <div class="header-message">Make sure to <a href="<%= new_confirmation_path(:user) %>">confirm your email</a> so you do not lose access to your account.</div>
   <% end %>
   <div class="header-right">
-    <span id="username"><%= current_user.username %></span>&nbsp;|&nbsp;<span id="sign-out">sign out</span>
+    <span id="username"><%= current_user.username %></span>
+    <div class="nav-menu-container">
+      <ul class="nav-menu">
+        <li><a href="/settings">settings</a></li>
+        <li><a href="/preferences">preferences</a></li>
+        <li><span id="sign-out">sign out</span></li>
+      </ul>
+    </div>
   </div>
 </header>
 
 <div class="container" style="font-family:Ubuntu;min-height:100vh;max-width:800px;">
-  <div class="">
   <div class="row right-align">
-    <a href="/list/new" class="waves-effect waves-light btn-small light-blue text-white" style="color:#fff;margin-right:0;">+ new list</a>
+    <a href="<%= new_list_path %>" class="waves-effect waves-light btn-small light-blue text-white" style="color:#fff;margin-right:0;">+ new list</a>
   </div>
   <% @lists.each do |list| %>
     <a href="<%= list_page_by_hex_id_path(hex_id: list.hex_id) %>">
@@ -25,7 +31,6 @@
       </div>
     </a>
   <% end %>
-  </div>
 </div>
 
 <%= javascript_include_tag "homepage" %>

@@ -1,0 +1,136 @@
+{
+ "text": "stats",
+ "collapsed": false,
+ "guid": "6219d41e-f2e7-44a7-a0b0-af1e10c46db1",
+ "items": [
+  {
+   "text": "list count [=] count(lists)",
+   "collapsed": false,
+   "sort_order": 100.390625,
+   "guid": "0b82b448-96a4-4c19-be15-ef79f6a45f9a",
+   "items": []
+  },
+  {
+   "text": "total update count [=] sum(lists[\"update_count\"])",
+   "collapsed": false,
+   "sort_order": 100.78125,
+   "guid": "a133abd3-3183-4876-b90e-3c787a0c69a5",
+   "items": []
+  },
+  {
+   "text": "total item count [=] sum(lists[\"item_count\"])",
+   "collapsed": false,
+   "sort_order": 101.5625,
+   "guid": "0d2ef0e2-fa17-4928-ac55-2ed1ce64f519",
+   "items": []
+  },
+  {
+   "text": "list with most items [=] $items.list + \" (\" + $items.max_item_count + \" items)\"",
+   "collapsed": true,
+   "sort_order": 103.125,
+   "guid": "f8b3e736-fd89-4153-a62f-a9f151a6e978",
+   "items": [
+    {
+     "text": "max item count [=] max(lists[\"item_count\"])",
+     "collapsed": false,
+     "sort_order": 100,
+     "guid": "fff78f17-a1f2-4d11-b4ad-ca2d66a49447",
+     "items": []
+    },
+    {
+     "text": "finding function [=] flow(item(\"item_count\"), eq(max_item_count))",
+     "collapsed": false,
+     "sort_order": 200,
+     "guid": "113cd3a5-6ff1-4d8e-8e1e-c5c84a7a4694",
+     "items": []
+    },
+    {
+     "text": "list [=] find(lists, finding_function)",
+     "collapsed": false,
+     "sort_order": 300,
+     "guid": "53c93f93-f47b-491d-89c0-6f23c60cd493",
+     "items": []
+    }
+   ]
+  },
+  {
+   "text": "list with fewest items [=] $items.list + \" (\" + $items.min_item_count + \" items)\"",
+   "collapsed": true,
+   "sort_order": 106.25,
+   "guid": "a01fda39-171e-4508-9844-e5689b281fc7",
+   "items": [
+    {
+     "text": "min item count [=] min(lists[\"item_count\"])",
+     "collapsed": false,
+     "sort_order": 100,
+     "guid": "7376cec7-ab65-4a54-a4bc-6fda9ed0e565",
+     "items": []
+    },
+    {
+     "text": "finding function [=] flow(item(\"item_count\"), eq(min_item_count))",
+     "collapsed": false,
+     "sort_order": 200,
+     "guid": "eb00f97b-b591-4c92-8720-54081bedddac",
+     "items": []
+    },
+    {
+     "text": "list [=] parentOf(min(lists[\"item_count\"]))",
+     "collapsed": false,
+     "sort_order": 300,
+     "guid": "38e17fe3-6248-4741-ad56-21a9162c52af",
+     "items": []
+    }
+   ]
+  },
+  {
+   "text": "average items per list [=] round(mean(lists[\"item_count\"]), 2)",
+   "collapsed": false,
+   "sort_order": 112.5,
+   "guid": "a25ab5df-4314-4c07-b568-53fc9df9dc1d",
+   "items": []
+  },
+  {
+   "text": "median items per list [=] median(lists[\"item_count\"])",
+   "collapsed": false,
+   "sort_order": 125,
+   "guid": "2ca1aa0e-a4fb-48ab-9b88-8afad55c9429",
+   "items": []
+  },
+  {
+   "text": "standard deviation [=] round(standard_deviation(lists[\"item_count\"]), 2)",
+   "collapsed": false,
+   "sort_order": 150,
+   "guid": "fa70b773-333b-4e02-b55b-7a44f3988c1d",
+   "items": []
+  },
+  {
+   "text": "most updated list [=] $items.list + \" (\" + $items.max_update_count + \" updates)\"",
+   "collapsed": true,
+   "sort_order": 200,
+   "guid": "81623f28-fc6f-4c1e-ae0f-57d238e6a785",
+   "items": [
+    {
+     "text": "max update count [=] max(lists[\"update_count\"])",
+     "collapsed": false,
+     "sort_order": 100,
+     "guid": "f1f29040-1739-4fbf-a1d0-a52ed5d8e670",
+     "items": []
+    },
+    {
+     "text": "finding function [=>] list | list.update_count == max_update_count",
+     "collapsed": false,
+     "sort_order": 200,
+     "guid": "926e5557-bb8a-4b63-9c48-060e4ff013ca",
+     "items": []
+    },
+    {
+     "text": "list [=] find(lists, finding_function)",
+     "collapsed": false,
+     "sort_order": 300,
+     "guid": "fde558ee-4c54-4084-9606-191bf675ff40",
+     "items": []
+    }
+   ]
+  }
+ ]
+}

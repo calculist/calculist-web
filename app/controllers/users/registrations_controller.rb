@@ -49,9 +49,9 @@ before_action :configure_sign_up_params, only: [:create]
   # end
 
   # The path used after sign up.
-  # def after_sign_up_path_for(resource)
-  #   profile_page_path(username: resource.username)
-  # end
+  def after_sign_up_path_for(resource)
+    welcome_list_path
+  end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)

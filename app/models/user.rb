@@ -70,6 +70,7 @@ class User < ApplicationRecord
   def create_initial_lists
     primary_list
     preferences
+    welcome_list
   end
 
   def primary_list
@@ -89,7 +90,7 @@ class User < ApplicationRecord
   def preferences
     @preferences ||= lists.where(list_type: 'user_preferences').first
     unless @preferences
-      @preferences = List.create(title: 'my preferences',
+      @preferences = List.create(title: 'preferences',
                                   user_id: id,
                                   update_count: 0,
                                   handle: 'preferences',
@@ -98,6 +99,20 @@ class User < ApplicationRecord
       upm.create_preference_items
     end
     @preferences
+  end
+
+  def welcome_list
+    @welcome_list ||= lists.where(list_type: 'welcome').first
+    unless @welcome_list
+      @welcome_list = List.create(title: 'Welcome to Calculist!',
+                                  user_id: id,
+                                  update_count: 0,
+                                  handle: 'welcome',
+                                  hex_id: SecureRandom.hex(4),
+                                  list_type: 'welcome')
+      upm.create_welcome_list_items
+    end
+    @welcome_list
   end
 
   def default_theme

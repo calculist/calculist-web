@@ -22,9 +22,15 @@ class ListPagesController < ApplicationController
       return render_404 if @list.nil?
       @list_owner = User.find(@list.user_id)
     else
-      @list_owner = User.where(username: params[:username]).first
-      return render_404 if @list_owner.nil?
+      if params[:username]
+        @list_owner = User.where(username: params[:username]).first
+        return render_404 if @list_owner.nil?
+      end
+      @list_owner ||= current_user
       @list = List.where(handle: params[:handle], user_id: @list_owner.id).first
+      if @list.nil? && @list_owner.id == current_user.id && params[:handle] == 'welcome'
+        @list = @list_owner.welcome_list
+      end
       return show_non_existent if @list.nil?
     end
     return show_non_existent unless current_user_can_read?

@@ -1,0 +1,491 @@
+{
+ "text": "preferences",
+ "collapsed": false,
+ "guid": "103c686f-5ae3-4eba-8d58-00dce29fcf9e",
+ "items": [
+  {
+   "text": "keyboard shortcuts",
+   "collapsed": true,
+   "sort_order": 100,
+   "guid": "b4232adb-bf06-4bcd-a3fe-6174cae0edf3",
+   "items": [
+    {
+     "text": "ctrl + enter",
+     "collapsed": false,
+     "sort_order": 100,
+     "guid": "e73e4386-6f98-4d89-9438-ddeb74d45222",
+     "items": [
+      {
+       "text": "enter command mode",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "8cd03eca-5a44-4b94-80c3-a1b633940eb4",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "alt + =",
+     "collapsed": false,
+     "sort_order": 200,
+     "guid": "aa343daa-8f08-4618-831d-9f66e4acfcdd",
+     "items": [
+      {
+       "text": "add text \"\\[=]\"",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "494f3142-0a34-4c91-9e2f-6c0cf3daa54c",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "alt + ;",
+     "collapsed": false,
+     "sort_order": 300,
+     "guid": "d81913ef-fc5d-46ea-9925-bdb499536ab2",
+     "items": [
+      {
+       "text": "add text \"\\[:]\"",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "30f75376-f3d0-4114-8a1b-cb04bf13d6eb",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "alt + shift + ;",
+     "collapsed": false,
+     "sort_order": 400,
+     "guid": "f5f3fddf-8745-4766-8155-a59794050e6b",
+     "items": [
+      {
+       "text": "add text \"\\[:]\"",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "30718f0f-4188-4e01-b1e3-50e781b4397b",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "alt + 0",
+     "collapsed": false,
+     "sort_order": 500,
+     "guid": "ea2f3849-3c14-421b-8ed4-22c3ba97551a",
+     "items": [
+      {
+       "text": "goto -1",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "6dca1e15-facc-4e9e-8e13-37542832e9a3",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "alt + spacebar",
+     "collapsed": false,
+     "sort_order": 600,
+     "guid": "e567258f-8d66-4542-906a-a172ff888433",
+     "items": [
+      {
+       "text": "goto ($parent)",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "a362faf1-929b-4f88-b75f-12391f653e56",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + spacebar",
+     "collapsed": false,
+     "sort_order": 700,
+     "guid": "8968ccf1-dd35-4a66-930f-e54bf154dc85",
+     "items": [
+      {
+       "text": "toggle collapse",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "3ff40d35-917e-4e94-b94e-55cb75d88691",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + right",
+     "collapsed": false,
+     "sort_order": 800,
+     "guid": "a58a3518-ee0d-4e80-892e-a5b19e7d1688",
+     "items": [
+      {
+       "text": "zoom in",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "dc9cb10a-2236-4884-8c94-058d10084dc1",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + left",
+     "collapsed": false,
+     "sort_order": 900,
+     "guid": "d6c1b7c1-a279-4c0a-a3dd-8453ae7dd8af",
+     "items": [
+      {
+       "text": "zoom out",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "fb065d91-9c3f-4333-8318-dab72aa4906a",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + up",
+     "collapsed": false,
+     "sort_order": 1000,
+     "guid": "79eb41a9-4b18-4737-bf45-5a366612ddd5",
+     "items": [
+      {
+       "text": "collapse all",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "e89dc517-dc8f-448f-a05a-01b2b1bbe666",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + down",
+     "collapsed": false,
+     "sort_order": 1100,
+     "guid": "6cace9dd-268d-468a-a850-08ef7c154001",
+     "items": [
+      {
+       "text": "expand all",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "5c5c816e-8c5d-46fa-b273-1654af957318",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + alt + up",
+     "collapsed": false,
+     "sort_order": 1200,
+     "guid": "b327b117-918b-41ab-8e94-81d4cf3a95dd",
+     "items": [
+      {
+       "text": "collapse items recursively",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "e3a656d9-2594-451e-aade-3fd7f6e2173b",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + shift + d",
+     "collapsed": false,
+     "sort_order": 1300,
+     "guid": "7e65a737-bd24-413f-a6f3-d6815f370392",
+     "items": [
+      {
+       "text": "duplicate",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "1653cf30-6d0d-489b-81a9-f3c39a3ad269",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + shift + delete",
+     "collapsed": false,
+     "sort_order": 1400,
+     "guid": "d71744cb-a13c-469b-9e06-1f1d0a442e13",
+     "items": [
+      {
+       "text": "delete",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "ede51fea-1f92-4c0c-9570-c461154a3cc2",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + shift + down",
+     "collapsed": false,
+     "sort_order": 1500,
+     "guid": "7cac41de-7f74-43cb-a9b9-9a99cd75a1aa",
+     "items": [
+      {
+       "text": "move down",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "b6c44913-2e74-4a8b-8645-e346cb5d3257",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + shift + up",
+     "collapsed": false,
+     "sort_order": 1600,
+     "guid": "779980c8-0e51-4cdc-bc1a-17bc1a9dce4e",
+     "items": [
+      {
+       "text": "move up",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "51e3578a-e429-42f0-9023-b37c8e13f820",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + shift + right",
+     "collapsed": false,
+     "sort_order": 1700,
+     "guid": "1f665fdb-32fb-4861-b2d9-2fa0fa752fff",
+     "items": [
+      {
+       "text": "indent",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "b527f3b7-c801-46ff-87b4-4cb1106ad656",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + shift + left",
+     "collapsed": false,
+     "sort_order": 1800,
+     "guid": "a377f4c2-50e5-41c1-b60f-e2eaa01c4fb5",
+     "items": [
+      {
+       "text": "outdent",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "b99f5a44-6069-4d20-a5a6-eb26fc661a32",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + shift + spacebar",
+     "collapsed": false,
+     "sort_order": 1900,
+     "guid": "f33d195d-1570-409c-88b1-0db146d55624",
+     "items": [
+      {
+       "text": "toggle collapse siblings",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "c78e8543-befa-48c0-880d-210dce95b3e4",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "alt + enter",
+     "collapsed": false,
+     "sort_order": 2000,
+     "guid": "6c25d8b9-9c3a-47e3-89f6-ae329be2866f",
+     "items": [
+      {
+       "text": "new item",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "5cf03956-e3ef-4c86-a53e-bf07648a9158",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + k",
+     "collapsed": false,
+     "sort_order": 2100,
+     "guid": "33955052-6df4-4695-91cc-d361a0dc27f5",
+     "items": [
+      {
+       "text": "template \"kanban\"",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "c36c29c0-95d3-449a-b679-835e0e2a1c12",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "ctrl + w",
+     "collapsed": false,
+     "sort_order": 2200,
+     "guid": "d456fecd-8961-410b-a0ca-5f25b7d88cf1",
+     "items": [
+      {
+       "text": "template \"days of the week\"",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "793d8f4c-78cd-4206-be95-844b361b28ca",
+       "items": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "text": "templates",
+   "collapsed": true,
+   "sort_order": 200,
+   "guid": "b47d388c-b698-4810-a641-ad74ebf2cdad",
+   "items": [
+    {
+     "text": "kanban",
+     "collapsed": false,
+     "sort_order": 100,
+     "guid": "9233e1e8-8cf0-44b0-b88b-a9ee89323873",
+     "items": [
+      {
+       "text": "DONE",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "a824dbd7-f604-4b91-90da-afb43a36c033",
+       "items": []
+      },
+      {
+       "text": "IN PROGRESS",
+       "collapsed": false,
+       "sort_order": 200,
+       "guid": "2ccbf1d9-c7d3-4036-b3bc-9532075776a8",
+       "items": []
+      },
+      {
+       "text": "TODO",
+       "collapsed": false,
+       "sort_order": 300,
+       "guid": "a0e89216-f65b-4d41-8316-7809e04e5249",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "days of the week",
+     "collapsed": false,
+     "sort_order": 200,
+     "guid": "b51e7c1f-2511-4030-9c96-50353cd43d41",
+     "items": [
+      {
+       "text": "Monday",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "a02d2e9b-3b11-432f-b530-2ad9b9387be7",
+       "items": []
+      },
+      {
+       "text": "Tuesday",
+       "collapsed": false,
+       "sort_order": 200,
+       "guid": "c7fffdf3-3c3b-4c90-834f-30e0725a8c6b",
+       "items": []
+      },
+      {
+       "text": "Wednesday",
+       "collapsed": false,
+       "sort_order": 300,
+       "guid": "c9fc24a2-5e33-4108-9ef4-3442b41304da",
+       "items": []
+      },
+      {
+       "text": "Thursday",
+       "collapsed": false,
+       "sort_order": 400,
+       "guid": "5a6c7798-69b5-45c6-aae1-6e89c48f8c4a",
+       "items": []
+      },
+      {
+       "text": "Friday",
+       "collapsed": false,
+       "sort_order": 500,
+       "guid": "4b0c270a-3b18-455a-9d5e-2ea58271a639",
+       "items": []
+      },
+      {
+       "text": "Saturday",
+       "collapsed": false,
+       "sort_order": 600,
+       "guid": "b9c9d81e-f78f-44d3-bf5b-66204c544e77",
+       "items": []
+      },
+      {
+       "text": "Sunday",
+       "collapsed": false,
+       "sort_order": 700,
+       "guid": "66136645-a5c3-4a75-95a6-ed628cbdb174",
+       "items": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "text": "onpageload",
+   "collapsed": true,
+   "sort_order": 300,
+   "guid": "194eb04e-671c-4e0e-aa00-7ab4aad94e93",
+   "items": [
+    {
+     "text": "// remove the \"//\" to execute the commands when the page loads",
+     "collapsed": false,
+     "sort_order": 100,
+     "guid": "4eaff71e-8087-4d1a-9688-ec6d4e4a862a",
+     "items": []
+    },
+    {
+     "text": "//hide header",
+     "collapsed": false,
+     "sort_order": 200,
+     "guid": "7c245a92-70e0-45ea-bf06-e35c9d2e7fff",
+     "items": []
+    },
+    {
+     "text": "//change theme \"dark\"",
+     "collapsed": false,
+     "sort_order": 300,
+     "guid": "5d17c952-ebb6-42bd-9708-24f1bb497cd3",
+     "items": [
+      {
+       "text": "default theme is \"light\"",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "3ca1fb3a-7f58-4a11-bf9c-832fa6ec55af",
+       "items": []
+      }
+     ]
+    },
+    {
+     "text": "//change font \"Courier New\"",
+     "collapsed": false,
+     "sort_order": 400,
+     "guid": "f5983433-c045-4a69-980e-f1be04a9f1cf",
+     "items": [
+      {
+       "text": "see fonts.google.com for other available fonts",
+       "collapsed": false,
+       "sort_order": 100,
+       "guid": "533b37f1-4f8d-4d17-9c41-3b602ef452b2",
+       "items": []
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
