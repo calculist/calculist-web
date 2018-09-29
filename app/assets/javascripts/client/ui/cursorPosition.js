@@ -34,7 +34,7 @@ calculist.register('cursorPosition', ['_'], function (_) {
       return Math.max(0, cursorPositionMinusDepth(depth, previousCursorPosition));
     },
     getWithCurrentOffset: function (text, depth) {
-      return Math.max(0, cursorPositionMinusDepth(depth, calculateCursorPosition(text, depth, document.getSelection().baseOffset)));
+      return Math.max(0, cursorPositionMinusDepth(depth, calculateCursorPosition(text, depth, document.getSelection().anchorOffset)));
     }
   };
 
