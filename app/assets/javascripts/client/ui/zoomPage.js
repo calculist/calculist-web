@@ -40,7 +40,7 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
       return false;
     },
     attach: function (item) {
-      $page = $('<div class="page zoom-page"></div>');
+      $page = $('<div class="page zoom-page" style="position: absolute;"></div>');
       originalDimensions = dimensionAttrs.reduce(function (dimensions, attr) {
         dimensions[attr] = item.$el[attr]();
         return dimensions;
