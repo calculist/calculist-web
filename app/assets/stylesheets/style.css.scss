@@ -175,12 +175,12 @@ body {
   }
   .page {
     background-color: rgba(0,0,0,0.3);
-    outline: $default-outline;
+    border: $default-outline;
   }
   .main-page, .zoom-page {
     display: block;
     margin: 0 auto;
-    padding: 10px;
+    padding: 9px;
     width: $main-page-width;
     min-height: $main-page-width * (11 / 9);
     overflow: hidden;
