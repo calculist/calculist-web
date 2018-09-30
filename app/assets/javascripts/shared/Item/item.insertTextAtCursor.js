@@ -6,7 +6,7 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorP
         'anchorOffset',
         // 'baseOffset',
         'extentOffset',
-        'focusOffset',
+        'focusOffset'
         // 'rangeCount'
         );
 
