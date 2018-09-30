@@ -5,8 +5,8 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorP
     var selection = _.pick(document.getSelection(),
         'anchorOffset',
         // 'baseOffset',
-        'extentOffset'
-        // 'focusOffset',
+        'extentOffset',
+        'focusOffset',
         // 'rangeCount'
         );
 
@@ -16,9 +16,10 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorP
       $input = this.$('#input' + this.id);
       text = $input.text();
     }
-    var start = Math.min(selection.anchorOffset, selection.extentOffset),
-        count = Math.max(selection.anchorOffset, selection.extentOffset) - start,
-        textArray = _.toArray(text);
+    var extentOffset = _.isNumber(selection.extentOffset) ? selection.extentOffset : selection.focusOffset;
+    var start = Math.min(selection.anchorOffset, extentOffset);
+    var count = Math.max(selection.anchorOffset, extentOffset) - start;
+    var textArray = _.toArray(text);
 
     textArray.splice(start, count, insertingText);
 
