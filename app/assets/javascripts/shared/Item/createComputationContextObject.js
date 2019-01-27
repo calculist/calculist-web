@@ -30,10 +30,13 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
 
   var valIfItem = function (item) { return isItem(item) ? item.valueOf() : item; };
   var itemsIfItem = function (item) { return isItem(item) ? item.items : item; };
+  var arrayWithItemsFirst = function (array) {
+    array[0] = itemsIfItem(array[0]);
+    return array;
+  };
   var itemsFirst = function (fn) {
     return function () {
-      arguments[0] = itemsIfItem(arguments[0]);
-      return fn.apply(this, arguments);
+      return fn.apply(this, arrayWithItemsFirst(arguments));
     };
   };
   var allItemsAndValues = function (fn) {
