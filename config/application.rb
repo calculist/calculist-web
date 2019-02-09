@@ -14,6 +14,6 @@ module Calculist
     config.autoload_paths += %W(#{config.root}/app/services)
 
     # Corresponds to GitHub releases: https://github.com/calculist/calculist-web/releases
-    config.calculist_version = 'v0.4.1'
+    config.calculist_version = 'v0.4.2'
   end
 end
