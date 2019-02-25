@@ -417,6 +417,20 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
   proto.last = proto.item(-1);
   proto.last.string = "list | item(-1)(list)";
 
+  var findOrFilter = function (fOrF) {
+    return curry2(function (predicate, collection) {
+      if (!_.isFunction(predicate) && _.isFunction(collection)) {
+        // backwards compatibility
+        return proto[fOrF](collection, predicate);
+      }
+      collection = itemsIfItem(collection);
+      return _[fOrF](collection, predicate);
+    });
+  };
+
+  proto.find = findOrFilter('find');
+  proto.filter = findOrFilter('filter');
+
   proto.itemOf = curry2(function (list, key) {
     return proto.item(key, list);
   });
