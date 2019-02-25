@@ -412,6 +412,11 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     return _.find(list, condition);
   });
 
+  proto.first = proto.item(0);
+  proto.first.string = "list | item(0)(list)";
+  proto.last = proto.item(-1);
+  proto.last.string = "list | item(-1)(list)";
+
   proto.itemOf = curry2(function (list, key) {
     return proto.item(key, list);
   });
