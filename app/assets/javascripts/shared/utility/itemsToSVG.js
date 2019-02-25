@@ -159,6 +159,11 @@ calculist.register('itemsToSVG', ['_'], function (_) {
       currentRect = null;
       addItems(item.items, datum, i);
       if (svg[svg.length - 1] !== '>') svg += '>';
+      if (item.key === 'text') {
+        var val = item.valueOf();
+        if (_.isFunction(val)) val = val(datum, i);
+        svg += _.escape(val);
+      }
       svg += '</' + item.key + '>';
     };
     addElement({key: topTag, items: items });
