@@ -171,7 +171,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       return sum + proto.wordCount(item);
     }, count);
   };
-  proto.mod = proto.modulo = function(a, b) { return (+a % (b = +b) + b) % b; };
+  proto.modulo = proto.mod = function(a, b) { return (+a % (b = +b) + b) % b; };
   proto.polarToCartesian = function (r, theta) {
     var x = r * Math.cos(theta),
         y = r * Math.sin(theta);
@@ -191,7 +191,8 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
   };
 
   proto.length = proto.count = itemsFirst(_.property('length'));
-  proto.name = proto.key = _.property('key');
+  proto.name = _.property('key');
+  proto.key = _.property('key');
   proto.valueOf = _.method('valueOf');
   proto.toString = _.method('toString');
   proto.recursiveCount = proto.rcount = itemsFirst(function (items) {
@@ -225,7 +226,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     }, []);
   });
 
-  proto.lambda = proto.function = proto.fn = _.rest(function (string, partialArgs) {
+  proto.function = proto.fn = proto.lambda = _.rest(function (string, partialArgs) {
     var pieces = ('' + string).split('|');
     var argNames = pieces.length > 1 ? pieces.shift().split(',') : [];
     var fnBody = pieces.join('|')
@@ -272,7 +273,13 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
         return [fn.valueOf().apply(null, r)];
       }, arguments)[0];
     };
-    flow.toString = fnToString;
+    flow.toString = function () {
+      return fns.reduce(function (s, fn) {
+        if (fn.toStringWithInput) return fn.toStringWithInput(s);
+        var fs = fn.fName ? fn.fName : ('(' + fn.toString().trim() + ')');
+        return fs + '(' + s + ')';
+      }, '_');
+    };
     return flow;
   });
 
@@ -282,6 +289,12 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     return proto.flow(fns);
   });
 
+  var quotedInputString = function (input) {
+    var quoted = '' + (_.isString(input) ? '"' + input + '"' : input);
+    if (quoted.length > 64) quoted = quoted.substring(0, 64) + '...';
+    return quoted.trim();
+  };
+
   var curry2 = function (fn) {
     var fn0, fn1;
     fn0 = function () {
@@ -290,17 +303,49 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       fn1 = function (arg1) { return fn(arg0, arg1); };
       if (arguments.length > 1) return fn1(arguments[1]);
       fn1.toString = fnToString;
+      if (fn0.toStringWithInput) {
+        fn1.toStringWithInput = function (input) {
+          return fn0.toStringWithInput(quotedInputString(arg0)) + (input ? '(' + input + ')' : '');
+        };
+        fn1.toString = function () {
+          return fn0.toStringWithInput(quotedInputString(arg0));
+        };
+      }
       return fn1;
     };
     fn0.toString = fnToString;
     return fn0;
   };
 
-  proto.isEqualTo = proto.eq = curry2(function (b, a) { return a == b; });
-  proto.isGreaterThan = proto.gt = curry2(function (b, a) { return a > b; });
-  proto.isGreaterThanOrEqualTo = proto.gte = curry2(function (b, a) { return a >= b; });
-  proto.isLessThan = proto.lt = curry2(function (b, a) { return a < b; });
-  proto.isLessThanOrEqualTo = proto.lte = curry2(function (b, a) { return a <= b; });
+  var curry2Comparison = function (op, fn) {
+    var c2 = curry2(fn);
+    var c2c = function () {
+      if (arguments.length === 0) return c2c;
+      if (arguments.length === 1) {
+        var arg0 = arguments[0];
+        if (isItem(arg0)) arg0 = arg0.valueOf();
+        var fn = c2(arg0);
+        fn.toString = function () {
+          return "_ " + op + " " + quotedInputString(arg0) + "";
+        };
+        fn.toStringWithInput = function (input) {
+          var s = fn.toString();
+          return input + s.substring(1);
+        };
+        return fn;
+      } else {
+        return c2.apply(this, arguments);
+      }
+    };
+    c2c.string = "_ " + op + " _";
+    return c2c;
+  };
+
+  proto.isEqualTo = proto.eq = curry2Comparison('==', function (b, a) { return a == b; });
+  proto.isGreaterThan = proto.gt = curry2Comparison('>', function (b, a) { return a > b;  });
+  proto.isGreaterThanOrEqualTo = proto.gte = curry2Comparison('>=', function (b, a) { return a >= b; });
+  proto.isLessThan = proto.lt = curry2Comparison('<', function (b, a) { return a < b;  });
+  proto.isLessThanOrEqualTo = proto.lte = curry2Comparison('<=', function (b, a) { return a <= b; });
 
   // TODO should these logic functions check and adapt to non-function arguments?
   proto.and = function () {
@@ -312,9 +357,12 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
         return fn.valueOf().apply(null, args);
       });
     };
-    and.toString = fnToString;
+    and.toString = function () {
+      return "(" + fns.map(proto.toString).join(' && ') + ")";
+    };
     return and;
   };
+  proto.and.string = "(_) && (_)";
 
   proto.or = function () {
     var fns = _.flatten(arguments),
@@ -325,15 +373,32 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
         return fn.valueOf().apply(null, args);
       });
     };
-    or.toString = fnToString;
+    or.toString = function () {
+      return "(" + fns.map(proto.toString).join(' || ') + ")";
+    };
     return or;
   };
+  proto.or.string = "(_) || (_)";
 
   proto.not = function (fn) {
-    return function () {
+    var not = function () {
       return !fn.valueOf().apply(null, arguments);
     };
+    not.toString = function () {
+      return "!(" + fn.toString().trim() + ")";
+    };
+    not.toStringWithInput = function (input) {
+      return '!(' +
+        (
+          fn.toStringWithInput ?
+          fn.toStringWithInput(input) :
+          '(' + fn.toString() + ')(' + input + ')'
+        ) +
+      ')';
+    };
+    return not;
   };
+  proto.not.string = "!(_)";
 
   proto.item = curry2(function (key, list) {
     if (isItem(list)) return list.$item(key);
@@ -717,8 +782,15 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
   });
 
   _.each(proto, function (fn, key) {
-    proto[_.snakeCase(key)] = fn;
-    if (_.isFunction(fn)) fn.toString = fnToString;
+    var sn_key = _.snakeCase(key);
+    proto[sn_key] = fn;
+    if (_.isFunction(fn)) {
+      fn.fName || (fn.fName = sn_key);
+      fn.toStringWithInput || (fn.toStringWithInput = function (input) {
+        return fn.fName + '(' + input + ')';
+      });
+      fn.toString = fn.string ? _.constant(fn.string) : fnToString;
+    }
   });
 
   return function (item) {

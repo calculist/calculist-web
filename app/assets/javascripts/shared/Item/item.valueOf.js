@@ -47,7 +47,10 @@ calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasCh
               _this.hasVariableReference = false;
               return val;
             };
-            this.val.toString = _.constant( parsedText.val);
+            this.val.toString = _.constant(parsedText.val);
+            this.val.toStringWithInput = function (input) {
+              return _this.key + '(' + input + ')';
+            };
             this._valueOf = this.val;
             break;
           case ('[=#]'):
