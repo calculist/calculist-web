@@ -402,7 +402,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
 
   proto.item = curry2(function (key, list) {
     if (isItem(list)) return list.$item(key);
-    if (_.isNumber(key)) return list[key];
+    if (_.isNumber(key)) return list[proto.mod(key, list.length)];
     var condition;
     if (_.isFunction(key)) {
       condition = key;
