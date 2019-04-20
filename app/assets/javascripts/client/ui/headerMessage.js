@@ -35,5 +35,9 @@ calculist.register('headerMessage', ['_','eventHub'], function (_, eventHub) {
     }, 2000)
   });
 
+  eventHub.on('needClickToConfirmCopy', function (button) {
+    getElement().append(button);
+  })
+
   return {}; // TODO add API as needed
 });

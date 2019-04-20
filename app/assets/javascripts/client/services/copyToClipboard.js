@@ -1,6 +1,6 @@
 calculist.register('copyToClipboard', ['_','$','Promise','Clipboard','eventHub'], function (_, $, Promise, Clipboard, eventHub) {
   return function (text) {
-    var trigger = $('<input type="button">')[0];
+    var trigger = $('<input type="button" value="click to copy">')[0];
     var params = {};
     if (_.isElement(text)) {
       params.target = _.constant(text);
@@ -12,12 +12,12 @@ calculist.register('copyToClipboard', ['_','$','Promise','Clipboard','eventHub']
     return new Promise(function (resolve, reject) {
       cb.on('success', function () {
         cb.destroy();
+        trigger.remove();
         resolve();
         eventHub.trigger('copyToClipboard');
       });
       cb.on('error', function () {
-        cb.destroy();
-        reject();
+        eventHub.trigger('needClickToConfirmCopy', trigger);
       });
     });
   };
