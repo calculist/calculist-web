@@ -246,6 +246,7 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
           if (/^[a-zA-Z]/.test(commandItem.text)) executeCommand(window.topItem, commandItem.text);
         });
       });
+      getAndApplyChangesFromServer(window.topItem.last_save);
     });
   });
 });
