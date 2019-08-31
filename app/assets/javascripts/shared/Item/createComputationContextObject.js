@@ -731,19 +731,51 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
 
   proto.table = itemsFirst(function (items, columns) {
     var columnValues = {};
-    _.each(items, function (rowItem, i) {
-      _.each(rowItem.items, function (cellItem) {
-        var val = cellItem.valueOf();
-        var column = cellItem.key;
-        columnValues[column] || (columnValues[column] = []);
-        columnValues[column][i] = val;
-      });
-    });
+    var mappers = {};
     if (columns) {
-      columns = itemsIfItem(columns).map(proto.valueOf);
-    } else {
-      columns = _.keys(columnValues);
+      var columnKeys = [];
+      itemsIfItem(columns).forEach(function (column, i) {
+        if (isItem(column)) {
+          var val = column.valueOf();
+          if (_.isFunction(val)) {
+            columnKeys.push(column.key);
+            columnValues[column.key] = [];
+            mappers[column.key] = val;
+          } else {
+            columnKeys.push(val);
+            columnValues[val] = [];
+          }
+        } else {
+          column = '' + column;
+          columnKeys.push(column);
+          columnValues[column] = [];
+        }
+      });
+      columns = columnKeys;
     }
+    _.each(items, function (rowItem, i) {
+      if (columns) {
+        columns.forEach(function (column) {
+          if (mappers[column]) {
+            columnValues[column][i] = mappers[column](rowItem);
+          } else {
+            var cellItem = proto.item(column, rowItem);
+            if (cellItem) {
+              var val = cellItem.valueOf();
+              columnValues[column][i] = val;
+            }
+          }
+        });
+      } else {
+        _.each(rowItem.items, function (cellItem) {
+          var val = cellItem.valueOf();
+          var column = cellItem.key;
+          columnValues[column] || (columnValues[column] = []);
+          columnValues[column][i] = val;
+        });
+      }
+    });
+    if (!columns) columns = _.keys(columnValues);
     var html = '<table>' +
       '<thead>' +
         '<tr>' +
