@@ -22,6 +22,7 @@ calculist.register('item.$item', ['_'], function (_) {
       if (children.length) {
         nextChildren = [];
         item = _.find(children, function(child) {
+          child.valueOf();
           if (condition(child)) {
             return true;
           } else {
