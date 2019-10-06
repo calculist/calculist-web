@@ -2,7 +2,10 @@ calculist.register('item.down',['_','lmSessionStorage'], function (_, lmSessionS
 
   return function(skipChildren, maintainDepth) {
     var i, item, nextItem, nextSibling, _ref;
-    if (maintainDepth) {
+    if (this.mode === 'search') {
+      var indexChange = 1;
+      this.navigateSearchResults(indexChange);
+    } else if (maintainDepth) {
       nextItem = this.parent.getNextItemAtDepth(this, this.depth);
       if (nextItem && nextItem.isWithinZoom()) {
         nextItem.focus();

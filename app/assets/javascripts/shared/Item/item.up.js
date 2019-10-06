@@ -1,6 +1,11 @@
 calculist.register('item.up', ['_','zoomPage','cursorPosition'], function (_, zoomPage, cursorPosition) {
 
   return function(skipChildren, maintainDepth) {
+    if (this.mode === 'search') {
+      var indexChange = -1;
+      this.navigateSearchResults(indexChange);
+      return;
+    }
     if (zoomPage.isTopOfAPage(this)) return;
     var nextUp;
     if (maintainDepth) {

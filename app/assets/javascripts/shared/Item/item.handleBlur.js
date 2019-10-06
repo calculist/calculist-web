@@ -1,4 +1,4 @@
-calculist.register('item.handleBlur', ['_','eventHub'], function (_, eventHub) {
+calculist.register('item.handleBlur', ['_','eventHub', 'executeCommand'], function (_, eventHub, executeCommand) {
 
   var itemsToBlur = [];
 
@@ -29,6 +29,7 @@ calculist.register('item.handleBlur', ['_','eventHub'], function (_, eventHub) {
   return function() {
     eventHub.trigger('item.handleBlur:before', this);
     if (this.mode === 'command') this.exitCommandMode();
+    if (this.mode === 'search') _.defer(executeCommand, this, 'exit search mode');
     addToQueue(this);
   };
 

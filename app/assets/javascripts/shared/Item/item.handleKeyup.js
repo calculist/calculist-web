@@ -2,6 +2,10 @@ calculist.register('item.handleKeyup', ['cursorPosition','itemOfFocus'], functio
 
   return function(e) {
     if (this.mode === 'command' || !itemOfFocus.is(this)) return;
+    if (this.mode === 'search') {
+      this.renderSearchResults(e.target.textContent);
+      return;
+    }
     var previousText = this.text;
     var text = e.target.textContent;
     if (text !== previousText) {

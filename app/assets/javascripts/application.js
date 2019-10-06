@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require lodash/lodash
+//= require mark.js/jquery.mark
 //= require backbone/backbone
 //= require papaparse/papaparse
 //= require undomanager/undomanager

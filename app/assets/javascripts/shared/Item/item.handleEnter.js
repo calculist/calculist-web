@@ -13,6 +13,22 @@ calculist.register('item.handleEnter',['_','$','cursorPosition','executeCommand'
     if (this.mode === 'command') {
       executeCommand(this, e.target.textContent);
       this.exitCommandMode();
+    } else if (this.mode === 'search') {
+      var selectedItem = this.searchResults && this.searchResults.items[this.searchResults.selectionIndex];
+      if (selectedItem) {
+        var nextParent = selectedItem.parent;
+        var guard = 0;
+        while (nextParent && ++guard < 100) {
+          nextParent.wasCollapsed = false;
+          nextParent.collapsed = false;
+          nextParent = nextParent.parent;
+        }
+        executeCommand(this, 'exit search mode');
+        selectedItem.focus();
+      } else {
+        executeCommand(this, 'exit search mode');
+        this.focus();
+      }
     } else if (e.ctrlKey && !e.shiftKey) {
       this.enterCommandMode();
     } else if (e.shiftKey) {
