@@ -22,11 +22,12 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       })
     },
     searchFor: function (_this, item, caseSensitive) {
-      if (_.isString(item)) {
-        if (caseSensitive) item = new RegExp(_.escapeRegExp(item));
-        if (!caseSensitive) item = new RegExp(_.escapeRegExp(item), 'i');
-      }
-      commands.goto(_this, item);
+      // if (_.isString(item)) {
+      //   if (caseSensitive) item = new RegExp(_.escapeRegExp(item));
+      //   if (!caseSensitive) item = new RegExp(_.escapeRegExp(item), 'i');
+      // }
+      // commands.goto(_this, item);
+      this.enterSearchMode(_this, item);
     },
     gotoItem: function (_this, item) {
       commands.goto(_this, item);

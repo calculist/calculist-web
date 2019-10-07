@@ -1,8 +1,13 @@
 calculist.register('commands.enterSearchMode', ['eventHub', 'zoomPage'], function (eventHub, zoomPage) {
-  return function (_this) {
+  return function (_this, query) {
     var f = _.debounce(function () {
       _this.mode = 'search';
-      _this.$("#input" + _this.id).addClass('search').text('');
+      _this.$("#input" + _this.id).addClass('search').text(query || '');
+      if (_this.collapsed) {
+        _this.wasCollapsed = true;
+        _this.collapsed = false;
+        _this.renderChildren();
+      }
       var lowerOpacity = function (item) {
         if (item === _this) return;
         item.$(".input-container:first").css('opacity', '0.4');
@@ -10,6 +15,7 @@ calculist.register('commands.enterSearchMode', ['eventHub', 'zoomPage'], functio
         item.items.forEach(lowerOpacity);
       };
       lowerOpacity(zoomPage.getTopItem());
+      $('#main-container').addClass('search');
       eventHub.trigger('item.enterSearchMode', _this);
     });
     if (_this.mode === 'command') {

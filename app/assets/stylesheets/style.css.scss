@@ -417,6 +417,9 @@ body {
   &.theme-light {
     background-color: $light-color;
     color: $dark-color;
+    &.search {
+      // background-color: $dark-color;
+    }
     a {
       color: $dark-color;
     }
