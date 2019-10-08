@@ -2,7 +2,9 @@ calculist.register('commands.enterSearchMode', ['eventHub', 'zoomPage'], functio
   return function (_this, query) {
     var f = _.debounce(function () {
       _this.mode = 'search';
-      _this.$("#input" + _this.id).addClass('search').text(query || '');
+      _this.$el.addClass('search');
+      var text = (query || '').toString();
+      _this.$("#input" + _this.id).addClass('search').text(text);
       if (_this.collapsed) {
         _this.wasCollapsed = true;
         _this.collapsed = false;
@@ -17,6 +19,7 @@ calculist.register('commands.enterSearchMode', ['eventHub', 'zoomPage'], functio
       lowerOpacity(zoomPage.getTopItem());
       $('#main-container').addClass('search');
       eventHub.trigger('item.enterSearchMode', _this);
+      _this.renderSearchResults(query);
     });
     if (_this.mode === 'command') {
       eventHub.once('item.exitCommandMode', f);

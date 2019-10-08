@@ -419,6 +419,9 @@ body {
     color: $dark-color;
     &.search {
       // background-color: $dark-color;
+      .page {
+        outline: solid 2px $computed-color;
+      }
     }
     a {
       color: $dark-color;

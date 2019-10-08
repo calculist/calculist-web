@@ -19,6 +19,7 @@ calculist.register('commands.exitSearchMode', ['eventHub', 'zoomPage', 'itemOfFo
         });
       };
       resetCollapsed([_this]);
+      _this.$el.removeClass('search');
       $('#main-container').removeClass('search');
       zoomPage.getTopItem().render();
       var iof = itemOfFocus.get();
