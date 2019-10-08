@@ -1,4 +1,4 @@
-calculist.register('item.handleEnter',['_','$','cursorPosition','executeCommand'],function (_, $, cursorPosition, executeCommand) {
+calculist.register('item.handleEnter',['_','$','cursorPosition','executeCommand','itemOfFocus'],function (_, $, cursorPosition, executeCommand, itemOfFocus) {
 
   var addNewItem = function (_this, newItemText) {
     if (sessionStorage.zoomGuid === _this.guid || !_this.parent) {
@@ -24,7 +24,7 @@ calculist.register('item.handleEnter',['_','$','cursorPosition','executeCommand'
           nextParent = nextParent.parent;
         }
         executeCommand(this, 'exit search mode');
-        selectedItem.focus();
+        itemOfFocus.change(selectedItem);
       } else {
         executeCommand(this, 'exit search mode');
         this.focus();
