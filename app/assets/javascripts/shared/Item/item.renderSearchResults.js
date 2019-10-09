@@ -1,11 +1,11 @@
-calculist.register('item.renderSearchResults', ['_'], function (_) {
+calculist.register('item.renderSearchResults', ['_', 'searchQueryParser'], function (_, searchQueryParser) {
 
-  var showOrHide = function (items, predicate, results, renderOps) {
+  var showOrHide = function (items, parsedQuery, results, renderOps) {
     return items.reduce(function (hadMatch, item) {
       var resultsIndex = results.items.length;
       var renderOpsIndex = renderOps.length;
-      var isMatch = predicate(item);
-      var hasMatch = showOrHide(item.items, predicate, results, renderOps);
+      var isMatch = parsedQuery.predicate(item);
+      var hasMatch = showOrHide(item.items, parsedQuery, results, renderOps);
       if (isMatch || hasMatch) {
         if (isMatch) results.items.splice(resultsIndex, 0, item);
         renderOps.splice(renderOpsIndex, 0, function () {
@@ -18,7 +18,7 @@ calculist.register('item.renderSearchResults', ['_'], function (_) {
           var input = item.$('#input' + item.id);
           input.css('opacity', isMatch ? '1.0' : '0.4');
           input.removeClass('focus');
-          if (isMatch && predicate.pattern) input.markRegExp(predicate.pattern);
+          if (isMatch && parsedQuery.highlightPattern) input.markRegExp(parsedQuery.highlightPattern);
           // The render procedure counts the number of results
           // that have been rendered in order to decide how long to delay
           // before executing the next render op.
@@ -59,19 +59,10 @@ calculist.register('item.renderSearchResults', ['_'], function (_) {
     }
     if (this.searchResults && this.searchResults.query === query) return;
     resetSearchResults(this, query);
-    var predicate, queryString;
-    if (_.isFunction(query)) {
-      predicate = query;
-      queryString = query.toString();
-    } else {
-      var pattern = new RegExp(_.escapeRegExp(query), 'i');
-      predicate = function (item) { return pattern.test(item.text); };
-      predicate.pattern = pattern;
-      queryString = query;
-    }
+    var parsedQuery = searchQueryParser.parse(query);
     var renderOps = [];
-    this.$el.unmark();
-    showOrHide(this.items, predicate, this.searchResults, renderOps);
+    showOrHide(this.items, parsedQuery, this.searchResults, renderOps);
+    console.log('completed compiling results for "' + query + '" in ' + (window.performance.now() - begin) + ' milliseconds');
     var _this = this;
     var renderCount = 0;
     var minRenderCountBeforeDelay = 10;
@@ -80,9 +71,10 @@ calculist.register('item.renderSearchResults', ['_'], function (_) {
     var delayThreshold = 20;
     var maxDelay = 100;
     var initialPromise = new Promise(function (resolve, reject) {
+      _this.$el.unmark();
       var initialDelay = 10;
-      if (queryString.length === 1) initialDelay = 1000;
-      if (queryString.length === 2) initialDelay = 100;
+      if (parsedQuery.queryString.length === 1) initialDelay = 1000;
+      if (parsedQuery.queryString.length === 2) initialDelay = 100;
       _.delay(function () {
         if (_this.mode === 'search' && currentQuery === query) {
           resolve(window.performance.now());
