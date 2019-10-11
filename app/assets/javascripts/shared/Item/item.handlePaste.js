@@ -1,7 +1,7 @@
 calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfFocus','itemsByGuid','calculistFileFormatter'], function (Item, _, parseTextDoc, getNewGuid, transaction, itemOfFocus, itemsByGuid, calculistFileFormatter) {
 
   Item.prototype.handlePaste = function(e, options) {
-    if (this.mode === 'command') return;
+    if (this.mode != null) return;
     var content, selectionEnd, selectionStart, _ref, _ref1;
     // content =  ? e : e.originalEvent.clipboardData.getData('text/plain');
     // _ref = e.target, selectionStart = _ref.selectionStart, selectionEnd = _ref.selectionEnd;

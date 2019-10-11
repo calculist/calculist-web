@@ -2,8 +2,22 @@ calculist.register('item.enterCommandMode', ['_','eventHub'], function (_, event
 
   return function(startingText, cursorIndex, highlightWidth) {
     eventHub.trigger('item.enterCommandMode:before', this);
-    this.mode = 'command';
-    this.$("#input" + this.id).addClass('command').text(_.isString(startingText) ? startingText : '');
+    if (this.mode === 'search') {
+      this.mode = 'search:command';
+      startingText || (startingText = 'for each item,');
+    } else {
+      this.mode = 'command';
+    }
+    var $input = this.$("#input" + this.id);
+    $input.addClass('command').text(_.isString(startingText) ? startingText : '');
+    if (startingText) {
+      var range = document.createRange();
+      var sel = window.getSelection();
+      range.setStart($input[0].childNodes[0], startingText.length);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
     eventHub.trigger('item.enterCommandMode', this);
   };
 

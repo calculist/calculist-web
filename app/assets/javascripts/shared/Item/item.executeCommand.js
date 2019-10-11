@@ -12,12 +12,15 @@ calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeIt
     if (commandStringPieces[0] === '') commandStringPieces[0] = 'noop';
     commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
     if (commandStringPieces[0] === 'delete') commandStringPieces[0] = '_delete';
-    if (contextItem.mode === 'command' && !_.isFunction(commands[commandStringPieces[0]]) ) {
+    if ((contextItem.mode === 'command' || contextItem.mode === 'search:command') && !_.isFunction(commands[commandStringPieces[0]]) ) {
       commandString = commandTypeahead.getTopMatch() || 'noop';
       commandStringPieces = commandString.split(/([^\w\s]|\d)/);
       commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
     }
     var commandArgumentsString;
+    if (contextItem.mode === 'search:command' && commandStringPieces[0] !== 'forEachItem') {
+      return;
+    }
     if (commandStringPieces[0] === 'forEach') {
       var enclosureDepth = 0;
       var commandArgumentsStringPieces = commandStringPieces.slice(1).join('').split('');
@@ -52,7 +55,7 @@ calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeIt
     transaction(function () {
       commandFunction.apply(commands, commandArguments);
     });
-    if (mode === 'command' && commandStringPieces[0] !== 'executePreviousCommand') commandTypeahead.end(commandString);
+    if ((mode === 'command' || mode === 'search:command') && commandStringPieces[0] !== 'executePreviousCommand') commandTypeahead.end(commandString);
   };
 
 });

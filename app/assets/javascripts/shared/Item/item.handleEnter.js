@@ -10,7 +10,7 @@ calculist.register('item.handleEnter',['_','$','cursorPosition','executeCommand'
 
   return function (e, anchorOffset) {
     e.preventDefault();
-    if (this.mode === 'command') {
+    if (this.mode === 'command' || this.mode === 'search:command') {
       executeCommand(this, e.target.textContent);
       this.exitCommandMode();
     } else if (this.mode === 'search') {

@@ -12,7 +12,7 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorP
 
     var text = this.text;
     var $input;
-    if (this.mode === 'command') {
+    if (this.mode != null) {
       $input = this.$('#input' + this.id);
       text = $input.text();
     }
@@ -24,7 +24,7 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','cursorP
     textArray.splice(start, count, insertingText);
 
     transaction(function () {
-      if (this.mode === 'command') {
+      if (this.mode != null) {
         $input.text(textArray.join(''));
         var range = document.createRange();
         var sel = window.getSelection();

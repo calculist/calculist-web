@@ -28,7 +28,7 @@ calculist.register('item.handleBlur', ['_','eventHub', 'executeCommand'], functi
 
   return function() {
     eventHub.trigger('item.handleBlur:before', this);
-    if (this.mode === 'command') this.exitCommandMode();
+    if (this.mode === 'command' || this.mode === 'search:command') this.exitCommandMode();
     if (this.mode === 'search') _.defer(executeCommand, this, 'exit search mode');
     addToQueue(this);
   };

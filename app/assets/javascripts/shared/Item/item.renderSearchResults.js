@@ -1,4 +1,4 @@
-calculist.register('item.renderSearchResults', ['_', 'searchQueryParser'], function (_, searchQueryParser) {
+calculist.register('item.renderSearchResults', ['_', 'searchQueryParser', 'eventHub'], function (_, searchQueryParser, eventHub) {
 
   var showOrHide = function (items, parsedQuery, results, renderOps) {
     return items.reduce(function (hadMatch, item) {
@@ -43,7 +43,11 @@ calculist.register('item.renderSearchResults', ['_', 'searchQueryParser'], funct
   };
 
   var currentQuery;
+
+  eventHub.on('exitSearchMode', function () { currentQuery = null; });
+
   return function (query) {
+    if (this.mode !== 'search') return;
     if (
       this.searchResults &&
       _.isFunction(this.searchResults.query) &&
@@ -76,17 +80,16 @@ calculist.register('item.renderSearchResults', ['_', 'searchQueryParser'], funct
       if (parsedQuery.queryString.length === 1) initialDelay = 1000;
       if (parsedQuery.queryString.length === 2) initialDelay = 100;
       _.delay(function () {
-        if (_this.mode === 'search' && currentQuery === query) {
+        if (currentQuery === query) {
           resolve(window.performance.now());
         } else {
-          reject("'" + _this.mode + "' !== 'search' || '" + currentQuery + "' !== '" + query + "'");
+          reject(new Error("'" + currentQuery + "' !== '" + query + "'"));
         }
       }, initialDelay);
     })
     var promise = renderOps.reduce(function (promise, f) {
       return promise.then(function (startTime) {
-        if (_this.mode !== 'search') return Promise.reject('not in search mode');
-        if (renderCount > 1000) return Promise.reject('too many results');
+        if (renderCount > 1000) return Promise.reject(new Error('too many results'));
         var elapsedTime = window.performance.now() - startTime;
         if (
           elapsedTime > delayThreshold &&
@@ -98,17 +101,16 @@ calculist.register('item.renderSearchResults', ['_', 'searchQueryParser'], funct
           // in between so we can check to see if the query has changed.
           // If it has changed, we abort rendering the stale results
           // in order to allow the updated results to render instead.
-          // We also abort if we have exited search mode.
           console.log(query + ", " + elapsedTime + " > 20 and renderCount == " + renderCount);
           return new Promise(function (resolve, reject) {
             _.delay(function () {
-              if (_this.mode === 'search' && currentQuery === query) {
+              if (currentQuery === query) {
                 var startTime = window.performance.now();
                 previousRenderCount = renderCount;
                 renderCount += f();
                 resolve(startTime);
               } else {
-                reject("'" + _this.mode + "' !== 'search' || '" + currentQuery + "' !== '" + query + "'");
+                reject(new Error("'" + currentQuery + "' !== '" + query + "'"));
               }
             }, delay);
             delay = Math.min(delay + 10, maxDelay);
@@ -118,12 +120,14 @@ calculist.register('item.renderSearchResults', ['_', 'searchQueryParser'], funct
           renderCount += f();
           return startTime;
         } else {
-          return Promise.reject("'" + currentQuery + "' !== '" + query + "'");
+          return Promise.reject(new Error("'" + currentQuery + "' !== '" + query + "'"));
         }
       });
     }, initialPromise);
     promise.then(function () {
       console.log('completed render for "' + query + '" in ' + (window.performance.now() - begin) + ' milliseconds');
+    }).catch(function () {
+      console.log('aborted render for "' + query + '" after ' + (window.performance.now() - begin) + ' milliseconds');
     });
   };
 

@@ -1,8 +1,10 @@
 calculist.register('commands.exitSearchMode', ['eventHub', 'zoomPage', 'itemOfFocus'], function (eventHub, zoomPage, itemOfFocus) {
 
   return function (_this) {
+    eventHub.trigger('exitSearchMode:before', _this);
     _this.mode = null;
     _this.searchResults = null;
+    eventHub.trigger('exitSearchMode', _this);
     // We reset the UI asynchronously in case the
     // search results are still rendering.
     // Rendering continually checks _this.mode and
@@ -24,6 +26,7 @@ calculist.register('commands.exitSearchMode', ['eventHub', 'zoomPage', 'itemOfFo
       zoomPage.getTopItem().render();
       var iof = itemOfFocus.get();
       iof && iof.focus();
+      eventHub.trigger('exitSearchMode:after', _this);
     });
   };
 });

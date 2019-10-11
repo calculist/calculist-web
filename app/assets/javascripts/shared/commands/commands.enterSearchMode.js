@@ -21,7 +21,7 @@ calculist.register('commands.enterSearchMode', ['eventHub', 'zoomPage'], functio
       eventHub.trigger('item.enterSearchMode', _this);
       _this.renderSearchResults(query);
     });
-    if (_this.mode === 'command') {
+    if (_this.mode === 'command' || _this.mode === 'search:command') {
       eventHub.once('item.exitCommandMode', f);
     } else {
       f();
