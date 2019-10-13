@@ -5,6 +5,7 @@ calculist.register('item.applySyntaxHighlighting',[], function () {
     'keyboard shortcuts': true,
     'number format': true,
     'onpageload': true,
+    'variables': true,
   };
 
   // TODO Do actual syntax highlighting
