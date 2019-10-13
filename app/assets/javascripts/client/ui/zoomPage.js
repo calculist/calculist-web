@@ -11,7 +11,30 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
     });
   };
 
-  return {
+  var getPageClickHandler = function ($page, topItem) {
+    return function (e) {
+      if (e.target != $page[0]) return;
+      var lastItem = _.last(topItem.items);
+      if (!lastItem) {
+        topItem.addChild('');
+      } else {
+        while (!lastItem.collapsed && lastItem.items.length) lastItem = _.last(lastItem.items);
+        lastItem.focus();
+      }
+    }
+  };
+
+  $(function () {
+    var $mp = $('.main-page');
+    var clickHandler = null;
+    $mp.on('click', function (e) {
+      // Waiting to set handler until after window.topItem has been initialized.
+      clickHandler || (clickHandler = getPageClickHandler($mp, window.topItem));
+      clickHandler(e);
+    });
+  });
+
+  var zoomPage = {
     isTopOfAPage: function (item) {
       return _.some(stack, function (data) { return data.item === item; }) || !item.parent;
     },
@@ -41,6 +64,7 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
     },
     attach: function (item) {
       $page = $('<div class="page zoom-page" style="position: absolute;"></div>');
+      $page.on('click', getPageClickHandler($page, item));
       originalDimensions = dimensionAttrs.reduce(function (dimensions, attr) {
         dimensions[attr] = item.$el[attr]();
         return dimensions;
@@ -146,6 +170,7 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
       });
     }
   };
+  return zoomPage;
 });
 // 162, 302.5
 // 172, 296.5
