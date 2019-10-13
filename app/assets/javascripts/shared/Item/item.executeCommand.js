@@ -5,7 +5,7 @@ calculist.register('item.executeCommand', ['_','executeCommand'], function (_, e
   });
 });
 
-calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead'], function (_, commands, transaction, computeItemValue, commandTypeahead) {
+calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead', 'itemOfSearch'], function (_, commands, transaction, computeItemValue, commandTypeahead, itemOfSearch) {
 
   return function (contextItem, commandString) {
     var commandStringPieces = commandString.split(/([^\w\s]|\d)/);
@@ -18,10 +18,7 @@ calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeIt
       commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
     }
     var commandArgumentsString;
-    if (contextItem.mode === 'search:command' && commandStringPieces[0] !== 'forEachItem') {
-      return;
-    }
-    if (commandStringPieces[0] === 'forEach') {
+    if (commandStringPieces[0] === 'forEach' || commandStringPieces[0] === 'forItem') {
       var enclosureDepth = 0;
       var commandArgumentsStringPieces = commandStringPieces.slice(1).join('').split('');
       var firstArgumentString = '';
@@ -47,7 +44,10 @@ calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeIt
       commandArgumentsString = commandStringPieces.slice(1).join('');
     }
     var commandFunction = commands[commandStringPieces[0]];
-    var additionalVariables = commandArgumentsString ? { '$value': contextItem.valueOf() } : null;
+    var additionalVariables = commandArgumentsString ? {
+      '$value': contextItem.valueOf(),
+      '$results': itemOfSearch.getSearchResultsItems(),
+    } : null;
     var computingForCommand = true;
     var commandArguments = commandArgumentsString ? computeItemValue('[' + commandArgumentsString + ']', contextItem, additionalVariables, computingForCommand) : [];
     commandArguments.unshift(contextItem);

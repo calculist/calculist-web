@@ -480,8 +480,12 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       if (!_.isArray(array)) return;
       _.each(array.slice(), _.method('executeCommand', cmd));
     },
+    forItem: function (_this, item, cmd) {
+      if (!isItem(item)) return;
+      item.executeCommand(cmd);
+    },
     forEachItem: function(_this, cmd) {
-      var items = _this.mode === 'search:command' ? _this.searchResults.items : _this.items.slice();
+      var items = _this.items.slice();
       _.each(items, _.method('executeCommand', cmd));
     },
     forEachItemRecursively: function (_this, cmd) {
@@ -492,7 +496,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
           if (item.items.length) recurse(item.items.slice());
         });
       };
-      var items = _this.mode === 'search:command' ? _this.searchResults.items : _this.items.slice();
+      var items = _this.items.slice();
       recurse(items);
     },
     flatten: function (_this) {

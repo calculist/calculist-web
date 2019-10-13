@@ -4,7 +4,7 @@ calculist.register('item.enterCommandMode', ['_','eventHub'], function (_, event
     eventHub.trigger('item.enterCommandMode:before', this);
     if (this.mode === 'search') {
       this.mode = 'search:command';
-      startingText || (startingText = 'for each item,');
+      startingText || (startingText = 'for each ( $results ),');
     } else {
       this.mode = 'command';
     }

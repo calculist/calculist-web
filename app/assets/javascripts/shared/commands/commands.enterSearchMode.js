@@ -1,7 +1,8 @@
-calculist.register('commands.enterSearchMode', ['eventHub', 'zoomPage'], function (eventHub, zoomPage) {
+calculist.register('commands.enterSearchMode', ['eventHub', 'zoomPage', 'itemOfSearch'], function (eventHub, zoomPage, itemOfSearch) {
   return function (_this, query) {
     var f = _.debounce(function () {
       _this.mode = 'search';
+      itemOfSearch.change(_this);
       _this.$el.addClass('search');
       var text = (query || '').toString();
       _this.$("#input" + _this.id).addClass('search').text(text);

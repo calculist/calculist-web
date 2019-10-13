@@ -1,9 +1,10 @@
-calculist.register('commands.exitSearchMode', ['eventHub', 'zoomPage', 'itemOfFocus'], function (eventHub, zoomPage, itemOfFocus) {
+calculist.register('commands.exitSearchMode', ['eventHub', 'zoomPage', 'itemOfFocus', 'itemOfSearch'], function (eventHub, zoomPage, itemOfFocus, itemOfSearch) {
 
   return function (_this) {
     eventHub.trigger('exitSearchMode:before', _this);
     _this.mode = null;
     _this.searchResults = null;
+    itemOfSearch.change(null);
     eventHub.trigger('exitSearchMode', _this);
     // We reset the UI asynchronously in case the
     // search results are still rendering.
