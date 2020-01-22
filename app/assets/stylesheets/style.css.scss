@@ -173,6 +173,9 @@ body {
       text-align: center;
     }
   }
+  tr:hover {
+    background-color: rgba(0,0,0,0.05);
+  }
   .page {
     background-color: rgba(0,0,0,0.3);
     border: $default-outline;
@@ -365,6 +368,9 @@ body {
       &.dragging-standin {
         background: rgba(255,255,255,0.1);
       }
+    }
+    tr:hover {
+      background-color: rgba(255,255,255,0.05);
     }
     .input {
       color: rgba(255,255,255,0.5);
