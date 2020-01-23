@@ -1,0 +1,14 @@
+//= require jquery
+//= require jquery_ujs
+//= require lodash/lodash
+//= require mark.js/jquery.mark
+//= require backbone/backbone
+//= require papaparse/papaparse
+//= require undomanager/undomanager
+//= require jsondiffpatch/jsondiffpatch
+//= require simple_statistics/simple_statistics
+//= require clipboard/clipboard
+//= require katex/katex.min
+//= require d3/d3
+//= require evalculist/evalculist
+//= require acyclic/acyclic
