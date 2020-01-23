@@ -22,11 +22,12 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       })
     },
     searchFor: function (_this, item, caseSensitive) {
-      if (_.isString(item)) {
-        if (caseSensitive) item = new RegExp(_.escapeRegExp(item));
-        if (!caseSensitive) item = new RegExp(_.escapeRegExp(item), 'i');
-      }
-      commands.goto(_this, item);
+      // if (_.isString(item)) {
+      //   if (caseSensitive) item = new RegExp(_.escapeRegExp(item));
+      //   if (!caseSensitive) item = new RegExp(_.escapeRegExp(item), 'i');
+      // }
+      // commands.goto(_this, item);
+      this.enterSearchMode(_this, item);
     },
     gotoItem: function (_this, item) {
       commands.goto(_this, item);
@@ -42,12 +43,12 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       }
     },
     exitCommandMode: function (_this) {
-      if (_this.mode === 'command') {
+      if (_this.mode === 'command' || _this.mode === 'search:command') {
         _this.exitCommandMode();
       }
     },
     toggleCommandMode: function (_this) {
-      if (_this.mode === 'command') {
+      if (_this.mode === 'command' || _this.mode === 'search:command') {
         _this.exitCommandMode();
       } else {
         _this.enterCommandMode();
@@ -479,18 +480,24 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       if (!_.isArray(array)) return;
       _.each(array.slice(), _.method('executeCommand', cmd));
     },
+    forItem: function (_this, item, cmd) {
+      if (!isItem(item)) return;
+      item.executeCommand(cmd);
+    },
     forEachItem: function(_this, cmd) {
-      _.each(_this.items.slice(), _.method('executeCommand', cmd));
+      var items = _this.items.slice();
+      _.each(items, _.method('executeCommand', cmd));
     },
     forEachItemRecursively: function (_this, cmd) {
-      var execCmd = _.method('executeCommand', cmd),
-          recurse = function (items) {
-            _.each(items, function (item) {
-              execCmd(item);
-              if (item.items.length) recurse(item.items.slice());
-            });
-          };
-      recurse(_this.items.slice());
+      var execCmd = _.method('executeCommand', cmd);
+      var recurse = function (items) {
+        _.each(items, function (item) {
+          execCmd(item);
+          if (item.items.length) recurse(item.items.slice());
+        });
+      };
+      var items = _this.items.slice();
+      recurse(items);
     },
     flatten: function (_this) {
       var parent = _this.parent;

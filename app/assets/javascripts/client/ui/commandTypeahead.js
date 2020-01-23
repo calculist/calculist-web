@@ -26,9 +26,8 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
         'pause computation','resume computation','unpause computation',
       ],
       availableCommandsWithForEachPrefix = [
-        'template ""','add text ""','add prefix ""','remove text ""','replace text "", ""','change text ""',
-        'duplicate','sort items by ""','group items by ""','shuffle items','reverse items','delete items',
-        'pivot items','move to list ""', 'split to list ""','freeze computed value',
+        'add text ""','add prefix ""','remove text ""','replace text "", ""','change text ""',
+        'delete', 'freeze computed value', 'add item ""'
       ].map(function (c) { return 'for each item, ' + c; }),
       matches = [],
       selectedCommandIndex = -1,

@@ -1,4 +1,4 @@
-calculist.register('item.handleEnter',['_','$','cursorPosition','executeCommand'],function (_, $, cursorPosition, executeCommand) {
+calculist.register('item.handleEnter',['_','$','cursorPosition','executeCommand','itemOfFocus'],function (_, $, cursorPosition, executeCommand, itemOfFocus) {
 
   var addNewItem = function (_this, newItemText) {
     if (sessionStorage.zoomGuid === _this.guid || !_this.parent) {
@@ -10,9 +10,25 @@ calculist.register('item.handleEnter',['_','$','cursorPosition','executeCommand'
 
   return function (e, anchorOffset) {
     e.preventDefault();
-    if (this.mode === 'command') {
+    if (this.mode === 'command' || this.mode === 'search:command') {
       executeCommand(this, e.target.textContent);
       this.exitCommandMode();
+    } else if (this.mode === 'search') {
+      var selectedItem = this.searchResults && this.searchResults.items[this.searchResults.selectionIndex];
+      if (selectedItem) {
+        var nextParent = selectedItem.parent;
+        var guard = 0;
+        while (nextParent && ++guard < 100) {
+          nextParent.wasCollapsed = false;
+          nextParent.collapsed = false;
+          nextParent = nextParent.parent;
+        }
+        executeCommand(this, 'exit search mode');
+        itemOfFocus.change(selectedItem);
+      } else {
+        executeCommand(this, 'exit search mode');
+        this.focus();
+      }
     } else if (e.ctrlKey && !e.shiftKey) {
       this.enterCommandMode();
     } else if (e.shiftKey) {

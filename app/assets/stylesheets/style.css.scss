@@ -311,6 +311,15 @@ body {
       background-color: rgba(255,0,0, 1);
       color: rgba(0,0,0,1);
     }
+    &.search:focus, &.search.focus {
+      background-color: #eee;
+      outline: solid 2px $computed-color;
+    }
+    &.command.search:focus, &.command.search.focus {
+      background-color: rgba(255,255,255, 1);
+      color: rgba(0,0,0,1);
+      outline: solid 2px $computed-color;
+    }
     &.top-level {
       font-size: 32px;
       list-style-type: none;
@@ -387,6 +396,15 @@ body {
         background-color: rgba(255,0,0, 1);
         color: rgba(0,0,0,1);
       }
+      &.search:focus, &.search.focus {
+        background-color: #333;
+        outline: solid 2px $computed-color;
+      }
+      &.command.search:focus, &.command.search.focus {
+        background-color: rgba(255,255,255, 1);
+        color: rgba(0,0,0,1);
+        outline: solid 2px $computed-color;
+      }
     }
     .dot {
       &.collapsed:after {
@@ -415,6 +433,12 @@ body {
   &.theme-light {
     background-color: $light-color;
     color: $dark-color;
+    &.search {
+      // background-color: $dark-color;
+      .page {
+        outline: solid 2px $computed-color;
+      }
+    }
     a {
       color: $dark-color;
     }
@@ -444,6 +468,15 @@ body {
       &.command.warning:focus {
         color: rgba(255,0,0, 1);
         background-color: rgba(0,0,0,1);
+      }
+      &.search:focus, &.search.focus {
+        background-color: #eee;
+        outline: solid 2px $computed-color;
+      }
+      &.command.search:focus, &.command.search.focus {
+        color: rgba(255,255,255, 1);
+        background-color: rgba(0,0,0,1);
+        outline: solid 2px $computed-color;
       }
     }
   }

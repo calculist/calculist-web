@@ -9,7 +9,7 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
       return;
     }
     _ref = document.getSelection(), anchorOffset = _ref.anchorOffset, baseOffset = _ref.baseOffset, extentOffset = _ref.extentOffset, focusOffset = _ref.focusOffset, rangeCount = _ref.rangeCount;
-    if (this.mode === 'command') {
+    if (this.mode === 'command' || this.mode === 'search:command') {
       if (!_.includes([13, 27, 192], e.which)) {
         commandTypeahead.update(e);
         return;
@@ -95,8 +95,11 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
         }, this);
       }
     } else if (e.which === 27) { // 27 = esc
-      if (this.mode === 'command') {
+      if (this.mode === 'command' || this.mode === 'search:command') {
         this.exitCommandMode();
+      } else if (this.mode === 'search') {
+        executeCommand(this, 'exit search mode');
+        this.focus();
       } else {
         this.$("#input" + this.id).blur();
       }
@@ -123,7 +126,7 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
     }
     this.keydownData.previousKey = e.which;
     this.keydownData.previousIndex = anchorOffset;
-    eventHub.trigger('item.handleKeydown', this, arguments)
+    eventHub.trigger('item.handleKeydown', this, arguments);
   };
 
 });

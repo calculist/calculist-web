@@ -5,20 +5,20 @@ calculist.register('item.executeCommand', ['_','executeCommand'], function (_, e
   });
 });
 
-calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead'], function (_, commands, transaction, computeItemValue, commandTypeahead) {
+calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead', 'itemOfSearch'], function (_, commands, transaction, computeItemValue, commandTypeahead, itemOfSearch) {
 
   return function (contextItem, commandString) {
     var commandStringPieces = commandString.split(/([^\w\s]|\d)/);
     if (commandStringPieces[0] === '') commandStringPieces[0] = 'noop';
     commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
     if (commandStringPieces[0] === 'delete') commandStringPieces[0] = '_delete';
-    if (contextItem.mode === 'command' && !_.isFunction(commands[commandStringPieces[0]]) ) {
+    if ((contextItem.mode === 'command' || contextItem.mode === 'search:command') && !_.isFunction(commands[commandStringPieces[0]]) ) {
       commandString = commandTypeahead.getTopMatch() || 'noop';
       commandStringPieces = commandString.split(/([^\w\s]|\d)/);
       commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
     }
     var commandArgumentsString;
-    if (commandStringPieces[0] === 'forEach') {
+    if (commandStringPieces[0] === 'forEach' || commandStringPieces[0] === 'forItem') {
       var enclosureDepth = 0;
       var commandArgumentsStringPieces = commandStringPieces.slice(1).join('').split('');
       var firstArgumentString = '';
@@ -44,7 +44,10 @@ calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeIt
       commandArgumentsString = commandStringPieces.slice(1).join('');
     }
     var commandFunction = commands[commandStringPieces[0]];
-    var additionalVariables = commandArgumentsString ? { '$value': contextItem.valueOf() } : null;
+    var additionalVariables = commandArgumentsString ? {
+      '$value': contextItem.valueOf(),
+      '$results': itemOfSearch.getSearchResultsItems(),
+    } : null;
     var computingForCommand = true;
     var commandArguments = commandArgumentsString ? computeItemValue('[' + commandArgumentsString + ']', contextItem, additionalVariables, computingForCommand) : [];
     commandArguments.unshift(contextItem);
@@ -52,7 +55,7 @@ calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeIt
     transaction(function () {
       commandFunction.apply(commands, commandArguments);
     });
-    if (mode === 'command' && commandStringPieces[0] !== 'executePreviousCommand') commandTypeahead.end(commandString);
+    if ((mode === 'command' || mode === 'search:command') && commandStringPieces[0] !== 'executePreviousCommand') commandTypeahead.end(commandString);
   };
 
 });

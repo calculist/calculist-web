@@ -1,6 +1,14 @@
 calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus','itemOfDrag'], function (Item, cursorPosition, isReadOnly, itemOfFocus, itemOfDrag) {
 
   Item.prototype.handleFocus = function(e) {
+    if (this.mode === 'search') return;
+    var nextParent = this.parent;
+    var guard = 0;
+    while (nextParent && ++guard < 100) {
+      nextParent.wasCollapsed = false;
+      nextParent.collapsed = false;
+      nextParent = nextParent.parent;
+    }
     var dragItem = itemOfDrag.get();
     if (dragItem && itemOfDrag !== this) return e.preventDefault();
     itemOfFocus.change(this);
