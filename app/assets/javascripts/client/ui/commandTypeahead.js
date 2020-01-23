@@ -5,6 +5,7 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
   var commandStack = (sessionStorage.commandStack ? JSON.parse(sessionStorage.commandStack) : []) || [],
       stackIndex = 0,
       availableCommands = [
+        'celebrate "HOORAY!"',
         'template ""','make template ""',
         'add text ""','add prefix ""','remove text ""','replace text "", ""','change text ""',
         'import from csv','import from json','import from txt',

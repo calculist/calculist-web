@@ -39,5 +39,14 @@ calculist.register('headerMessage', ['_','eventHub'], function (_, eventHub) {
     getElement().append(button);
   })
 
-  return {}; // TODO add API as needed
+  return {
+    flashMessage: function (message, duration) {
+      var el = getElement();
+      previousMessages.push(el.html());
+      el.text(message);
+      _.delay(function () {
+        el.html(previousMessages.pop() || '');
+      }, duration || 2000);
+    }
+  };
 });

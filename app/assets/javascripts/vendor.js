@@ -10,5 +10,6 @@
 //= require clipboard/clipboard
 //= require katex/katex.min
 //= require d3/d3
+//= require confetti.js/confetti
 //= require evalculist/evalculist
 //= require acyclic/acyclic
