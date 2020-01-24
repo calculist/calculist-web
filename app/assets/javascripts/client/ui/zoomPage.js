@@ -1,9 +1,11 @@
-calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGuid','undoManager'], function (_, $, Promise, lmSessionStorage, getItemByGuid, undoManager) {
+calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGuid','undoManager','eventHub'], function (_, $, Promise, lmSessionStorage, getItemByGuid, undoManager, eventHub) {
 
-  var stack = [],
-      $page,
-      dimensionAttrs = ['offset','width','height'],
-      originalDimensions, $standin;
+  var stack = [];
+  var $page;
+  var dimensionAttrs = ['offset','width','height'];
+  var originalDimensions;
+  var $standin;
+  var zooming = false;
 
   var applyOriginalDimensions = function () {
     _.each(dimensionAttrs, function (attr) {
@@ -32,6 +34,24 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
       clickHandler || (clickHandler = getPageClickHandler($mp, window.topItem));
       clickHandler(e);
     });
+
+    var heightChangeHandler = _.debounce(function() {
+      if (zooming || stack.length === 0) return;
+      // console.log("checking zoom page heights on " + stack.length + " page" + (stack.length === 1 ? ". " : "s. ") + performance.now());
+      _.forEachRight(stack, function (p, i) {
+        var $page0 = i == 0 ? $mp : stack[i - 1].$page;
+        var $page1 = p.$page;
+        var height = $page1.height();
+        if ($page0.height() != height + 20) {
+          // console.log('updating page height');
+          $page0.height(height + 20);
+        }
+      });
+    }, 10);
+
+    $(window).on('transitionend', heightChangeHandler);
+    eventHub.on('transactionend', heightChangeHandler);
+    eventHub.on('zoomPageHeightChange', heightChangeHandler);
   });
 
   var zoomPage = {
@@ -63,6 +83,7 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
       return false;
     },
     attach: function (item) {
+      zooming = true;
       $page = $('<div class="page zoom-page" style="position: absolute;"></div>');
       $page.on('click', getPageClickHandler($page, item));
       originalDimensions = dimensionAttrs.reduce(function (dimensions, attr) {
@@ -109,6 +130,8 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
           item.focus();
           _.delay(function () {
             $page.css({ height: 'auto' });
+            zooming = false;
+            eventHub.trigger('zoomPageHeightChange');
           }, 200);
         });
       });
@@ -122,6 +145,7 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
       });
     },
     detach: function () {
+      zooming = true;
       var pageData = stack.pop();
       return new Promise(function (resolve) {
         if (!pageData) return resolve();
@@ -150,11 +174,14 @@ calculist.register('zoomPage',['_','$','Promise','lmSessionStorage','getItemByGu
           $page.off('transitionend');
           $standin.replaceWith(pageData.item.render(true).el);
           $page.remove();
+          $mainPage.height('auto');
           originalDimensions = nextPageData.originalDimensions;
           $standin = nextPageData.$standin;
           lmSessionStorage.set('zoomGuid', (nextPageData.item || window.topItem).guid);
           var focusItem = getItemByGuid(lmSessionStorage.get('focusGuid'));
           if (focusItem) focusItem.focus();
+          zooming = false;
+          eventHub.trigger('zoomPageHeightChange');
           resolve();
         });
 
