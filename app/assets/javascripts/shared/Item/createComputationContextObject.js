@@ -471,6 +471,32 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
     }
   });
 
+  proto.__embedString = function () {
+    var args = arguments;
+    var onlyComputedVals = [];
+    var html = [].map.call(args, function (s, i) {
+      if (i % 2 === 0) return '<span class="key">' + _.escape(s) + '</span>';
+      var computedVal = s && s.toHTML ? s.toHTML() : _.escape(s);
+      onlyComputedVals.push(computedVal);
+      return computedVal;
+    }).join("");
+    var string = [].join.call(args, '');
+    return {
+      toString: function () {
+        return string;
+      },
+      toHTML: function () { return html; },
+      toStringAsHTML: function () {
+        return '<span class="key">[</span>' +
+          onlyComputedVals.join('<span class="key">]  [</span>') +
+        '<span class="key">]</span>';
+      },
+      toFrozenText: function () {
+        return string;
+      },
+    };
+  };
+
   var imageToString = _.constant('[Image]');
   proto.image = function (url, width, height) {
     if (!urlFinder.isUrl(url)) return NaN;

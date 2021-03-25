@@ -231,6 +231,9 @@ body {
     &.error {
       color: $computed-error-color;
     }
+    .key {
+      color: $default-text-color;
+    }
   }
   .dot {
     cursor: pointer;
@@ -334,6 +337,9 @@ body {
         &.error {
           color: $computed-error-color;
         }
+        .key {
+          color: $default-text-color;
+        }
         th {
           color: #000;
         }
@@ -424,9 +430,17 @@ body {
         color: rgba(255,255,255,0.8);
       }
     }
+    .computed-display {
+      .key {
+        color: rgba(255,255,255,0.5);
+      }
+    }
     span.value {
       th {
         color: rgba(255,255,255,0.8);
+      }
+      .key {
+        color: rgba(255,255,255,0.5);
       }
     }
   }

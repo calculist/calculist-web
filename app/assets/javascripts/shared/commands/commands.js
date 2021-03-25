@@ -88,7 +88,11 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     },
     freezeComputedValue: function (_this) {
       if (_this.valIsComputed) {
-        _this.text = _this.text.split('[=]')[0] + '[:] ' + _this.val;
+        if (_.isPlainObject(_this.val) && _this.val.toFrozenText) {
+          _this.text = _this.val.toFrozenText();
+        } else {
+          _this.text = _this.text.split('[=]')[0] + '[:] ' + _this.val;
+        }
         _this.render();
         _this.save();
       }
