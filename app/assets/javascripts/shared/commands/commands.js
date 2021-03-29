@@ -33,7 +33,8 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       commands.goto(_this, item);
     },
     changeTheme: function (_this, theme) {
-      if (_.includes(['light','dark','sandcastle'], theme)) {
+      var validThemes = ['light','dark','sandcastle','yellowpad','blueprint'];
+      if (_.includes(validThemes, theme)) {
         $('#main-container').removeClass().addClass('theme-' + theme);
       }
     },
