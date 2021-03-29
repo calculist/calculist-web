@@ -1,4 +1,4 @@
-calculist.require(['Item','replaceTeX','_','userIsTyping'], function (Item, replaceTeX, _, userIsTyping) {
+calculist.require(['Item','replaceTeX','_','userIsTyping', 'emojiHelper'], function (Item, replaceTeX, _, userIsTyping, emojiHelper) {
 
   var ERROR_VAL = '#ERROR!';
 
@@ -21,7 +21,14 @@ calculist.require(['Item','replaceTeX','_','userIsTyping'], function (Item, repl
     return replaceTeX(_.escape(key))
               .replace('\\[=]', '[=]')
               .replace('\\[=&gt;]', '[=&gt;]')
-              .replace('\\[:]', '[:]');
+              .replace('\\[:]', '[:]')
+              .replace(/\\emoji\[([\\a-zA-Z0-9]+)\]/g, function (text, emojiUTF16) {
+                return emojiHelper.unescapeToUnicode(emojiUTF16);
+              })
+              .replace(/\\emoji\[(U\+[\\a-fA-F0-9]+)\]/g, function (text, codePointString) {
+                return emojiHelper.fromCodePointString(codePointString);
+              })
+              ;
   };
 
 });

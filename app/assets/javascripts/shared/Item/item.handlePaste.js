@@ -1,4 +1,4 @@
-calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfFocus','itemsByGuid','calculistFileFormatter'], function (Item, _, parseTextDoc, getNewGuid, transaction, itemOfFocus, itemsByGuid, calculistFileFormatter) {
+calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfFocus','itemsByGuid','calculistFileFormatter', 'emojiHelper'], function (Item, _, parseTextDoc, getNewGuid, transaction, itemOfFocus, itemsByGuid, calculistFileFormatter, emojiHelper) {
 
   Item.prototype.handlePaste = function(e, options) {
     if (this.mode != null) return;
@@ -11,6 +11,9 @@ calculist.require(['Item','_','parseTextDoc','getNewGuid','transaction','itemOfF
       content = e.originalEvent.clipboardData.getData('text/plain');
       e.preventDefault();
     }
+    content = content.replace(emojiHelper.emojiPattern, function (emoji) {
+      return '\\emoji[' + emojiHelper.toCodePointString(emoji) + ']';
+    });
     if (content.split('\n').length > 1) {
       transaction(function () {
         var isCalculistFile = options && options.isCalculistFile;
