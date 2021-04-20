@@ -13,7 +13,11 @@ calculist.register('commands.enterSearchMode', ['eventHub', 'zoomPage', 'itemOfS
       }
       var lowerOpacity = function (item) {
         if (item === _this) return;
-        item.$(".input-container:first").css('opacity', '0.4');
+        // item.$(".input-container:first").css('opacity', '0.4');
+        item.$(".input-container:first").css({
+          'opacity': '0.4',
+          'filter': 'blur(2px)'
+        });
         if (item.collapsed) return;
         item.items.forEach(lowerOpacity);
       };
@@ -29,3 +33,5 @@ calculist.register('commands.enterSearchMode', ['eventHub', 'zoomPage', 'itemOfS
     }
   };
 });
+
+calculist.register('commands.search', ['commands.enterSearchMode'], _.identity);

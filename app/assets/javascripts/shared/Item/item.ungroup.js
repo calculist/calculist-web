@@ -7,12 +7,12 @@ calculist.require(['Item','_','getNewGuid','itemOfFocus'], function (Item, _, ge
       _.each(items, function(groupedItem) {
         var existingAttributeItem = _.find(groupedItem.items, { key: groupAttribute });
         if (existingAttributeItem) {
-          existingAttributeItem.text = existingAttributeItem.key + ' [:] ' + groupingItem.valueOf();
+          existingAttributeItem.text = existingAttributeItem.key + ' \\: ' + groupingItem.valueOf();
         } else {
           var newItem = new Item({
             parent: groupedItem,
             guid: getNewGuid(),
-            text: "" + groupAttribute + " [:] " + groupingItem.valueOf()
+            text: "" + groupAttribute + " \\: " + groupingItem.valueOf()
           });
           groupedItem.items.push(newItem);
           newItem.refreshSortOrder();

@@ -46,8 +46,12 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
     if (listEl.children().length > 0) _.each(this.items, callUnrender);
   };
 
+  Item.prototype.softRenderRequiresCompute = function () {
+    return this.valIsComputed || /\\(?:\.|lookup)/.test(this.text);
+  }
+
   Item.prototype.softRender = function() {
-    if (this.valIsComputed) {
+    if (this.softRenderRequiresCompute()) {
       this.showComputedValue();
     } else if (this.computedDisplayIsVisible) {
       this.$("#computed-display" + this.id).text('');

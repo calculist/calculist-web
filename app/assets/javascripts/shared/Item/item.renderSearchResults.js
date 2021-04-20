@@ -1,5 +1,6 @@
 calculist.register('item.renderSearchResults', ['_', 'searchQueryParser', 'eventHub'], function (_, searchQueryParser, eventHub) {
-
+  var consolelog = _.noop;
+  // consolelog = console.log;
   var showOrHide = function (items, parsedQuery, results, renderOps) {
     return items.reduce(function (hadMatch, item) {
       var resultsIndex = results.items.length;
@@ -17,6 +18,7 @@ calculist.register('item.renderSearchResults', ['_', 'searchQueryParser', 'event
           }
           var input = item.$('#input' + item.id);
           input.css('opacity', isMatch ? '1.0' : '0.4');
+          input.css('filter',  isMatch ? 'none' : 'blur(0.8px)');
           input.removeClass('focus');
           if (isMatch && parsedQuery.highlightPattern) input.markRegExp(parsedQuery.highlightPattern);
           // The render procedure counts the number of results
@@ -66,7 +68,7 @@ calculist.register('item.renderSearchResults', ['_', 'searchQueryParser', 'event
     var parsedQuery = searchQueryParser.parse(query);
     var renderOps = [];
     showOrHide(this.items, parsedQuery, this.searchResults, renderOps);
-    console.log('completed compiling results for "' + query + '" in ' + (window.performance.now() - begin) + ' milliseconds');
+    consolelog('completed compiling results for "' + query + '" in ' + (window.performance.now() - begin) + ' milliseconds');
     var _this = this;
     var renderCount = 0;
     var minRenderCountBeforeDelay = 10;
@@ -101,7 +103,7 @@ calculist.register('item.renderSearchResults', ['_', 'searchQueryParser', 'event
           // in between so we can check to see if the query has changed.
           // If it has changed, we abort rendering the stale results
           // in order to allow the updated results to render instead.
-          console.log(query + ", " + elapsedTime + " > 20 and renderCount == " + renderCount);
+          consolelog(query + ", " + elapsedTime + " > 20 and renderCount == " + renderCount);
           return new Promise(function (resolve, reject) {
             _.delay(function () {
               if (currentQuery === query) {
@@ -125,9 +127,9 @@ calculist.register('item.renderSearchResults', ['_', 'searchQueryParser', 'event
       });
     }, initialPromise);
     promise.then(function () {
-      console.log('completed render for "' + query + '" in ' + (window.performance.now() - begin) + ' milliseconds');
+      consolelog('completed render for "' + query + '" in ' + (window.performance.now() - begin) + ' milliseconds');
     }).catch(function () {
-      console.log('aborted render for "' + query + '" after ' + (window.performance.now() - begin) + ' milliseconds');
+      consolelog('aborted render for "' + query + '" after ' + (window.performance.now() - begin) + ' milliseconds');
     });
   };
 

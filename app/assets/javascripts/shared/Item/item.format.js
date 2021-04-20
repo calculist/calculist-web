@@ -1,4 +1,4 @@
-calculist.require(['Item','replaceTeX','_','userIsTyping', 'emojiHelper'], function (Item, replaceTeX, _, userIsTyping, emojiHelper) {
+calculist.require(['Item','replaceTeX','_','userIsTyping','slashElementsHelper'], function (Item, replaceTeX, _, userIsTyping, slashElementsHelper) {
 
   var ERROR_VAL = '#ERROR!';
 
@@ -6,7 +6,7 @@ calculist.require(['Item','replaceTeX','_','userIsTyping', 'emojiHelper'], funct
     if (_.isNaN(val)) {
       val = userIsTyping() ? '' : ERROR_VAL;
     } else if (_.isFunction(val)) {
-      val = _.escape(val.toString()) || '[Function]';
+      val = val.toHTML ? val.toHTML() : _.escape(val.toString()) || '[Function]';
     } else if (_.isArray(val)) {
       val = '[Array] ' + val.length;
     } else if (val !== '' && !_.isNaN(+val)) {
@@ -18,17 +18,12 @@ calculist.require(['Item','replaceTeX','_','userIsTyping', 'emojiHelper'], funct
   };
 
   Item.prototype.formatKey = function(key) {
-    return replaceTeX(_.escape(key))
-              .replace('\\[=]', '[=]')
+    return slashElementsHelper.parseSlashElements(
+      replaceTeX(_.escape(key))
+              .replace('\\\\=', '\\=')
               .replace('\\[=&gt;]', '[=&gt;]')
-              .replace('\\[:]', '[:]')
-              .replace(/\\emoji\[([\\a-zA-Z0-9]+)\]/g, function (text, emojiUTF16) {
-                return emojiHelper.unescapeToUnicode(emojiUTF16);
-              })
-              .replace(/\\emoji\[(U\+[\\a-fA-F0-9]+)\]/g, function (text, codePointString) {
-                return emojiHelper.fromCodePointString(codePointString);
-              })
-              ;
+              .replace('\\\\:', '\\:')
+    );
   };
 
 });

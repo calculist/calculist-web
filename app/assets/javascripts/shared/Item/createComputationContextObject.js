@@ -28,6 +28,55 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
 
   var proto = ContextObject.prototype;
 
+  proto._toText = function (items) {
+    return items.map(function (item) {
+      return item.toText();
+    }).join('\n');
+  };
+
+  proto.parse = function (format, string) {
+    switch (format) {
+      case 'json':
+        var data = JSON.parse(string);
+        var jsonData = function (data) {
+          return {
+            toString: _.constant('[JSON Data]'),
+            accessor: function (key) {
+              var val = data[key];
+              // NOTE This is not sufficient
+              return _.isObject(val) ? jsonData(val) : val;
+            }
+          }
+        }
+        return jsonData(data);
+        break;
+      case 'csv':
+        // TODO Make CSV object more structured
+        // maybe use PapaParse
+        var data = string.trim().split('\n').map(function (row) {
+          return row.split(',');
+        });
+        return {
+          toString: _.constant('[CSV Data]'),
+          dotAccessor: function (key) {
+            return key === 'rows' ? data.slice(1) : (
+              key === 'header' ? data[0] : NaN
+            );
+          },
+          accessor: function (key) {
+            var index = data[0].indexOf(key);
+            if (index === -1) return NaN;
+            return data.slice(1).map(function (row) {
+              return row[index];
+            });
+          }
+        }
+        break;
+      default:
+        return NaN
+    }
+  };
+
   var valIfItem = function (item) { return isItem(item) ? item.valueOf() : item; };
   var itemsIfItem = function (item) { return isItem(item) ? item.items : item; };
   var arrayWithItemsFirst = function (array) {
@@ -227,9 +276,9 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
   });
 
   proto.function = proto.fn = proto.lambda = _.rest(function (string, partialArgs) {
-    var pieces = ('' + string).split('|');
+    var pieces = ('' + string).split('=>');
     var argNames = pieces.length > 1 ? pieces.shift().split(',') : [];
-    var fnBody = pieces.join('|')
+    var fnBody = pieces.join('=>')
     var evalFn = evalculist(fnBody);
     var fn = function () {
       var args = partialArgs.concat(_.toArray(arguments));
@@ -250,7 +299,7 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       });
     };
     var argString = argNames.slice(partialArgs.length).join(',');
-    var fnString = argString ? (argString + '|'  + fnBody) : fnBody;
+    var fnString = argString ? (argString + '=>'  + fnBody) : fnBody;
     fn.toString = _.constant(fnString);
     return fn;
   });
@@ -446,11 +495,16 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
   // evalculist adds a special "accessor" function for things like a['b']
   // so it becomes accessor(a, 'b')
   proto.accessor = function (obj, key) {
+    console.log(obj, key);
+    if (obj && obj.accessor) return obj.accessor(key);
     if (_.isNumber(key) && !isItem(obj[key])) return obj[key];
     return proto.pluckItems(obj, key);
   };
 
   proto.dotAccessor = itemsFirst(function (items, key) {
+    console.log(items, key);
+    if (items && items.dotAccessor) return items.dotAccessor(key);
+    if (items && items.accessor) return items.accessor(key);
     var item = _.findLast(items, function (item) {
       if (!item.key) item.valueOf();
       return keyToVarName(item.key) === key;
@@ -494,6 +548,34 @@ calculist.register('createComputationContextObject', ['_','ss','d3','evalculist'
       toFrozenText: function () {
         return string;
       },
+    };
+  };
+
+  proto.bar = function (num, denom, text) {
+    text = _.escape(" " + (text || ""));
+    return {
+      toString: function () { return "[Bar]"; },
+      toHTML: function () {
+        return '<span class="bar-background">' +
+          '<span class="bar" style="width:' + (98.7 * (num / denom)) + '%">' +
+            '<span style="opacity:0;">.</span>' + // invisible char to force non-zero height
+            text +
+          '</span>' +
+        '</span>';
+      }
+    };
+  };
+
+  proto.dots = function (blueDotCount, totalDotCount) {
+    totalDotCount || (totalDotCount = blueDotCount);
+    return {
+      toString: function () { return '[Dots]'; },
+      toHTML: function () {
+        return _.times(totalDotCount, function (i) {
+          var color = i < blueDotCount ? 'blue' : 'gray';
+          return '<span class="big-dot big-' + color + '-dot"></span>';
+        }).join('');
+      }
     };
   };
 

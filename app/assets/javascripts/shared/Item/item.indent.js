@@ -6,6 +6,7 @@ calculist.register('item.indent', ['zoomPage'], function (zoomPage) {
     if (!(newParent && zoomPage.isInPage(newParent))) {
       return;
     }
+    this.blurContainingList();
     this.parent.removeChild(this);
     this.parent = newParent;
     this.parent.items.push(this);

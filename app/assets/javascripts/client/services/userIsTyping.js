@@ -7,7 +7,7 @@ calculist.register('userIsTyping', ['_','eventHub'], function (_, eventHub) {
         _userIsTyping = false;
         eventHub.trigger('userStoppedTyping');
         // console.log('userStoppedTyping');
-        window.topItem.softRenderAll();
+        // window.topItem.softRenderAll();
       }, 1200);
 
   eventHub.on('item.handleKeydown:before', function (item, args) {

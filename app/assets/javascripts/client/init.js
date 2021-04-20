@@ -1,5 +1,5 @@
 // TODO refactor
-calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndApplyChangesFromServer','jsonToItemTree','getNewGuid','userPreferences','executeCommand','calculistFileFormatter'], function (foo, Item, _, $, Backbone, lmDiff, saveButton, getAndApplyChangesFromServer, jsonToItemTree, getNewGuid, userPreferences, executeCommand, calculistFileFormatter) {
+calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','getAndApplyChangesFromServer','jsonToItemTree','getNewGuid','userPreferences','executeCommand','calculistFileFormatter','faviconHelper'], function (foo, Item, _, $, Backbone, lmDiff, saveButton, getAndApplyChangesFromServer, jsonToItemTree, getNewGuid, userPreferences, executeCommand, calculistFileFormatter, faviconHelper) {
   window.DEV_MODE = window.localStorage.DEV_MODE;
   if (!window.LIST_DATA) return;
   $(function() {
@@ -7,6 +7,12 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
       LIST_DATA.guid = getNewGuid();
     }
     window.topItem = new Item(LIST_DATA);
+    var protoChangeText = window.topItem.changeText;
+    window.topItem.changeText = function (newText) {
+      faviconHelper.updatePageTitle(newText);
+      return protoChangeText.call(this, newText);
+    };
+    faviconHelper.updatePageTitle(window.topItem.text);
     var saveCount = 0, updateCount = 0;
     var originalFilePath = window.FILE_PATH;
     if (window.FILE_PATH) {
@@ -246,7 +252,16 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
           if (/^[a-zA-Z]/.test(commandItem.text)) executeCommand(window.topItem, commandItem.text);
         });
       });
-      getAndApplyChangesFromServer(window.topItem.last_save);
+      getAndApplyChangesFromServer(window.topItem.last_save).then(function () {
+        $('#homebase-main-message').text('Ready.');
+        $('#homebase-main-button').attr('opacity', '1').click(function () {
+          $('#homebase-main-circle').attr('r', 0);
+          $('#homebase-circle-content').css('display', 'none');
+        });
+        setTimeout(function () {
+
+        }, 1000)
+      });
     });
   });
 });

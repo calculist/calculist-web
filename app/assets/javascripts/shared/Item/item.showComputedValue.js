@@ -9,7 +9,7 @@ calculist.require(['Item','itemOfFocus'], function (Item, itemOfFocus) {
     if (itemOfFocus.is(this)) {
       this.valueOf();
       val = this.val;
-      if (this.valIsComputed && this.hasVal) {
+      if (this.valIsComputed && this.hasVal && this.parsedText.separator !== '\\(') {
         val = (_.isPlainObject(val) && val.toHTML) ?
           (val.toStringAsHTML ? val.toStringAsHTML() : _.escape(val.toString())) :
           this.formatVal(val);

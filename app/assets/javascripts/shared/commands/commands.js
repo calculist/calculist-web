@@ -33,9 +33,28 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
       commands.goto(_this, item);
     },
     changeTheme: function (_this, theme) {
-      var validThemes = ['light','dark','sandcastle','yellowpad','blueprint'];
-      if (_.includes(validThemes, theme)) {
-        $('#main-container').removeClass().addClass('theme-' + theme);
+      var themes = {
+        light: ['light'],
+        dark: ['dark'],
+        sandcastle: ['sandcastle'], // deprecated
+        minimallight: ['light', 'minimallight'],
+        bluesky: ['light', 'minimallight', 'bluesky'],
+        minimaldark: ['dark', 'minimaldark'],
+        chalkboard: ['dark', 'minimaldark', 'chalkboard'],
+        matcha: ['dark', 'minimaldark', 'matcha'],
+        // coffee: ['dark', 'minimaldark', 'coffee'],
+        // campfire: ['dark', 'minimaldark', 'campfire'],
+        // nightsky
+        // roadmap
+        legalpad: ['light', 'legalpad'],
+        stickynote: ['light', 'legalpad', 'stickynote'],
+        notebook: ['light', 'legalpad', 'notebook'],
+        blueprint: ['dark', 'blueprint'],
+        // journal: ['light', 'journal'],
+      }
+      console.log(theme, themes[theme]);
+      if (themes[theme]) {
+        $('#main-container').removeClass().addClass(themes[theme].map(t => `theme-${t}`).join(' '));
       }
     },
     enterCommandMode: function (_this) {
@@ -92,7 +111,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         if (_.isPlainObject(_this.val) && _this.val.toFrozenText) {
           _this.text = _this.val.toFrozenText();
         } else {
-          _this.text = _this.text.split('[=]')[0] + '[:] ' + _this.val;
+          _this.text = _this.text.split('\\=')[0] + '\\: ' + _this.val;
         }
         _this.render();
         _this.save();
@@ -185,9 +204,9 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
           newItem = text.clone(_this);
         } else {
           if (_.isNumber(text)) {
-            text = '[:] ' + text;
+            text = '\\: ' + text;
           } else if (_.isArray(text)) {
-            text = '[=] [' + text.join(', ') + ']';
+            text = '\\= [' + text.join(', ') + ']';
           } else {
             text = '' + text;
           }
@@ -221,7 +240,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
           item.items = _.map(row, function(val, i) {
             return new Item({
               guid: getNewGuid(),
-              text: "" + headerRow[i] + " [:] " + val,
+              text: "" + headerRow[i] + " \\: " + val,
               parent: item
             });
           });

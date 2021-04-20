@@ -5,7 +5,7 @@ calculist.register('jsonToItemTree', ['_','getNewGuid'], function (_, getNewGuid
       text = '';
     }
     if (!_.isObject(json)) {
-      if (text && json != null) text += ' [:] ';
+      if (text && json != null) text += ' \\: ';
       if (json != null) text += json;
       json = null;
     }

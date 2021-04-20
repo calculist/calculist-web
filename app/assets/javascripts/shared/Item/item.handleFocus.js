@@ -1,4 +1,17 @@
 calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus','itemOfDrag'], function (Item, cursorPosition, isReadOnly, itemOfFocus, itemOfDrag) {
+  // TODO move this
+  Item.prototype.focusContainingList = function () {
+    if (this.parent) {
+      this.parent.$('ul:first').addClass('focus');
+      // this.parent.focusContainingList();
+    }
+  };
+  Item.prototype.blurContainingList = function () {
+    if (this.parent) {
+      this.parent.$('ul:first').removeClass('focus');
+      this.parent.blurContainingList();
+    }
+  };
 
   Item.prototype.handleFocus = function(e) {
     if (this.mode === 'search') return;
@@ -19,8 +32,12 @@ calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus','itemOfDr
     this.showTrueValue();
     this.showComputedValue();
     this.showLinkButtons();
+    this.focusContainingList();
     $input.addClass('focus');
-    $input.css({minHeight: previousHeight});
+    $input.removeClass('callout');
+    $input.css({minHeight:previousHeight});
+    // $input.css({minHeight:'16px'});
+    // $input.css({height:previousHeight, overflow: 'visible'});
     // $input[0].selectionStart = cursorPosition.get();
     // $input[0].selectionEnd = 0;
     var range = document.createRange();

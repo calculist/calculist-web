@@ -1,7 +1,7 @@
-calculist.register('commands.goto', ['_','isItem','getItemByGuid','zoomPage'], function (_, isItem, getItemByGuid, zoomPage) {
+calculist.register('commands.goto', ['_','isItem','getItemByGuid','zoomPage','itemTagsHelper'], function (_, isItem, getItemByGuid, zoomPage, itemTagsHelper) {
 
   return function (_this, item) {
-    if (!isItem(item)) item = getItemByGuid(item) || _this.$item(item) || _this.$$item(item);
+    if (!isItem(item)) item = itemTagsHelper.getItemByIdTag(item) ||getItemByGuid(item) || _this.$item(item) || _this.$$item(item);
     if (!isItem(item)) return;
     var zoomOutUntilInPage = function (resolve, reject) {
       if (zoomPage.isInPage(item)) {

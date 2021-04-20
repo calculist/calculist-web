@@ -11,3 +11,13 @@ calculist.register('commands.copy', ['_','copyToClipboard','commands.copyItemsTo
     }
   });
 });
+
+calculist.register('commands.cut', ['_', 'commands.copy', 'isItem'], function (_, copyCommand, isItem) {
+  return function (_this, thingToCut, options) {
+    copyCommand.apply(this, arguments);
+    if (thingToCut == null || isItem(thingToCut)) return (thingToCut || _this).deleteItem(true);
+    if (_.isArray(thingToCut) && isItem(thingToCut[0])) {
+      thingToCut.forEach(function (item) { item.deleteItem(true); });
+    }
+  };
+});

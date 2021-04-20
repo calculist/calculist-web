@@ -37,10 +37,13 @@ calculist.register('urlFinder', [], function () {
   var hasUrlPattern = new RegExp(basePatternString, 'i');
   var allUrlsPattern = new RegExp(basePatternString, 'ig');
   var isUrlPattern = new RegExp('^' + basePatternString + '$', 'i');
+  // for data png images. Copied from https://github.com/ragingwind/data-uri-regex
+  var dataURIPattern = new RegExp(/^(data:)([\w\/\+-]*)(;charset=[\w-]+|;base64){0,1},(.*)/gi);
   return {
     hasUrl: function (string) { return hasUrlPattern.test(string); },
     isUrl: function (string) { return isUrlPattern.test(string); },
     replaceUrl: function (string, replacer) { return string.replace(hasUrlPattern, replacer); },
-    getUrls: function (string) { return string.match(allUrlsPattern); }
+    getUrls: function (string) { return string.match(allUrlsPattern); },
+    isDataURI: function (string) { return dataURIPattern.test(string); },
   }
 });

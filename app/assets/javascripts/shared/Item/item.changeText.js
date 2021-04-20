@@ -8,6 +8,7 @@ calculist.register('item.changeText', ['_','transaction','eventHub','parseItemTe
     var prevKey = this.key;
     this.evalFn = null;
     this.parseItemText = parseItemText(this.text);
+    this.inputLines = null;
     this.key = this.parseItemText.key;
     if (this.key !== prevKey) eventHub.trigger('keychange', prevKey, this.key);
     this.save();

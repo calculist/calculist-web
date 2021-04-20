@@ -20,14 +20,26 @@ calculist.require(['Item','removeHTML','_'], function (Item, removeHTML, _) {
     this.valueOf();
     var val = this.val;
     if (val != null) {
-      if (_.isPlainObject(val) && val.toHTML) {
+      if ((_.isPlainObject(val) || _.isFunction(val)) && val.toHTML) {
         val = val.toHTML();
       } else {
         val = this.formatVal(val);
       }
       val = "<span class='value'>" + val + "</span>";
       if (this.key) {
-        return "<span class='key'>" + this.formatKey(this.key) + "</span> <span class='separator'>" + this.parsedText.separator + "</span> " + val;
+        var formatedKey = this.formatKey(this.key);
+        var s1 = this.text[this.key.length] === ' ' ? ' ' : '';
+        var s2 = this.text[
+          this.key.length + s1.length + this.parsedText.separator.length
+        ] === ' ' ? ' ' : '';
+        var sep = '';
+        if (this.parsedText.separator === '\\(') {
+          //
+        } else {
+          sep = "<span class='separator'>" + this.parsedText.separator.replace('\\', '') + "</span>";
+        }
+        // TODO parse function separator properly
+        return "<span class='key'>" + formatedKey + "</span>" + s1 + sep + s2 + val;
       } else {
         return val;
       }

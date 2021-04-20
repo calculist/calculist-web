@@ -9,7 +9,7 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
         'template ""','make template ""',
         'add text ""','add prefix ""','remove text ""','replace text "", ""','change text ""',
         'import from csv','import from json','import from txt',
-        'duplicate','expand all','collapse all','expand siblings',
+        'duplicate','expand all','collapse all','expand siblings', // todo collapse items, expand items
         'collapse siblings','indent siblings','outdent items','outdent straight',
         'sort items by ""','group items by ""','ungroup items ""','ungroup',
         'pivot items',
@@ -21,9 +21,9 @@ calculist.register('commandTypeahead', ['_','eventHub'], function (_, eventHub) 
         'expand','collapse','freeze computed value',
         'goto','add item ""', 'add items',
         'download as txt','download as computed txt','download as csv','download backup',
-        'copy','copy ( $items )','copy ( $value )','copy ( $name )','copy ( $guid )',
+        'copy','copy ( $items )','copy ( $value )','copy ( $name )',
         'change theme "dark"','change theme "light"','change theme "sandcastle"',
-        'search for ""','change font ""','change font "Courier New"','change font "Source Code Pro"',
+        'search','change font ""','change font "Courier New"','change font "Source Code Pro"',
         'pause computation','resume computation','unpause computation',
       ],
       availableCommandsWithForEachPrefix = [

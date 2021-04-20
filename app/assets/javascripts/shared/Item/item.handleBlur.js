@@ -6,21 +6,23 @@ calculist.register('item.handleBlur', ['_','eventHub', 'executeCommand'], functi
     if (!_.includes(itemsToBlur, item)) itemsToBlur.push(item);
   };
 
-  var blurItem = function (item) {
+  var blurItem = function (item, focusItem) {
     if (!item) return;
     _.pull(itemsToBlur, item);
     item.showComputedValue();
     item.showLinkButtons();
+    if (!focusItem || item.parent !== focusItem.parent) item.blurContainingList();
     var $input = item.$("#input" + item.id);
     $input.removeClass('focus');
     $input.css({minHeight: '16px'});
+    // $input.css({minHeight: '16px', height: 'auto', overflow:'hidden'});
     eventHub.trigger('item.handleBlur', item);
   };
 
   var blurItems = function (focusItem) {
     if (itemsToBlur.length === 0) return;
     _.pull(itemsToBlur, focusItem);
-    while (itemsToBlur.length) blurItem(itemsToBlur.shift());
+    while (itemsToBlur.length) blurItem(itemsToBlur.shift(), focusItem);
   };
 
   eventHub.on('itemOfFocusChange:before', addToQueue);

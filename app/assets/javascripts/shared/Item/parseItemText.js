@@ -1,76 +1,30 @@
-calculist.register('parseItemText', ['_'], function (_) {
+calculist.register('parseItemText', ['_', 'parseUntilBalanced'], function (_, parseUntilBalanced) {
 
   'use strict';
 
   var TEMPORARY_PLACEHOLDER = 'DSFGSpRGBoSAERSFDGSDrFGDFGSDFwGWESRTBGFzAE';
 
-  var separators = ['[:]','[=]','[=>]','[=#]'],
+  var separators = ['\\(','\\=','\\:'],
       splitters = {
-        '[:]': /(\[:\])/,
-        '[=]': /(\[=\])/,
-        '[=>]': /(\[=\>\])/,
-        '[=#]': /(\[=\#\])/,
+        '\\(': /(\\\()/,
+        '\\=': /(\\\=)/,
+        '\\:': /(\\\:)/,
       };
 
   var parseEmbed = function (text) {
-    var pieces = [];
-    var i = 0;
-    var sqrDepth = 0;
-    var mode = 'txt';
-    var currentString = '';
-    var prevPrevChar, prevChar, char;
-    while (i < text.length) {
-      prevPrevChar = prevChar;
-      prevChar = char;
-      char = text[i];
-      i += 1;
-      if (mode === 'txt') {
-        if (char === '^') {
-          continue;
-        } else if (prevChar === '^' && char ==='[') {
-          if (prevPrevChar === '\\') {
-            currentString += prevChar + char;
-            prevChar = '';
-          }
-          continue;
-        } else if (prevPrevChar === '^' && prevChar === '[' && char === '=') {
-          pieces.push(currentString);
-          currentString = '';
-          mode = 'exp';
-          sqrDepth += 1;
-          continue;
-        } else if (prevPrevChar === '^' && prevChar === '[' && char !== '=') {
-          currentString += '^[' + char;
-          continue;
-        } else if (prevChar === '^') {
-          currentString += '^' + char;
-          continue;
-        } else {
-          currentString += char;
-          continue;
-        }
-      } else if (mode === 'exp') {
-        if (char === '[') {
-          sqrDepth += 1;
-          currentString += char;
-        } else if (char === ']') {
-          sqrDepth -= 1;
-          if (sqrDepth === 0) {
-            pieces.push(currentString);
-            currentString = '';
-            mode = 'txt';
-          } else {
-            currentString += char;
-          }
-        } else {
-          currentString += char;
-        }
-      } else if (mode === 'str') {
-        // TODO
-        // if (char === '"')
-      }
-    }
-    pieces.push(currentString);
+    var chunks = text.split("\\\^=[");
+    if (chunks.length < 2) return;
+    // hello \^=[1 + 1] hello \^=[2 + 2]
+    // ["hello ", "1 + 1] hello ", "2 + 2]"]
+    var pieces = chunks.reduce(function (pieces, chunk, i) {
+      if (i === 0) return [chunk]; // First element must be string.
+      var computedChunk = parseUntilBalanced('[' + chunk);
+      var stringChunk = chunk.slice(computedChunk.length - 1);
+      return pieces.concat([
+        computedChunk.slice(1, computedChunk.length - 1),
+        stringChunk
+      ]);
+    }, []);
     if (pieces.length < 2) return;
     if (pieces.length % 2 === 0) pieces.push("");
     var strs = pieces.map(function (piece, i) {
@@ -81,7 +35,7 @@ calculist.register('parseItemText', ['_'], function (_) {
       text: text,
       key: "",
       val: '__embedString(' +  strs.join (',') + ')',
-      separator: '[=]'
+      separator: '\\='
     }
   };
 
