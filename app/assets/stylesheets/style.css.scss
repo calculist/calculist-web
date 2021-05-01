@@ -2,9 +2,16 @@
 @import "mixins.css.scss";
 @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono);
 @import url(https://fonts.googleapis.com/css?family=Ubuntu);
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 body {
   margin: 0;
   padding: 0;
+  @media (max-width: $main-page-width + 400px) {
+    position: relative;
+  }
 }
 #main-container {
   font-family: 'Ubuntu';
