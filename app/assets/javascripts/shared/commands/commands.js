@@ -52,9 +52,10 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         blueprint: ['dark', 'blueprint'],
         // journal: ['light', 'journal'],
       }
-      console.log(theme, themes[theme]);
       if (themes[theme]) {
-        $('#main-container').removeClass().addClass(themes[theme].map(t => `theme-${t}`).join(' '));
+        $('#main-container').removeClass().addClass(themes[theme].map(function (t) {
+          return 'theme-' + t;
+        }).join(' '));
       }
     },
     enterCommandMode: function (_this) {
