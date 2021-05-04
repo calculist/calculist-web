@@ -8,34 +8,6 @@ calculist.register('item.executeCommand', ['_','executeCommand'], function (_, e
 calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeItemValue', 'commandTypeahead', 'itemOfSearch'], function (_, commands, transaction, computeItemValue, commandTypeahead, itemOfSearch) {
 
   return function (contextItem, commandString) {
-    var customCommands = contextItem.$$item("commands");
-    var originalCommand = commandString;
-    var customCommand;
-    if (customCommands) {
-      customCommand = customCommands.$item(commandString);
-    }
-    if (customCommand && customCommand.items.length) {
-      // commandString = customCommand.valueOf();
-      var commandSequence = customCommand.items.map(function (item) { return item.valueOf(); });
-      // undo, rollback?
-      transaction.start();
-      commandSequence.reduce(function (promiseChain, command) {
-        return promiseChain.then(new Promise (function (resolve, reject) {
-          window.requestAnimationFrame(function () {
-            try {
-              // should contextItem ever change?
-              contextItem.executeCommand(commandString);
-              resolve();
-            } catch (err) {
-              reject(err);
-            }
-          });
-        }));
-      }, Promise.resolve())
-      .then(transaction.end)
-      .catch(transaction.end);
-      return;
-    }
     var commandStringPieces = commandString.split(/([^\w\s]|\d)/);
     if (commandStringPieces[0] === '') commandStringPieces[0] = 'noop';
     commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
@@ -83,7 +55,7 @@ calculist.register('executeCommand', ['_', 'commands', 'transaction', 'computeIt
     transaction(function () {
       commandFunction.apply(commands, commandArguments);
     });
-    if ((mode === 'command' || mode === 'search:command') && commandStringPieces[0] !== 'executePreviousCommand') commandTypeahead.end(originalCommand);
+    if ((mode === 'command' || mode === 'search:command') && commandStringPieces[0] !== 'executePreviousCommand') commandTypeahead.end(commandString);
   };
 
 });

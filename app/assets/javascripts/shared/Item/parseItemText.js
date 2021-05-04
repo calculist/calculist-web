@@ -4,12 +4,20 @@ calculist.register('parseItemText', ['_', 'parseUntilBalanced'], function (_, pa
 
   var TEMPORARY_PLACEHOLDER = 'DSFGSpRGBoSAERSFDGSDrFGDFGSDFwGWESRTBGFzAE';
 
-  var separators = ['\\(','\\=','\\:'],
-      splitters = {
-        '\\(': /(\\\()/,
-        '\\=': /(\\\=)/,
-        '\\:': /(\\\:)/,
-      };
+  var separators = [
+    '\\(','\\=','\\:',
+    // DEPRECATED: These separators will be removed in future versions.
+    '[=>]','[=]','[:]',
+  ];
+  var splitters = {
+    '\\(': /(\\\()/,
+    '\\=': /(\\\=)/,
+    '\\:': /(\\\:)/,
+    // DEPRECATED
+    '[:]': /(\[:\])/,
+    '[=]': /(\[=\])/,
+    '[=>]': /(\[=\>\])/,
+  };
 
   var parseEmbed = function (text) {
     var chunks = text.split("\\\^=[");

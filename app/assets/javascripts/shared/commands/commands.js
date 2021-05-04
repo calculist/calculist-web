@@ -111,7 +111,11 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         if (_.isPlainObject(_this.val) && _this.val.toFrozenText) {
           _this.text = _this.val.toFrozenText();
         } else {
-          _this.text = _this.text.split('\\=')[0] + '\\: ' + _this.val;
+          var computeToken = '[=]';
+          // var computeToken = '\\=';
+          var plainValToken = '[:]';
+          // var plainValToken = '\\:';
+          _this.text = _this.text.split(computeToken)[0] + plainValToken + ' ' + _this.val;
         }
         _this.render();
         _this.save();
@@ -204,9 +208,13 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
           newItem = text.clone(_this);
         } else {
           if (_.isNumber(text)) {
-            text = '\\: ' + text;
+            var plainValToken = '[:]';
+            // var plainValToken = '\\:';
+            text = plainValToken + ' ' + text;
           } else if (_.isArray(text)) {
-            text = '\\= [' + text.join(', ') + ']';
+            var computeToken = '[=]';
+            // var computeToken = '\\=';
+            text = computeToken + ' [' + text.join(', ') + ']';
           } else {
             text = '' + text;
           }

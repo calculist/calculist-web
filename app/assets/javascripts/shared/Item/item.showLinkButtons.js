@@ -34,7 +34,7 @@ calculist.register('item.showLinkButtons', ['_','$','urlFinder','itemOfFocus','z
     this.$el.prepend(this.$linkButtons);
     this.$linkButtons.html(
       '<span class="command-menu-container">' +
-        '<span class="command-menu-icon"></span>' +
+        // '<span class="command-menu-icon"></span>' +
         // '<span class="command">zoom in</span>' +
         commands.map(function (command) {
           return '<span class="command">' + _.escape(command) + '</span>';

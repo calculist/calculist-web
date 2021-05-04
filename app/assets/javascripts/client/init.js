@@ -253,14 +253,7 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
         });
       });
       getAndApplyChangesFromServer(window.topItem.last_save).then(function () {
-        $('#homebase-main-message').text('Ready.');
-        $('#homebase-main-button').attr('opacity', '1').click(function () {
-          $('#homebase-main-circle').attr('r', 0);
-          $('#homebase-circle-content').css('display', 'none');
-        });
-        setTimeout(function () {
-
-        }, 1000)
+        // TODO Add loading screen
       });
     });
   });

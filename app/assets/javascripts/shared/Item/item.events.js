@@ -11,6 +11,14 @@ calculist.require(['Item','_','isReadOnly', 'itemTagsHelper'], function (Item, _
     events["focus #input" + id] = 'handleFocus';
     events["blur #input" + id] = 'handleBlur';
     events["paste #input" + id] = 'handlePaste';
+    events["mousemove .input-container:first"] = 'handleMousemove';
+    events["mouseout .input-container:first"] = 'handleMouseout';
+    if (isReadOnly()) events["click #input" + id] = 'focus';
+    events["click #dot" + id] = 'handleDotClick';
+    events["mousedown #dot" + id] = 'handleDotMousedown';
+    events["dblclick #input" + id] = 'enterCommandMode';
+
+    // TODO Clean this up, give functions their own files.
     events["mouseover #input" + id + ' span.tag'] = _.debounce(function (e) {
       console.log(e.currentTarget.textContent);
       var idTag = e.currentTarget.textContent.split('ref:')[1];
@@ -39,12 +47,6 @@ calculist.require(['Item','_','isReadOnly', 'itemTagsHelper'], function (Item, _
         }
       }
     }, 300);
-    events["mousemove .input-container:first"] = 'handleMousemove';
-    events["mouseout .input-container:first"] = 'handleMouseout';
-    if (isReadOnly()) events["click #input" + id] = 'focus';
-    events["click #dot" + id] = 'handleDotClick';
-    events["mousedown #dot" + id] = 'handleDotMousedown';
-    // events["dblclick #input" + id] = 'enterCommandMode';
     events["click .link-buttons:first .tag"] = function (e) {
       this.executeCommand(e.currentTarget.title);
     };

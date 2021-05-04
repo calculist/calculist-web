@@ -4,17 +4,17 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
 
   return function (string, item, args, isForCommand) {
 
-    // string = string.replace(/\^item/g, function() {
-    //   return '$$item';
-    // }).replace(/\*item/g, function () {
-    //   return 'global_item';
-    // }).replace(/\@item/g, function () {
-    //   return 'itemByGuid';
-    // }).replace(/\$siblings/g, function() {
-    //   return '$siblings()';
-    // });
-    string = string.replace('@content', '_toText($items)');
-    string = string.replace('@', '$');
+    string = string.replace(/\^item/g, function() {
+      return '$$item';
+    }).replace(/\*item/g, function () {
+      return 'global_item';
+    }).replace(/\@item/g, function () {
+      return 'itemByGuid';
+    }).replace(/\$siblings/g, function() {
+      return '$siblings()';
+    });
+    // string = string.replace('@content', '_toText($items)');
+    // string = string.replace('@', '$');
 
     try {
       if (item.isComputingValue) throw 'infinite loop';

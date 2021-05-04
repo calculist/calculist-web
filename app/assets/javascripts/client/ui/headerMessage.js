@@ -31,10 +31,8 @@ calculist.register('headerMessage', ['_','eventHub', 'emojiHelper'], function (_
     var el = getElement();
     previousMessages.push(el.html());
     el.html(COPIED);
-    $('#homebase-main-circle').attr('r', '10%');
     _.delay(function () {
       el.html(previousMessages.pop() || '');
-      $('#homebase-main-circle').attr('r', '0');
     }, 2000)
   });
 

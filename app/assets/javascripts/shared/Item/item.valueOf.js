@@ -28,6 +28,14 @@ calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasCh
             if (this.val === this) throw new Error('item cannot be its own value');
             this._valueOf = this.val;
             break;
+          // DEPRECATED
+          case ('[=]'):
+            this.hasVal = true;
+            this.valIsComputed = true;
+            this.val = computeItemValue(parsedText.val, this);
+            if (this.val === this) throw new Error('item cannot be its own value');
+            this._valueOf = this.val;
+            break;
           case ('\\('):
             this.hasVal = true;
             this.valIsComputed = true;
@@ -61,18 +69,58 @@ calculist.require(['Item','_','parseItemText','computeItemValue','somethingHasCh
             };
             this._valueOf = this.val;
             break;
-          case ('[=#]'):
-            this.hasVal = false;
+          case ('\\:'):
+            this.hasVal = true;
+            this.val = _.trim(parsedText.val);
+            if (this.val !== '' && !_.isNaN(+this.val)) this.val = +this.val;
+            this._valueOf = this.val;
+            break;
+          // DEPRECATED
+          case ('[=>]'):
+            this.hasVal = true;
             this.valIsComputed = true;
-            this.val = null;
-            this._valueOf = this.parsedText.key;
-            computeItemValue(parsedText.val, this);
+            var _this = this;
+            // TODO abstract this logic into a service
+            this.val = function () {
+              var pieces = parsedText.val.split('|'),
+                  argObject = {};
+              if (pieces.length > 1) {
+                var argNames = pieces.shift().split(','),
+                    args = arguments;
+                _.each(argNames, function (name, i) {
+                  argObject[_.trim(name)] = args[i];
+                });
+              }
+              var val = computeItemValue(pieces.join('|'), _this, argObject);
+              _this.hasVariableReference = false;
+              return val;
+            };
+            this.val.toString = _.constant(parsedText.val);
+            this.val.toStringWithInput = function (input) {
+              return _this.key + '(' + input + ')';
+            };
+            this._valueOf = this.val;
             break;
           case ('\\:'):
             this.hasVal = true;
             this.val = _.trim(parsedText.val);
             if (this.val !== '' && !_.isNaN(+this.val)) this.val = +this.val;
             this._valueOf = this.val;
+            break;
+          // DEPRECATED
+          case ('[:]'):
+            this.hasVal = true;
+            this.val = _.trim(parsedText.val);
+            if (this.val !== '' && !_.isNaN(+this.val)) this.val = +this.val;
+            this._valueOf = this.val;
+            break;
+          // DEPRECATED
+          case ('[=#]'):
+            this.hasVal = false;
+            this.valIsComputed = true;
+            this.val = null;
+            this._valueOf = this.parsedText.key;
+            computeItemValue(parsedText.val, this);
             break;
           default:
             throw new Error('Unexpected separator ' + parsedText.separator);

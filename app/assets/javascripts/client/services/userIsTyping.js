@@ -6,8 +6,9 @@ calculist.register('userIsTyping', ['_','eventHub'], function (_, eventHub) {
       reset = _.debounce(function () {
         _userIsTyping = false;
         eventHub.trigger('userStoppedTyping');
-        // console.log('userStoppedTyping');
-        // window.topItem.softRenderAll();
+        // BUG This softRenderAll removes highlighting from search results.
+        // Is this softRenderAll really necessary?
+        window.topItem.softRenderAll();
       }, 1200);
 
   eventHub.on('item.handleKeydown:before', function (item, args) {
@@ -18,7 +19,6 @@ calculist.register('userIsTyping', ['_','eventHub'], function (_, eventHub) {
     } else if (!_userIsTyping) {
       _userIsTyping = true;
       eventHub.trigger('userStartedTyping');
-      // console.log('userStartedTyping');
     }
     reset();
   });
