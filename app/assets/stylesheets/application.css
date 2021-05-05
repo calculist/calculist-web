@@ -11,6 +11,7 @@
  * It is generally better to create a new file per style scope.
  *
  *= require katex/katex.min
+ *= require gg-icons/icons.min
  *= require_tree .
  *= require_self
  */
