@@ -1,4 +1,4 @@
-calculist.register('footerMenu', ['_','eventHub', 'emojiHelper'], function (_, eventHub, emojiHelper) {
+calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], function (_, eventHub, zoomPage, undoManager) {
   var devMode = false;
   var isMobileDevice = navigator.userAgent.toLowerCase().match(/mobile/i);
   if (!devMode && !isMobileDevice) {
@@ -24,7 +24,7 @@ calculist.register('footerMenu', ['_','eventHub', 'emojiHelper'], function (_, e
     'outdent': 'gg-push-chevron-left',
     'move up': 'gg-push-chevron-up',
     'move down': 'gg-push-chevron-down',
-    'expand': 'gg-arrows-shrink-v',
+    'expand': 'gg-arrows-v',
     'collapse': 'gg-arrows-merge-alt-v',
     'search': 'gg-search',
     'delete': 'gg-trash',
@@ -48,7 +48,7 @@ calculist.register('footerMenu', ['_','eventHub', 'emojiHelper'], function (_, e
   var footerEl = $('#footer');
   var commandEls = commands.map(function (command, i) {
     var secondOfPair = i % 2 || command === 'move up';
-    return '<span  title="' + command +
+    return '<span class="command-icon" title="' + command +
       '" style="display: inline-block; cursor: pointer; margin: 5px 0 5px ' +
       (secondOfPair ? '-1px' : '5px') +
       '; padding: 5px; border: 1px solid #aaa; height: 20px; width: 20px;">' +
@@ -63,11 +63,36 @@ calculist.register('footerMenu', ['_','eventHub', 'emojiHelper'], function (_, e
       ) +
     '</span>';
   });
+  var refreshState = function () {
+    var disable = function (command, disabled) {
+      $('.command-icon [title="' + command + '"]').css(
+        'opacity', disabled ? '0.3' : '1'
+      );
+    }
+    if (iof) {
+      var topItem = zoomPage.getTopItem();
+      disable('zoom in', zoomPage.getTopItem() === iof);
+      disable('zoom out', zoomPage.getZoomDepth() === 0);
+      disable('expand', !iof.collapsed);
+      disable('collapse', iof === topItem || iof.collapsed || iof.items.length === 0);
+      disable('indent', iof === topItem || iof === iof.parent.items[0]);
+      disable('outdent', iof === topItem || iof.parent === topItem);
+      disable('move up', iof === topItem || iof === topItem.items[0]);
+      disable('move down', iof === topItem || iof === topItem.items[topItem.items.length - 1]);
+
+      disable('undo', !undoManager.hasUndo());
+      disable('redo', !undoManager.hasRedo());
+      disable('delete', iof === topItem);
+      disable('duplicate', iof === topItem);
+    }
+  };
+  eventHub.on('transactionend', refreshState);
   footerEl.html(commandEls).on('click', function (e) {
     e.preventDefault();
     console.log(e.target.title, iof && iof.text);
     if (iof) {
       iof.executeCommand(e.target.title);
+      // refreshState();
     }
   });
   footerEl.css({
@@ -81,11 +106,12 @@ calculist.register('footerMenu', ['_','eventHub', 'emojiHelper'], function (_, e
     'white-space': 'nowrap',
     'overflow-x': 'scroll',
     'box-shadow': '0 0 3px rgba(0, 0, 0, 0.2)',
-  })
+  });
   eventHub.on('itemOfFocusChange', function (newIOF) {
     var prevIOF = iof;
     iof = newIOF;
     // console.log('iof change ', iof);
+    refreshState();
     if (iof && !prevIOF) {
       footerEl.show();
     } else if (!iof) {
