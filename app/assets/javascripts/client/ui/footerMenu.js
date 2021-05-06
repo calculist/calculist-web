@@ -48,6 +48,7 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
   var footerEl = $('#footer');
   var commandEls = commands.map(function (command, i) {
     var secondOfPair = i % 2 || command === 'move up';
+    // TODO Move style to stylesheet
     return '<span class="command-icon" title="' + command +
       '" style="display: inline-block; cursor: pointer; margin: 5px 0 5px ' +
       (secondOfPair ? '-1px' : '5px') +
@@ -95,6 +96,7 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
       // refreshState();
     }
   });
+  // TODO Move css to stylesheet
   footerEl.css({
     display: iof ? 'block' : 'none',
     position: 'fixed',
@@ -103,6 +105,7 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
     width: '100%',
     'z-index': '1000',
     height: '50px',
+    transition: 'height 300ms ease-in-out',
     'white-space': 'nowrap',
     'overflow-x': 'scroll',
     'box-shadow': '0 0 3px rgba(0, 0, 0, 0.2)',
