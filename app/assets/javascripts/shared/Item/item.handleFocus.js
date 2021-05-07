@@ -12,6 +12,13 @@ calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus','itemOfDr
       this.parent.blurContainingList();
     }
   };
+  Item.prototype.handleTouchFocus = function(e) {
+    if (itemOfFocus.is(this)) {
+      var $input = this.$("#input" + this.id);
+      $input.attr('contenteditable', 'true');
+    }
+    this.handleFocus(e);
+  };
 
   Item.prototype.handleFocus = function(e) {
     if (this.mode === 'search') return;
@@ -26,7 +33,6 @@ calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus','itemOfDr
     if (dragItem && itemOfDrag !== this) return e.preventDefault();
     itemOfFocus.change(this);
     sessionStorage.focusGuid = this.guid;
-    if (isReadOnly()) return;
     var $input = this.$("#input" + this.id);
     var previousHeight = $input.height();
     this.showTrueValue();
@@ -36,10 +42,6 @@ calculist.require(['Item', 'cursorPosition','isReadOnly','itemOfFocus','itemOfDr
     $input.addClass('focus');
     $input.removeClass('callout');
     $input.css({minHeight:previousHeight});
-    // $input.css({minHeight:'16px'});
-    // $input.css({height:previousHeight, overflow: 'visible'});
-    // $input[0].selectionStart = cursorPosition.get();
-    // $input[0].selectionEnd = 0;
     var range = document.createRange();
     var sel = window.getSelection();
     range.setStart($input[0].childNodes[0], Math.min(cursorPosition.get(this.depth), this.text.length));

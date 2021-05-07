@@ -1,7 +1,6 @@
-calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], function (_, eventHub, zoomPage, undoManager) {
-  var devMode = false;
-  var isMobileDevice = navigator.userAgent.toLowerCase().match(/mobile/i);
-  if (!devMode && !isMobileDevice) {
+calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager', 'userAgentHelper'], function (_, eventHub, zoomPage, undoManager, userAgentHelper) {
+  var isMobileDevice = userAgentHelper.isMobileDevice;
+  if (!isMobileDevice) {
     $('#footer').hide();
     return {};
   }
@@ -10,9 +9,9 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
     'expand', 'collapse',
     'indent', 'outdent',
     'move up', 'move down',
-    'delete', 'duplicate',
     'undo','redo',
-    'search', 'enter command mode',
+    'delete', 'duplicate',
+    'search', 'command mode',
     // 'copy', 'paste',
   ];
   var commandIcons = {
@@ -28,7 +27,7 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
     'collapse': 'gg-arrows-merge-alt-v',
     'search': 'gg-search',
     'delete': 'gg-trash',
-    'enter command mode': 'gg-terminal',
+    'command mode': 'gg-terminal',
     'copy': 'gg-copy',
     'duplicate': 'gg-duplicate',
     'outdent straight': 'gg-move-left',
@@ -42,17 +41,14 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
     'duplicate': '7px auto 0 2px',
     'undo': '3px auto',
     'redo': '3px auto',
-    'enter command mode': '0 -2px',
+    'command mode': '0 -2px',
   }
   var iof = null;
   var footerEl = $('#footer');
   var commandEls = commands.map(function (command, i) {
-    var secondOfPair = i % 2 || command === 'move up';
-    // TODO Move style to stylesheet
-    return '<span class="command-icon" title="' + command +
-      '" style="display: inline-block; cursor: pointer; margin: 5px 0 5px ' +
-      (secondOfPair ? '-1px' : '5px') +
-      '; padding: 5px; border: 1px solid #aaa; height: 20px; width: 20px;">' +
+    var secondOfPair = i % 2 || command === 'expand' || command === 'move up';
+    return '<span class="command-icon" title="' + command + '"' +
+      (secondOfPair ? 'style="margin-left: -1px;"' : '') + '>' +
       (
         commandIcons[command] ?
           (
@@ -90,39 +86,22 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
   eventHub.on('transactionend', refreshState);
   footerEl.html(commandEls).on('click', function (e) {
     e.preventDefault();
-    console.log(e.target.title, iof && iof.text);
     if (iof) {
       iof.executeCommand(e.target.title);
-      // refreshState();
     }
   });
-  // TODO Move css to stylesheet
   footerEl.css({
     display: iof ? 'block' : 'none',
-    position: 'fixed',
-    bottom: 0,
-    background: '#fff',
-    width: '100%',
-    'z-index': '1000',
-    height: '50px',
-    transition: 'height 300ms ease-in-out',
-    'white-space': 'nowrap',
-    'overflow-x': 'scroll',
-    'box-shadow': '0 0 3px rgba(0, 0, 0, 0.2)',
   });
   eventHub.on('itemOfFocusChange', function (newIOF) {
     var prevIOF = iof;
     iof = newIOF;
-    // console.log('iof change ', iof);
     refreshState();
     if (iof && !prevIOF) {
       footerEl.show();
     } else if (!iof) {
       footerEl.hide();
     }
-  });
-  eventHub.on('item.handleBlur:before', function (blurItem) {
-    // TODO Hide menu when keyboard is not present.
   });
   return {
 

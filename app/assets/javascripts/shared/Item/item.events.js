@@ -1,4 +1,4 @@
-calculist.require(['Item','_','isReadOnly', 'itemTagsHelper'], function (Item, _, isReadOnly, itemTagsHelper) {
+calculist.require(['Item','_','isReadOnly', 'itemTagsHelper', 'userAgentHelper'], function (Item, _, isReadOnly, itemTagsHelper, userAgentHelper) {
 
   'use strict';
 
@@ -9,6 +9,7 @@ calculist.require(['Item','_','isReadOnly', 'itemTagsHelper'], function (Item, _
     events["keypress #input" + id] = 'handleKeypress';
     events["keyup #input" + id] = 'handleKeyup';
     events["focus #input" + id] = 'handleFocus';
+    if (userAgentHelper.isMobileDevice) events["touchend #input" + id] = 'handleTouchFocus';
     events["blur #input" + id] = 'handleBlur';
     events["paste #input" + id] = 'handlePaste';
     events["mousemove .input-container:first"] = 'handleMousemove';

@@ -63,6 +63,11 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
         _this.enterCommandMode();
       }
     },
+    commandMode: function (_this) {
+      if (_this.mode !== 'command') {
+        _this.enterCommandMode();
+      }
+    },
     exitCommandMode: function (_this) {
       if (_this.mode === 'command' || _this.mode === 'search:command') {
         _this.exitCommandMode();
