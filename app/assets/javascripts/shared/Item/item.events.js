@@ -9,7 +9,7 @@ calculist.require(['Item','_','isReadOnly', 'itemTagsHelper', 'userAgentHelper']
     events["keypress #input" + id] = 'handleKeypress';
     events["keyup #input" + id] = 'handleKeyup';
     events["focus #input" + id] = 'handleFocus';
-    if (userAgentHelper.isMobileDevice) events["touchend #input" + id] = 'handleTouchFocus';
+    if (userAgentHelper.isMobileDevice) events["click #input" + id] = 'handleTouchFocus';
     events["blur #input" + id] = 'handleBlur';
     events["paste #input" + id] = 'handlePaste';
     events["mousemove .input-container:first"] = 'handleMousemove';

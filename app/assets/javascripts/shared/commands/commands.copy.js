@@ -12,6 +12,12 @@ calculist.register('commands.copy', ['_','copyToClipboard','commands.copyItemsTo
   });
 });
 
+calculist.register('commands.copyItems', ['commands.copy'], function (copyCommand) {
+  return function (_this, options) {
+    return copyCommand(_this, _this.items, options);
+  };
+});
+
 calculist.register('commands.cut', ['_', 'commands.copy', 'isItem'], function (_, copyCommand, isItem) {
   return function (_this, thingToCut, options) {
     copyCommand.apply(this, arguments);

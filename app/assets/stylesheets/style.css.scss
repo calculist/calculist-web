@@ -544,13 +544,28 @@ body {
     display: none;
     position: fixed;
     bottom: 0;
-    background: #fff;
     width: 100%;
     z-index: 1000;
     height: 60px;
     white-space: nowrap;
     overflow-x: scroll;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    overflow-y: hidden;
+    @media (any-hover: hover) {
+      opacity: 0;
+      bottom: -20px;
+      transition: all 200ms ease-in-out;
+      &:hover {
+        opacity: 1;
+        bottom: 0;
+      }
+    }
+    .command-icons-container {
+      display: block;
+      width: min-content;
+      margin: 0 auto;
+      // background: #fff;
+      // box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    }
     .command-icon {
       display: inline-block;
       cursor: pointer;
@@ -559,6 +574,7 @@ body {
       border: 1px solid #aaa;
       height: 20px;
       width: 20px;
+      background-color: #fff;
       &:active {
         background-color: #ddd;
       }

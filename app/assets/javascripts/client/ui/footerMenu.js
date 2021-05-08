@@ -1,18 +1,13 @@
-calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager', 'userAgentHelper'], function (_, eventHub, zoomPage, undoManager, userAgentHelper) {
-  var isMobileDevice = userAgentHelper.isMobileDevice;
-  if (!isMobileDevice) {
-    $('#footer').hide();
-    return {};
-  }
+calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], function (_, eventHub, zoomPage, undoManager) {
   var commands = [
     'zoom in', 'zoom out',
     'expand', 'collapse',
     'indent', 'outdent',
     'move up', 'move down',
     'undo','redo',
-    'delete', 'duplicate',
+    'copy', 'copy items',
+    'delete', 'delete items',//'duplicate',
     'search', 'command mode',
-    // 'copy', 'paste',
   ];
   var commandIcons = {
     'undo': 'gg-undo',
@@ -26,18 +21,22 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager', 'us
     'expand': 'gg-arrows-v',
     'collapse': 'gg-arrows-merge-alt-v',
     'search': 'gg-search',
-    'delete': 'gg-trash',
+    'delete': 'gg-trash-empty',
+    'delete items': 'gg-trash',
     'command mode': 'gg-terminal',
     'copy': 'gg-copy',
+    'copy items': 'gg-copy',
     'duplicate': 'gg-duplicate',
     'outdent straight': 'gg-move-left',
     'indent siblings': 'gg-move-task',
+    pin: 'gg-pin-alt',
   };
   var commandIconMargins = {
     'indent': '-1px auto 0 -4px',
     'outdent': '-1px auto 0 1px',
     'move down': '-3px auto 0 auto',
     'delete': '5px auto 0 auto',
+    'delete items': '5px auto 0 auto',
     'duplicate': '7px auto 0 2px',
     'undo': '3px auto',
     'redo': '3px auto',
@@ -54,13 +53,22 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager', 'us
           (
             '<i style="margin:' +
             (commandIconMargins[command] ? commandIconMargins[command] : '0 auto') +
-            ';" class="' + commandIcons[command] + '" title="' + command + '" ></i>'
+            ';" class="' + commandIcons[command] + '" title="' + command + '" ></i>' +
+            (
+              command === 'copy' ?
+                ( // NOTE This is a hack to add the black dot on the copy icon
+                  '<span style="pointer-events: none; display: block; width: 6px; height: 10px; background: #fff; position: relative;top: -14px;left: 7px;"></span>' +
+                  '<span style="pointer-events: none; display: block; width: 6px; height: 6px; background: #000; position: relative;top: -22px;left: 7px;border-radius: 8px;"></span>'
+                ) :
+                // NOTE This is a hack to add the black dot on the delete icon
+                (command === 'delete' ? '<span style="pointer-events: none; display: block; width: 6px; height: 6px; background: #000; position: relative;top: -9px;left: 7px;border-radius: 8px;"></span>' : '')
+            )
           ) :
           command
       ) +
     '</span>';
   });
-  var refreshState = function () {
+  var refreshState = _.debounce(function () {
     var disable = function (command, disabled) {
       $('.command-icon [title="' + command + '"]').css(
         'opacity', disabled ? '0.3' : '1'
@@ -80,18 +88,26 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager', 'us
       disable('undo', !undoManager.hasUndo());
       disable('redo', !undoManager.hasRedo());
       disable('delete', iof === topItem);
-      disable('duplicate', iof === topItem);
+      disable('delete items', iof.items.length === 0);
+      disable('copy items', iof.items.length === 0);
+      // disable('duplicate', iof === topItem);
     }
-  };
+  }, 50);
   eventHub.on('transactionend', refreshState);
-  footerEl.html(commandEls).on('click', function (e) {
+  eventHub.on('undoableTransaction', refreshState);
+  eventHub.on('undo', refreshState);
+  eventHub.on('redo', refreshState);
+  eventHub.on('delayedCollapse', refreshState);
+  footerEl.html('<div class="command-icons-container">' +
+    commandEls.join('') +
+  '</div>').on('click', function (e) {
     e.preventDefault();
     if (iof) {
       iof.executeCommand(e.target.title);
     }
   });
   footerEl.css({
-    display: iof ? 'block' : 'none',
+    display: iof ? 'block' : 'none'
   });
   eventHub.on('itemOfFocusChange', function (newIOF) {
     var prevIOF = iof;

@@ -65,6 +65,7 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     },
     commandMode: function (_this) {
       if (_this.mode !== 'command') {
+        _this.focus();
         _this.enterCommandMode();
       }
     },
@@ -551,8 +552,9 @@ calculist.require(['_','$','transaction','computeItemValue','cursorPosition','co
     generateList: _.noop,
     deleteItems: function(_this) {
       _this.items = [];
+      _this.collapsed = false;
       _this.save();
-      _this.renderChildren();
+      _this.render();
     },
     moveToList: function (_this, listName) {
       var oldParent = _this.parent,

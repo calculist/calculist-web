@@ -1,4 +1,4 @@
-calculist.require(['Item','_','$','lmSessionStorage','zoomPage'], function (Item, _, $, lmSessionStorage, zoomPage) {
+calculist.require(['Item','_','$','lmSessionStorage','zoomPage','eventHub'], function (Item, _, $, lmSessionStorage, zoomPage, eventHub) {
 
   Item.prototype.zoomIn = function(options) {
     options || (options = {});
@@ -27,6 +27,7 @@ calculist.require(['Item','_','$','lmSessionStorage','zoomPage'], function (Item
             _this.wasCollapsed = false;
             _this.collapse(true).then(function () {
               _this.focus();
+              eventHub.trigger('delayedCollapse');
             });
           }
           resolve();
