@@ -1,4 +1,4 @@
-calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], function (_, eventHub, zoomPage, undoManager) {
+calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager','userAgentHelper'], function (_, eventHub, zoomPage, undoManager, userAgentHelper) {
   var commands = [
     'zoom in', 'zoom out',
     'expand', 'collapse',
@@ -6,7 +6,7 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
     'move up', 'move down',
     'undo','redo',
     'copy', 'copy items',
-    'delete', 'delete items',//'duplicate',
+    'delete', 'delete items',
     'search', 'command mode',
   ];
   var commandIcons = {
@@ -26,10 +26,11 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
     'command mode': 'gg-terminal',
     'copy': 'gg-copy',
     'copy items': 'gg-copy',
-    'duplicate': 'gg-duplicate',
+    // 'duplicate': 'gg-duplicate',
     'outdent straight': 'gg-move-left',
     'indent siblings': 'gg-move-task',
     pin: 'gg-pin-alt',
+    unpin: 'gg-pin-bottom',
   };
   var commandIconMargins = {
     'indent': '-1px auto 0 -4px',
@@ -41,6 +42,8 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
     'undo': '3px auto',
     'redo': '3px auto',
     'command mode': '0 -2px',
+    pin: '10px auto',
+    unpin: '10px auto',
   }
   var iof = null;
   var footerEl = $('#footer');
@@ -57,17 +60,30 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
             (
               command === 'copy' ?
                 ( // NOTE This is a hack to add the black dot on the copy icon
-                  '<span style="pointer-events: none; display: block; width: 6px; height: 10px; background: #fff; position: relative;top: -14px;left: 7px;"></span>' +
-                  '<span style="pointer-events: none; display: block; width: 6px; height: 6px; background: #000; position: relative;top: -22px;left: 7px;border-radius: 8px;"></span>'
+                  '<span title="copy" style="pointer-events: none; display: block; width: 6px; height: 10px; background: #fff; position: relative;top: -14px;left: 7px;"></span>' +
+                  '<span title="copy" style="pointer-events: none; display: block; width: 6px; height: 6px; background: #000; position: relative;top: -22px;left: 7px;border-radius: 8px;"></span>'
                 ) :
                 // NOTE This is a hack to add the black dot on the delete icon
-                (command === 'delete' ? '<span style="pointer-events: none; display: block; width: 6px; height: 6px; background: #000; position: relative;top: -9px;left: 7px;border-radius: 8px;"></span>' : '')
+                (command === 'delete' ? '<span  title="delete" style="pointer-events: none; display: block; width: 6px; height: 6px; background: #000; position: relative;top: -9px;left: 7px;border-radius: 8px;"></span>' : '')
             )
           ) :
           command
       ) +
     '</span>';
   });
+  if (!userAgentHelper.isMobileDevice) {
+    (function () {
+      var pinned = sessionStorage.commandMenuPin === '1';
+      var icon = commandIcons[pinned ? 'unpin' : 'pin'];
+      var title = (pinned ? 'un' : '') + 'pin command menu';
+      commandEls.push('<span class="command-icon pin" title="' + title + '">' +
+        '<i class="' + icon + '" title="' + title + '" style="margin: ' + commandIconMargins.pin + '"></i>' +
+      '</span>');
+      if (pinned) {
+        footerEl.css({bottom: 0, opacity: 1});
+      }
+    })();
+  }
   var refreshState = _.debounce(function () {
     var disable = function (command, disabled) {
       $('.command-icon [title="' + command + '"]').css(
@@ -82,16 +98,34 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
       disable('collapse', iof === topItem || iof.collapsed || iof.items.length === 0);
       disable('indent', iof === topItem || iof === iof.parent.items[0]);
       disable('outdent', iof === topItem || iof.parent === topItem);
-      disable('move up', iof === topItem || iof === topItem.items[0]);
-      disable('move down', iof === topItem || iof === topItem.items[topItem.items.length - 1]);
-
-      disable('undo', !undoManager.hasUndo());
-      disable('redo', !undoManager.hasRedo());
+      var topOrFirst = function (top) { return top ? (iof === top || topOrFirst(top.items[0])) : false; };
+      disable('move up', topOrFirst(topItem));
+      var topOrLast = function (top) { return top ? (iof === top || topOrLast(_.last(top.items))) : false; };
+      disable('move down', topOrLast(topItem));
+      disable('copy', false);
+      disable('copy items', iof.items.length === 0);
       disable('delete', iof === topItem);
       disable('delete items', iof.items.length === 0);
-      disable('copy items', iof.items.length === 0);
-      // disable('duplicate', iof === topItem);
+      disable('search', iof.items.length === 0);
+      disable('command mode', false);
+    } else {
+      disable('zoom in', true);
+      disable('zoom out', true);
+      disable('expand', true);
+      disable('collapse', true);
+      disable('indent', true);
+      disable('outdent', true);
+      disable('move up', true);
+      disable('move down',true);
+      disable('copy', true);
+      disable('copy items', true);
+      disable('delete', true);
+      disable('delete items', true);
+      disable('search', true);
+      disable('command mode', true);
     }
+    disable('undo', !undoManager.hasUndo());
+    disable('redo', !undoManager.hasRedo());
   }, 50);
   eventHub.on('transactionend', refreshState);
   eventHub.on('undoableTransaction', refreshState);
@@ -102,22 +136,28 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager'], fu
     commandEls.join('') +
   '</div>').on('click', function (e) {
     e.preventDefault();
-    if (iof) {
-      iof.executeCommand(e.target.title);
+    // TODO make pin command menu a real command
+    if (e.target.title === 'pin command menu') {
+      footerEl.css({bottom: 0, opacity: 1});
+      $('[title="pin command menu"]').attr('title', 'unpin command menu');
+      $('.' + commandIcons.pin).addClass(commandIcons.unpin).removeClass(commandIcons.pin);
+      sessionStorage.commandMenuPin = '1';
+    } else if (e.target.title === 'unpin command menu') {
+      footerEl.css({bottom: '', opacity: ''});
+      $('[title="unpin command menu"]').attr('title', 'pin command menu');
+      $('.' + commandIcons.unpin).addClass(commandIcons.pin).removeClass(commandIcons.unpin);
+      sessionStorage.commandMenuPin = '0';
+    } else if (iof) {
+      iof.$('.input:first').focus();
+      window.requestAnimationFrame(function () {
+        iof.executeCommand(e.target.title);
+      });
     }
-  });
-  footerEl.css({
-    display: iof ? 'block' : 'none'
   });
   eventHub.on('itemOfFocusChange', function (newIOF) {
     var prevIOF = iof;
     iof = newIOF;
     refreshState();
-    if (iof && !prevIOF) {
-      footerEl.show();
-    } else if (!iof) {
-      footerEl.hide();
-    }
   });
   return {
 

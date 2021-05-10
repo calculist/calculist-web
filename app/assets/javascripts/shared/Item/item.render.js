@@ -1,4 +1,4 @@
-calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
+calculist.require(['Item','_','itemOfFocus','editMode'], function (Item, _, itemOfFocus, editMode) {
 
   'use strict';
 
@@ -13,7 +13,8 @@ calculist.require(['Item','_','itemOfFocus'], function (Item, _, itemOfFocus) {
       id: this.id,
       text: isFocused ? _.escape(this.text) : this.getComputedHTML(),
       collapsed: this.collapsed,
-      focus: isFocused
+      focus: isFocused,
+      contenteditable: editMode.isEditing(),
     };
     this.$el.html(this.template(templateData));
     this.addOrRemoveClasses();

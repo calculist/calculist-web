@@ -1,4 +1,4 @@
-calculist.register('item.handleBlur', ['_','eventHub', 'executeCommand', 'userAgentHelper'], function (_, eventHub, executeCommand, userAgentHelper) {
+calculist.register('item.handleBlur', ['_','eventHub', 'executeCommand'], function (_, eventHub, executeCommand) {
 
   var itemsToBlur = [];
 
@@ -15,7 +15,6 @@ calculist.register('item.handleBlur', ['_','eventHub', 'executeCommand', 'userAg
     var $input = item.$("#input" + item.id);
     $input.removeClass('focus');
     $input.css({minHeight: '16px'});
-    if (userAgentHelper.isMobileDevice) $input.attr('contenteditable', 'false');
     // $input.css({minHeight: '16px', height: 'auto', overflow:'hidden'});
     eventHub.trigger('item.handleBlur', item);
   };

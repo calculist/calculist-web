@@ -541,7 +541,6 @@ body {
     }
   }
   #footer {
-    display: none;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -550,10 +549,14 @@ body {
     white-space: nowrap;
     overflow-x: scroll;
     overflow-y: hidden;
+    background: #fff;
+    border-top: 1px solid #aaa;
     @media (any-hover: hover) {
       opacity: 0;
       bottom: -20px;
       transition: all 200ms ease-in-out;
+      background: none;
+      border-top: none;
       &:hover {
         opacity: 1;
         bottom: 0;
@@ -564,7 +567,6 @@ body {
       width: min-content;
       margin: 0 auto;
       // background: #fff;
-      // box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
     }
     .command-icon {
       display: inline-block;
@@ -577,6 +579,13 @@ body {
       background-color: #fff;
       &:active {
         background-color: #ddd;
+      }
+      &.pin {
+        border: none;
+        background: none;
+        &:active {
+          background: none;
+        }
       }
     }
   }
