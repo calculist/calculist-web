@@ -42,8 +42,8 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager','use
     'undo': '3px auto',
     'redo': '3px auto',
     'command mode': '0 -2px',
-    pin: '10px auto',
-    unpin: '10px auto',
+    pin: '9px auto 0 auto',
+    unpin: '11px auto 0 auto',
   }
   var iof = null;
   var footerEl = $('#footer');
@@ -76,8 +76,9 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager','use
       var pinned = sessionStorage.commandMenuPin === '1';
       var icon = commandIcons[pinned ? 'unpin' : 'pin'];
       var title = (pinned ? 'un' : '') + 'pin command menu';
+      var margin = commandIconMargins[pinned ? 'unpin' : 'pin'];
       commandEls.push('<span class="command-icon pin" title="' + title + '">' +
-        '<i class="' + icon + '" title="' + title + '" style="margin: ' + commandIconMargins.pin + '"></i>' +
+        '<i class="' + icon + '" title="' + title + '" style="margin: ' + margin + '"></i>' +
       '</span>');
       if (pinned) {
         footerEl.css({bottom: 0, opacity: 1});
@@ -140,12 +141,18 @@ calculist.register('footerMenu', ['_','eventHub', 'zoomPage', 'undoManager','use
     if (e.target.title === 'pin command menu') {
       footerEl.css({bottom: 0, opacity: 1});
       $('[title="pin command menu"]').attr('title', 'unpin command menu');
-      $('.' + commandIcons.pin).addClass(commandIcons.unpin).removeClass(commandIcons.pin);
+      $('.' + commandIcons.pin)
+        .addClass(commandIcons.unpin)
+        .removeClass(commandIcons.pin)
+        .css('margin', commandIconMargins.unpin);
       sessionStorage.commandMenuPin = '1';
     } else if (e.target.title === 'unpin command menu') {
       footerEl.css({bottom: '', opacity: ''});
       $('[title="unpin command menu"]').attr('title', 'pin command menu');
-      $('.' + commandIcons.unpin).addClass(commandIcons.pin).removeClass(commandIcons.unpin);
+      $('.' + commandIcons.unpin)
+        .addClass(commandIcons.pin)
+        .removeClass(commandIcons.unpin)
+        .css('margin', commandIconMargins.pin);
       sessionStorage.commandMenuPin = '0';
     } else if (iof) {
       iof.$('.input:first').focus();
