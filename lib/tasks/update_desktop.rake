@@ -2,7 +2,7 @@ RAILS_ENV = ENV['RAILS_ENV'] || 'development'
 
 namespace :assets do
 
-  desc 'Update assets in the desktop repository (assumes calculist-desktop is in the same directory as app.calculist.io)'
+  desc 'Update assets for use in the desktop app'
   task :update_desktop do
     puts "rake assets:clobber"
     Rake::Task['assets:clobber'].invoke
@@ -14,14 +14,14 @@ namespace :assets do
 
     digest_regex = /(-{1}[a-z0-9]{32}*\.{1}){1}/
 
-    desktop_assets_path = assets_path.gsub('app.calculist.io/public','calculist-desktop')
+    desktop_assets_path = assets_path.gsub('/public','/desktop')
 
     assets.each do |file_path|
       file_name = file_path.split(assets_path).pop.gsub(digest_regex, '.')
-      desktop_file_path = "#{desktop_assets_path}/#{file_name}"
+      desktop_file_path = "#{desktop_assets_path}#{file_name}"
       puts "Updating #{file_name}"
       if file_name == 'application.css'
-        File.write(file_path, File.read(file_path).gsub(Rails.root.to_s, '~/app.calculist.io'))
+        File.write(file_path, File.read(file_path).gsub(Rails.root.to_s, '~/calculist-web'))
       end
       FileUtils.mv(file_path, desktop_file_path)
     end

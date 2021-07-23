@@ -2,9 +2,8 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
 
   'use strict';
 
-  return function (string, item, args, isForCommand) {
-
-    string = string.replace(/\^item/g, function() {
+  var preProcessString = function (string) {
+    return string.replace(/\^item/g, function() {
       return '$$item';
     }).replace(/\*item/g, function () {
       return 'global_item';
@@ -13,6 +12,11 @@ calculist.register('computeItemValue', ['_','createComputationContextObject','ev
     }).replace(/\$siblings/g, function() {
       return '$siblings()';
     });
+  };
+
+  return function (string, item, args, isForCommand) {
+
+    string = preProcessString(string);
     // string = string.replace('@content', '_toText($items)');
     // string = string.replace('@', '$');
 

@@ -426,6 +426,9 @@ body {
       &.tag.dup {
         background-color: red;
       }
+      &.tag.special-tag {
+        background-color: orange;
+      }
       &.tag-prefix {
         opacity: 0.8;
       }

@@ -1,4 +1,4 @@
-calculist.register('slashElementsHelper', ['parseUntilBalanced', 'emojiHelper', 'itemTagsHelper', 'urlFinder'], function (parseUntilBalanced, emojiHelper, itemTagsHelper, urlFinder) {
+calculist.register('slashElementsHelper', ['parseUntilBalanced', 'emojiHelper', 'itemTagsHelper', 'urlFinder', 'desktopHelper'], function (parseUntilBalanced, emojiHelper, itemTagsHelper, urlFinder, desktopHelper) {
   var findItem = function (item, pattern) {
     // if (pattern.test(item.text)) return item;
     if (item.items.length === 0) return null;
@@ -68,25 +68,31 @@ calculist.register('slashElementsHelper', ['parseUntilBalanced', 'emojiHelper', 
       var prefix = '';
       if (f === 'id' || f === 'ref' || f === 'system-id') {
         prefix = '<span class="tag-prefix">' + f + ':</span>';
-        // if (f === 'id') {
-        //   // NOTE this isn't working yet
-        //   var dup = itemTagsHelper.getItemByIdTag(innerText);
-        //   if (dup) { f = 'tag dup'; } else { f = 'tag'; }
-        // } else {
+        if (f === 'id' && (innerText === 'lexicon' || innerText === 'environment' || innerText === 'patterns')) {
+          f = 'tag special-tag';
+        } else {
           f = 'tag';
-        // }
-      // } else if (f === 'label') {
-      //   f = 'tag';
+        }
       } else if (f === 'image') {
-        // BUG There's a "sometimes" bug here with data URIs sometimes not passing the regexp.
-        // Same data uri, but sometimes it passes and sometimes it doesn't.
-        if (urlFinder.isUrl(innerText) || urlFinder.isDataURI(innerText.trim())) {
+        var isValidSrc = function (src) {
+          // BUG There's a "sometimes" bug here with data URIs sometimes not passing the regexp.
+          // Same data uri, but sometimes it passes and sometimes it doesn't.
+          return urlFinder.isUrl(src) || urlFinder.isDataURI(src) || (
+            desktopHelper.isDesktop() && desktopHelper.isRelativeFilepath(src)
+          );
+        };
+        if (isValidSrc(innerText)) {
           return '<img src="' + innerText + '"/>' + remainingText;
         } else {
           var parts = innerText.split(',');
-          var n = parseInt(parts[0]);
-          if (parts[1] && (urlFinder.isUrl(parts[1]) || urlFinder.isDataURI(parts[1].trim()))) {
-            return '<img src="' + parts[1] + '" width="' + n  + '"/>'
+          var src = parts.slice(1).join(',').trim();
+          if (src && isValidSrc(src)) {
+            var widthAndHeight = parts[0].split('x');
+            var width = +widthAndHeight[0];
+            var widthAttr = _.isNaN(width) ? '' : 'width="' + width + '"';
+            var height = +widthAndHeight[1];
+            var heightAttr = _.isNaN(height) ? '' : 'height="' + height + '"';
+            return '<img src="' + src + '" ' + widthAttr  + ' ' + heightAttr + '/>';
           } else {
             return text;//innerText + remainingText;
           }

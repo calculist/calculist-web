@@ -17,3 +17,7 @@ calculist.register('commands.shareListWith', ['Backbone', '_'], function (Backbo
     });
   });
 });
+
+calculist.register('commands.shareDocumentWith', ['commands.shareListWith'], _.identity)
+calculist.register('commands.stopSharingDocument', ['commands.stopSharingList'], _.identity)
+calculist.register('commands.stopSharingDocumentWith', ['commands.stopSharingListWith'], _.identity)

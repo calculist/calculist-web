@@ -24,6 +24,11 @@ calculist.register('item.handleKeydown', ['_','$','customKeyboardShortcuts','cur
       } else {
         transaction(this.indent, this);
       }
+    } else if (e.which === 32) { // 32 = spacebar
+      if (this.text === '') {
+        e.preventDefault();
+        transaction(this.indent, this);
+      }
     } else if (e.which === 38) { // 38 = up
       if (e.metaKey) {
         e.preventDefault();

@@ -251,6 +251,9 @@ calculist.init(['LIST_DATA','Item','_','$','Backbone','lmDiff','saveButton','get
         if (commands) _.each(commands.items, function (commandItem) {
           if (/^[a-zA-Z]/.test(commandItem.text)) executeCommand(window.topItem, commandItem.text);
         });
+        if (window.location.pathname === '/welcome') {
+          executeCommand(window.topItem, 'celebrate');
+        }
       });
       getAndApplyChangesFromServer(window.topItem.last_save).then(function () {
         // TODO Add loading screen
