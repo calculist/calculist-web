@@ -2,10 +2,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
 before_action :configure_sign_up_params, only: [:create]
 # before_action :configure_account_update_params, only: [:update]
 
-  # GET /resource/sign_up
-  # def new
-  #   super
-  # end
+  # GET /join
+  def new
+    sh = StripeHelper.new
+    if params[:plan] && sh.valid_plan?(params[:plan])
+      @plan = params[:plan]
+      render 'stripe_checkout'
+    elsif params[:invite_code] || params[:code]
+      super
+    else
+      redirect_to "#{ENV['CALCULIST_MAIN_URL']}/pricing"
+    end
+  end
 
   # POST /resource
   # def create

@@ -1,50 +1,104 @@
-<div class="devise-form">
-  <a href="https://calculist.io"><img class="logo-icon" src="/logo-icon-blue-black.svg"></a>
-  <h2>Join Calculist</h2>
+<style media="screen">
+  body { background: #fff; }
+  #main-container.theme-light { background: #fff; }
+  form em {
+    font-style: normal;
+    font-size: 0.8rem;
+    color: #a3a3a3;
+  }
+  #error_explanation h2 {
+    font-size: 1rem;
+  }
+  .gg-check-o {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(var(--ggs,1));
+    width: 22px;
+    height: 22px;
+    border: 2px solid;
+    border-radius: 100px
+  }
 
-  <div style="text-align:center;margin: 20px 0;">
-    <div id="message">Need an <a style="text-decoration:underline;" href="https://eepurl.com/cxt3mb">invite code</a>?</div>
+  .gg-check-o::after {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    left: 3px;
+    top: -1px;
+    width: 6px;
+    height: 10px;
+    border-color: currentColor;
+    border-width: 0 2px 2px 0;
+    border-style: solid;
+    transform-origin: bottom left;
+    transform: rotate(45deg)
+  }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css" integrity="sha384-VP0GfisErC22dnswxVzLKdy1z+wIV3p/iGyahqdhsuFvfu9wrRUaXUAdLWPN7E8m" crossorigin="anonymous">
+<!-- TODO Combine this page with the existing join page -->
+<div class="container">
+  <div class="section">
+    <div class="row center" style="text-align:justify;margin:0 auto;">
+      <div class="col s8 offset-s2">
+        <div id="step-1-container" style="opacity: 0.3; ">
+          <h4 id="step-1-header">Step 1. Enter your email <i id="step-1-check" class="gg-check-o" style="display:inline-block;background:green;color:white;"></i></h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="row center" style="text-align:justify;margin:0 auto;">
+      <div class="col s8 offset-s2">
+        <div id="step-2-container" style="opacity: 0.3;  margin-top: 10px;">
+          <h4>Step 2. Add payment info <i id="step-2-check" class="gg-check-o" style="display:inline-block;background:green;color:white;"></i></h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="row center" style="text-align:justify;margin:0 auto;">
+      <div class="col s8 offset-s2">
+        <div id="step-3-container" style="margin-top: 10px;">
+          <h4>Step 3. Create a username and password</h4>
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= devise_error_messages! %>
+
+            <div class="field" style="display:none;">
+              <%= f.label :invite_code %><br />
+              <%= f.text_field :invite_code  %>
+            </div>
+
+            <div class="field">
+              <%= f.label :email %><br />
+              <%= f.email_field :email %>
+            </div>
+
+            <div class="field">
+              <%= f.label :username %><br />
+              <%= f.text_field :username, autofocus: true %>
+            </div>
+
+            <div class="field">
+              <%= f.label :password %>
+              <% if @minimum_password_length %>
+              <em>(<%= @minimum_password_length %>+ characters)</em>
+              <% end %><br />
+              <%= f.password_field :password, autocomplete: "off" %>
+            </div>
+
+            <div class="field">
+              <%= f.label :password_confirmation %><br />
+              <%= f.password_field :password_confirmation, autocomplete: "off" %>
+            </div>
+
+            <div class="actions">
+              <%= f.submit "Sign up", class: "btn-large waves-effect waves-light light-blue" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="form-inputs">
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-      <%= devise_error_messages! %>
-
-      <div class="field">
-        <%= f.label :invite_code %><br />
-        <%= f.text_field :invite_code, autofocus: true %>
-      </div>
-
-      <div class="field">
-        <%= f.label :username %><br />
-        <%= f.text_field :username %>
-      </div>
-
-      <div class="field">
-        <%= f.label :email %><br />
-        <%= f.email_field :email %>
-      </div>
-
-      <div class="field">
-        <%= f.label :password %>
-        <% if @minimum_password_length %>
-        <em>(<%= @minimum_password_length %>+ characters)</em>
-        <% end %><br />
-        <%= f.password_field :password, autocomplete: "off" %>
-      </div>
-
-      <div class="field">
-        <%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "off" %>
-      </div>
-
-      <div class="actions">
-        <%= f.submit "Sign up" %>
-      </div>
-    <% end %>
-  </div>
-
-  <%= render "devise/shared/links" %>
-
 </div>
 
 <script>
@@ -57,9 +111,20 @@
       }
       return params;
     }, {});
-    if (params.invite_code) {
-      document.getElementById('user_invite_code').value = params.invite_code;
-      document.getElementById('message').innerHTML = '';
+    if (params.invite_code || params.code) {
+      var inviteCodeInput = document.getElementById('user_invite_code');
+      inviteCodeInput.value = params.invite_code || params.code;
+      inviteCodeInput.setAttribute('readonly', true);
+    }
+    if (params.email) {
+      var emailInput = document.getElementById('user_email')
+      emailInput.value = params.email;
+      emailInput.setAttribute('readonly', true);
+
+      var pageTitleEl = document.getElementById('page-title');
+      pageTitleEl.textContent = 'Almost done!';
+
+
     }
   }
 </script>
