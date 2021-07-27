@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   get 'home' => 'home#homepage'
   get 'blankpage' => 'list_pages#blankpage'
+  get 'sample' => 'list_pages#sample'
 
   get 'subscribe' => 'subscriptions#index'
   get 'subscribe/complete_checkout' => 'subscriptions#complete_checkout'

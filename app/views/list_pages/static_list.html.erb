@@ -3,7 +3,14 @@
   <span id="version"></span>
   <div class="header-right">
     <% if current_user %>
-      <span id="username"><a href="/<%= current_user.username %>"><%= current_user.username %></a></span>&nbsp;|&nbsp;<span id="sign-out">sign out</span>
+      <span id="username"><a href="/<%= current_user.username %>"><%= current_user.username %></a>
+      <div class="nav-menu-container">
+        <ul class="nav-menu">
+          <li><a href="/settings">settings</a></li>
+          <li><a href="/preferences">preferences</a></li>
+          <li><span id="sign-out">sign out</span></li>
+        </ul>
+      </div>
     <% else %>
       <span><a href="<%= new_registration_path(:user) %>">sign up</a></span>&nbsp;|&nbsp;<span><a href="<%= new_session_path(:user) %>">sign in</a></span>
     <% end %>
@@ -14,16 +21,19 @@
   <ul id="top-level"></ul>
 </div>
 
+<footer id="footer">
+</footer>
+
 <input type="file" style="display:none;">
 
 <script>
-  var LIST_TITLE = "Calculist",
-      LIST_DATA = {},
+  var LIST_TITLE = "<%= @list_title.gsub("\n", '') %>",
+      LIST_DATA = <%= raw(@json) %>,
       LIST_ID = 0,
       INITIAL_LAST_SAVE = 0,
       USER_PREFERENCES = <%= raw(current_user ? current_user.preferences.content.to_json : UserPreferencesManager::DEFAULT_PREFERENCES.to_json) %>,
       WORKER_FILE_PATH = '<%= asset_path('worker.js') %>',
-      READ_ONLY = false,
+      READ_ONLY = true,
       OTHER_LISTS = [];
 </script>
 

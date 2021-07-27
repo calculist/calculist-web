@@ -125,7 +125,7 @@ calculist.register('slashElementsHelper', ['parseUntilBalanced', 'emojiHelper', 
   // TODO Parse to plain text
   var parseSlashElements = function (string) {
     return parseSlashBrackets(string)
-      .replace(/^\\(header|small|bold|italic|strike|underline|code|comment|highlight|break)\s.*$/, function (text, f) {
+      .replace(/^\\(header|small|bold|italic|strike|underline|code|comment|highlight|break)(?:(?:\s.*$)|$)/, function (text, f) {
         if (f === 'break') return '<hr/>';
 
         return '<span class="'+f+'">' +

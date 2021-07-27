@@ -1,0 +1,361 @@
+{
+  "text": "\\emoji[U+1F4DD] Calculist Sample Document",
+  "guid": "a1bab6d1-b073-485d-bd6e-4fd677e1abd5",
+  "collapsed": false,
+  "sort_order": 100.0,
+  "items": [
+    {
+      "text": "\\emoji[U+1F44B] Hello! This sample document is meant to give you a taste of what Calculist can do.",
+      "guid": "99cbdbb5-cd0e-45d2-883b-08978a5fac69",
+      "collapsed": null,
+      "sort_order": 100.0,
+      "items": []
+    },
+    {
+      "text": "This document is editable. So feel free to play with the examples to try out each feature.",
+      "guid": "fc9be2d2-a948-4eb7-a837-d2d233fbe18b",
+      "collapsed": false,
+      "sort_order": 150.0,
+      "items": []
+    },
+    {
+      "text": "\\emoji[U+2B05]️ Click the dot on the left to \\bold[expand or collapse] sub-items.",
+      "guid": "4a5dab79-1288-499e-b7c6-1a624702557b",
+      "collapsed": true,
+      "sort_order": 200.0,
+      "items": [
+        {
+          "text": "Hover your mouse over the bottom of the screen to reveal the \\bold[command menu] (and you can pin the menu in place by clicking the pin icon, the right-most icon on the menu).",
+          "guid": "91964f77-8094-40b4-8d8f-6242ea1d6222",
+          "collapsed": true,
+          "sort_order": 100.0,
+          "items": [
+            {
+              "text": "Commands (left to right)",
+              "guid": "ac5c5408-37f1-4bf6-9810-9c67f72eac83",
+              "collapsed": null,
+              "sort_order": 50.0,
+              "items": [
+                {
+                  "text": "\\break",
+                  "guid": "4d2415ef-cd41-4960-8c2b-6743b9775f8a",
+                  "collapsed": false,
+                  "sort_order": 100.0,
+                  "items": []
+                },
+                {
+                  "text": "zoom in",
+                  "guid": "5b6a6fe9-8e96-4d72-bf07-81107ad67776",
+                  "collapsed": false,
+                  "sort_order": 200.0,
+                  "items": []
+                },
+                {
+                  "text": "zoom out",
+                  "guid": "647709ac-0286-4794-919f-e4ea7590619b",
+                  "collapsed": false,
+                  "sort_order": 300.0,
+                  "items": []
+                },
+                {
+                  "text": "expand",
+                  "guid": "1d27059b-0bd6-4cb6-a020-fe7eaa44fdd3",
+                  "collapsed": false,
+                  "sort_order": 400.0,
+                  "items": []
+                },
+                {
+                  "text": "collapse",
+                  "guid": "151cd078-956e-42ee-bc9f-be4f03cd278e",
+                  "collapsed": false,
+                  "sort_order": 500.0,
+                  "items": []
+                },
+                {
+                  "text": "\\break",
+                  "guid": "05538911-6eb9-46c8-96be-99ed50bc9d53",
+                  "collapsed": false,
+                  "sort_order": 600.0,
+                  "items": []
+                },
+                {
+                  "text": "indent",
+                  "guid": "ce2fac86-4fc3-41e6-98c2-add5b1f361d5",
+                  "collapsed": false,
+                  "sort_order": 700.0,
+                  "items": []
+                },
+                {
+                  "text": "outdent",
+                  "guid": "2e518b91-765b-4e3e-b9ba-6ac49337e319",
+                  "collapsed": false,
+                  "sort_order": 800.0,
+                  "items": []
+                },
+                {
+                  "text": "move up",
+                  "guid": "6492dbec-b0ea-44ef-9950-77d5430bf84c",
+                  "collapsed": false,
+                  "sort_order": 900.0,
+                  "items": []
+                },
+                {
+                  "text": "move down",
+                  "guid": "ca036b4f-e89b-49fe-b22a-991d26bdb883",
+                  "collapsed": false,
+                  "sort_order": 1000.0,
+                  "items": []
+                },
+                {
+                  "text": "\\break",
+                  "guid": "fc469fa9-e7df-41cc-ac7b-3682750fb119",
+                  "collapsed": false,
+                  "sort_order": 1100.0,
+                  "items": []
+                },
+                {
+                  "text": "undo",
+                  "guid": "9bd905d4-1525-4ff1-b080-cfcc3e228e9c",
+                  "collapsed": false,
+                  "sort_order": 1200.0,
+                  "items": []
+                },
+                {
+                  "text": "redo",
+                  "guid": "08f534ad-3b4b-4a0f-8190-d05a102cea27",
+                  "collapsed": false,
+                  "sort_order": 1300.0,
+                  "items": []
+                },
+                {
+                  "text": "\\break",
+                  "guid": "7852e66b-4e04-4032-93e1-38432f222bc9",
+                  "collapsed": false,
+                  "sort_order": 1400.0,
+                  "items": []
+                },
+                {
+                  "text": "copy",
+                  "guid": "4f11354d-f486-46c8-9311-ad978a8be21c",
+                  "collapsed": false,
+                  "sort_order": 1500.0,
+                  "items": []
+                },
+                {
+                  "text": "copy items",
+                  "guid": "8f5bc6cb-5f00-4797-aa4a-8e4e447e121b",
+                  "collapsed": false,
+                  "sort_order": 1600.0,
+                  "items": []
+                },
+                {
+                  "text": "\\break",
+                  "guid": "5168cb94-109c-4235-9083-99c70c7d21fb",
+                  "collapsed": false,
+                  "sort_order": 1700.0,
+                  "items": []
+                },
+                {
+                  "text": "delete",
+                  "guid": "75e4f92d-72ff-4a93-8838-a0324b843a43",
+                  "collapsed": false,
+                  "sort_order": 1800.0,
+                  "items": []
+                },
+                {
+                  "text": "delete items",
+                  "guid": "ecbefae0-fb16-4923-8444-8c2528109f67",
+                  "collapsed": false,
+                  "sort_order": 1900.0,
+                  "items": []
+                },
+                {
+                  "text": "\\break",
+                  "guid": "2eb2eb0b-d4bd-4bfd-9c6f-c97fcd49ddf3",
+                  "collapsed": false,
+                  "sort_order": 2000.0,
+                  "items": []
+                },
+                {
+                  "text": "search",
+                  "guid": "91472528-cf56-4069-ae1c-327b502e2e9c",
+                  "collapsed": false,
+                  "sort_order": 2100.0,
+                  "items": []
+                },
+                {
+                  "text": "command mode",
+                  "guid": "fb35e8e8-0498-4bda-a86a-5e8fb9106ef2",
+                  "collapsed": false,
+                  "sort_order": 2200.0,
+                  "items": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "This item contains some examples of simple \\bold[calculations] you can do.",
+          "guid": "4a64204c-e881-4790-968d-9af865a0d6aa",
+          "collapsed": true,
+          "sort_order": 200.0,
+          "items": [
+            {
+              "text": "\\italic[Calculations begin with the \"\\bold[\\\\=]\" symbol (backslash + equals sign)]",
+              "guid": "588af566-7fa0-4e2b-87e1-8fd529e54c1b",
+              "collapsed": null,
+              "sort_order": 100.0,
+              "items": []
+            },
+            {
+              "text": "Use \\bold[arithmetic] operators and functions.",
+              "guid": "c5910e93-7ec5-4a5d-869a-9f7d5ed20e2d",
+              "collapsed": false,
+              "sort_order": 200.0,
+              "items": [
+                {
+                  "text": "\\= (1 + 2) * 3 - 4 / 5",
+                  "guid": "a4c42fbd-dbdb-4e72-a857-ca7749ca6366",
+                  "collapsed": null,
+                  "sort_order": 100.0,
+                  "items": []
+                },
+                {
+                  "text": "\\= pow(5, 2)",
+                  "guid": "4320a501-4d74-4861-9ce1-a191429f87c1",
+                  "collapsed": null,
+                  "sort_order": 200.0,
+                  "items": []
+                },
+                {
+                  "text": "\\= round(sqrt(2), 3)",
+                  "guid": "20afab3b-5ce6-40f0-be19-c4288a411717",
+                  "collapsed": null,
+                  "sort_order": 300.0,
+                  "items": []
+                }
+              ]
+            },
+            {
+              "text": "Add up numbers in a list with the \\bold[\\code[sum]] function.",
+              "guid": "ab8f70a6-5ec4-4207-b3c8-d7cb606c08c6",
+              "collapsed": null,
+              "sort_order": 300.0,
+              "items": [
+                {
+                  "text": "total \\= sum($items)",
+                  "guid": "532fa759-a4c0-409b-b795-f0931957680d",
+                  "collapsed": false,
+                  "sort_order": 100.0,
+                  "items": [
+                    {
+                      "text": "\\= 25",
+                      "guid": "58b42974-9857-4a80-92f9-f9b72debb3c4",
+                      "collapsed": null,
+                      "sort_order": 100.0,
+                      "items": []
+                    },
+                    {
+                      "text": "\\= 10",
+                      "guid": "9d2d287a-3622-467f-9263-886f41055dff",
+                      "collapsed": null,
+                      "sort_order": 200.0,
+                      "items": []
+                    }
+                  ]
+                },
+                {
+                  "text": "\\italic[Other useful list functions include \\code[count], \\code[min], \\code[max], \\code[average], \\code[median], and more.]",
+                  "guid": "4a3e44ab-a402-4f71-a7fe-d484c457a43f",
+                  "collapsed": false,
+                  "sort_order": 200.0,
+                  "items": []
+                }
+              ]
+            },
+            {
+              "text": "Define \\bold[functions] and \\bold[variables].",
+              "guid": "51865d00-4f53-4b3a-9e3a-897159edc40b",
+              "collapsed": null,
+              "sort_order": 400.0,
+              "items": [
+                {
+                  "text": "f\\(x) = x + 1",
+                  "guid": "03d71de2-fd41-48ad-93ec-8df7d8539797",
+                  "collapsed": false,
+                  "sort_order": 100.0,
+                  "items": []
+                },
+                {
+                  "text": "a \\= f(0)",
+                  "guid": "d2244686-c689-4f0a-9316-ab7f742da255",
+                  "collapsed": false,
+                  "sort_order": 200.0,
+                  "items": []
+                },
+                {
+                  "text": "b \\= f(a)",
+                  "guid": "ca1bafbc-c50a-495b-8909-1590f85171d5",
+                  "collapsed": null,
+                  "sort_order": 300.0,
+                  "items": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "This item contains an example that demonstrates how to create knowledge graphs using \\bold[IDs] and \\bold[references].",
+          "guid": "d8e7cce4-828c-420e-80a5-0972a9d7d59e",
+          "collapsed": true,
+          "sort_order": 300.0,
+          "items": [
+            {
+              "text": "This item has the ID \"123\" \\id[123]",
+              "guid": "423b2f5b-cca8-4c04-827d-76f87e288526",
+              "collapsed": null,
+              "sort_order": 100.0,
+              "items": []
+            },
+            {
+              "text": "Expand this item to see some references to item \"123\"",
+              "guid": "f59e6ed8-c4a6-4df9-9505-c107cc163009",
+              "collapsed": true,
+              "sort_order": 200.0,
+              "items": [
+                {
+                  "text": "This item references item \"123\" \\ref[123]",
+                  "guid": "a1fc7744-a0db-4ed2-8fef-a8fbd3124a36",
+                  "collapsed": null,
+                  "sort_order": 100.0,
+                  "items": []
+                },
+                {
+                  "text": "This item also references item \"123\" \\ref[123]",
+                  "guid": "be601331-5526-4ed4-bac7-a437abf4b653",
+                  "collapsed": null,
+                  "sort_order": 200.0,
+                  "items": []
+                }
+              ]
+            },
+            {
+              "text": "You can hover your mouse over the blue \\bold[id:123] icon above to see how many references it has.",
+              "guid": "793c6258-1ad8-44f9-8841-e2dcd73dd648",
+              "collapsed": null,
+              "sort_order": 300.0,
+              "items": []
+            }
+          ]
+        },
+        {
+          "text": "Calculist has many other useful features. Sign up at https://calculist.io",
+          "guid": "0d179674-be9b-4888-8d41-d51ef7eaef51",
+          "collapsed": null,
+          "sort_order": 400.0,
+          "items": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 class ListPagesController < ApplicationController
-  before_action :authenticate_user!, except: :blankpage
+  before_action :authenticate_user!, except: [:blankpage, :sample]
 
   def index
     @user = User.where(username: params[:username]).first
@@ -76,6 +76,12 @@ class ListPagesController < ApplicationController
   end
 
   def blankpage
+  end
+
+  def sample
+    @json = (@@sample_doc ||= File.read("#{Rails.root}/config/lists/sample_doc.calculist"))
+    @list_title = '\emoji[U+1F4DD] Sample Document'
+    render 'static_list'
   end
 
 private
