@@ -99,8 +99,12 @@
   };
 
   var fetchCheckoutId = function () {
-    state.email = emailInput.value;
+    state.email = encodeURIComponent(emailInput.value);
     state.checkoutID = null;
+    state.plan = {
+      personal: 'personal',
+      professional: 'professional',
+    }[state.plan];
     focusOnStep(1);
     fetch('subscribe/checkout?email=' + state.email + '&plan=' + state.plan).then(function (response) {
       console.log(response);
