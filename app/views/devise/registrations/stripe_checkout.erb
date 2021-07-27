@@ -1,0 +1,144 @@
+<style media="screen">
+  body { background: #fff; }
+  #main-container.theme-light { background: #fff; }
+  .gg-check-o {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(var(--ggs,1));
+    width: 22px;
+    height: 22px;
+    border: 2px solid;
+    border-radius: 100px
+  }
+
+  .gg-check-o::after {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    left: 3px;
+    top: -1px;
+    width: 6px;
+    height: 10px;
+    border-color: currentColor;
+    border-width: 0 2px 2px 0;
+    border-style: solid;
+    transform-origin: bottom left;
+    transform: rotate(45deg)
+  }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css" integrity="sha384-VP0GfisErC22dnswxVzLKdy1z+wIV3p/iGyahqdhsuFvfu9wrRUaXUAdLWPN7E8m" crossorigin="anonymous">
+<!-- TODO Combine this page with the existing join page -->
+<div class="container">
+  <div class="section">
+    <div class="row center" style="text-align:justify;margin:0 auto;">
+      <div class="col s8 offset-s2">
+        <div id="step-1-container">
+          <h4 id="step-1-header">Step 1. Enter your email <i id="step-1-check" class="gg-check-o" style="display:none;background:green;color:white;"></i></h4>
+          <div id="email-message"></div>
+          <input id="email" type="email" placeholder="email" value="<%= @current_user_email %>"/>
+          <span id="submit-email-button" class="btn-large waves-effect waves-light light-blue">submit</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row center" style="text-align:justify;margin:0 auto;">
+      <div class="col s8 offset-s2">
+        <div id="step-2-container" style="opacity: 0.3; margin-top: 10px;">
+          <h4>Step 2. Add payment info<i id="step-2-check" class="gg-check-o" style="display:none;background:green;color:white;"></i></h4>
+          <div id="step-2-body" style="display:none;">
+            <div id="payment-message">Click the button below to be redirected to <code>checkout.stripe.com</code>.<br/>Once complete, you will be redirected back here for Step 3.</div>
+            <span id="goto-stripe-button" class="btn-large waves-effect waves-light light-blue">Go to payment page</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row center" style="text-align:justify;margin:0 auto;">
+      <div class="col s8 offset-s2">
+        <div id="step-3-container" style="display: <%= @current_user_email ? 'none' : 'block' %>;opacity: 0.3; margin-top: 10px;">
+          <h4>Step 3. Create a username and password</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+  var state = {
+    email: null,
+    checkoutID: "<%= @stripe_checkout_session_id %>",
+    plan: "<%= @plan %>",
+  };
+  var stripe = Stripe("<%= Rails.application.secrets.stripe_publishable_key %>");
+
+  var step1Container = document.getElementById('step-1-container');
+  var messageDisplay = document.getElementById('email-message');
+  var emailInput = document.getElementById('email');
+  var submitEmailButton = document.getElementById('submit-email-button');
+  var step1Check = document.getElementById('step-1-check');
+
+  var step2Container = document.getElementById('step-2-container');
+  var step2Body = document.getElementById('step-2-body');
+  var gotoStripeButton = document.getElementById('goto-stripe-button');
+  var step2Check = document.getElementById('step-2-check');
+
+  var step3Container = document.getElementById('step-3-container');
+
+  var focusOnStep = function (n) {
+    step1Container.style.opacity = n === 1 ? '1' : '0.3';
+    step2Container.style.opacity = n === 2 ? '1' : '0.3';
+    step3Container.style.opacity = n === 3 ? '1' : '0.3';
+
+    step1Check.style.display = n > 1 ? 'inline-block' : 'none';
+    step2Check.style.display = n > 2 ? 'inline-block' : 'none';
+
+    step2Body.style.display = n === 2 ? 'block' : 'none';
+  };
+
+  var fetchCheckoutId = function () {
+    state.email = emailInput.value;
+    state.checkoutID = null;
+    focusOnStep(1);
+    fetch('subscribe/checkout?email=' + state.email + '&plan=' + state.plan).then(function (response) {
+      console.log(response);
+      if (response.status === 409) {
+        messageDisplay.innerHTML = 'That email is already taken. <a href="/login">Log in</a>';
+        // show login button
+      } else {
+        return response.json();
+      }
+    }).then(function (json) {
+      if (json) {
+        state.checkoutID = json.stripe_checkout_session_id;
+        state.plan = json.plan;
+        focusOnStep(2);
+      }
+    });
+  };
+
+  var gotoStripe = function () {
+    if (state.checkoutID) {
+      stripe.redirectToCheckout({sessionId: state.checkoutID });
+    }
+  };
+
+  emailInput.addEventListener('keyup', function () {
+    if (emailInput.value !== state.email) {
+      state.checkoutID = null;
+      focusOnStep(1);
+      messageDisplay.textContent = '';
+    }
+  });
+  emailInput.addEventListener('keydown', function (e) {
+    var enter = 13;
+    if (e.which === enter) {
+      fetchCheckoutId();
+    }
+  });
+  submitEmailButton.addEventListener('click', fetchCheckoutId);
+  gotoStripeButton.addEventListener('click', gotoStripe);
+  focusOnStep(state.checkoutID ? 2 : 1);
+</script>

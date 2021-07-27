@@ -19,6 +19,10 @@ Rails.application.routes.draw do
   get 'home' => 'home#homepage'
   get 'blankpage' => 'list_pages#blankpage'
 
+  get 'subscribe' => 'subscriptions#index'
+  get 'subscribe/complete_checkout' => 'subscriptions#complete_checkout'
+  get 'subscribe/checkout' => 'subscriptions#get_stripe_checkout_session'
+
   get 'welcome' => 'list_pages#show', defaults: { handle: 'welcome' }, as: :welcome_list
   get 'preferences' => 'list_pages#show', defaults: { handle: 'preferences' }, as: :preferences
   get ':username' => 'list_pages#index', as: :profile_page
