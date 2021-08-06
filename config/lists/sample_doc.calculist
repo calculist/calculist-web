@@ -12,6 +12,21 @@
       "items": []
     },
     {
+      "text": "Calculist documents are ultimately just \\bold[plain text] documents. So when you select an item, what you see is the raw underlying markup text.",
+      "guid": "20780788-b7b5-47d4-9bde-d53ac30d9b76",
+      "collapsed": null,
+      "sort_order": 125.0,
+      "items": [
+        {
+          "text": "To learn about the markup syntax, checkout https://calculist.io/markup",
+          "guid": "e4400e55-e813-4cce-a754-24d85239ae18",
+          "collapsed": false,
+          "sort_order": 137.5,
+          "items": []
+        }
+      ]
+    },
+    {
       "text": "This document is editable. So feel free to play with the examples to try out each feature.",
       "guid": "fc9be2d2-a948-4eb7-a837-d2d233fbe18b",
       "collapsed": false,
@@ -19,13 +34,13 @@
       "items": []
     },
     {
-      "text": "\\emoji[U+2B05]️ Click the dot on the left to \\bold[expand or collapse] sub-items.",
+      "text": "\u003c--- Click the dot on the left to \\bold[expand or collapse] sub-items.",
       "guid": "4a5dab79-1288-499e-b7c6-1a624702557b",
       "collapsed": true,
       "sort_order": 200.0,
       "items": [
         {
-          "text": "Hover your mouse over the bottom of the screen to reveal the \\bold[command menu] (and you can pin the menu in place by clicking the pin icon, the right-most icon on the menu).",
+          "text": "Hover your mouse over the bottom of the screen to reveal the \\highlight[command menu] (and you can pin the menu in place by clicking the pin icon, the right-most icon on the menu).",
           "guid": "91964f77-8094-40b4-8d8f-6242ea1d6222",
           "collapsed": true,
           "sort_order": 100.0,
@@ -36,13 +51,6 @@
               "collapsed": null,
               "sort_order": 50.0,
               "items": [
-                {
-                  "text": "\\break",
-                  "guid": "4d2415ef-cd41-4960-8c2b-6743b9775f8a",
-                  "collapsed": false,
-                  "sort_order": 100.0,
-                  "items": []
-                },
                 {
                   "text": "zoom in",
                   "guid": "5b6a6fe9-8e96-4d72-bf07-81107ad67776",
@@ -195,7 +203,7 @@
           ]
         },
         {
-          "text": "This item contains some examples of simple \\bold[calculations] you can do.",
+          "text": "Expand this item to see some examples of simple \\highlight[calculations] you can do.",
           "guid": "4a64204c-e881-4790-968d-9af865a0d6aa",
           "collapsed": true,
           "sort_order": 200.0,
@@ -305,7 +313,7 @@
           ]
         },
         {
-          "text": "This item contains an example that demonstrates how to create knowledge graphs using \\bold[IDs] and \\bold[references].",
+          "text": "This item contains an example that demonstrates how to create \\highlight[knowledge graphs] using \\bold[IDs] and \\bold[references].",
           "guid": "d8e7cce4-828c-420e-80a5-0972a9d7d59e",
           "collapsed": true,
           "sort_order": 300.0,
