@@ -6,7 +6,7 @@ class SubscriptionsController < ApplicationController
     if current_user
       # Does this user already have a stripe customer record?
       if current_stripe_customer
-        redirect_to 'subscribe/manage'
+        redirect_to '/subscribe/manage'
         return
       elsif params[:plan]
         # TODO attach user id to stripe customer metadata
