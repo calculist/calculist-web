@@ -6,9 +6,7 @@ class SubscriptionsController < ApplicationController
     if current_user
       # Does this user already have a stripe customer record?
       if current_stripe_customer
-        # Does this user already have a subscription?
-        # TODO Tell them how to contact us to make updates to their subscription
-        render json: { message: 'already customer' }
+        redirect_to 'subscribe/manage'
         return
       elsif params[:plan]
         # TODO attach user id to stripe customer metadata
@@ -45,8 +43,7 @@ class SubscriptionsController < ApplicationController
           claimed_at: current_user ? DateTime.now : nil,
         ).code
         if current_user
-          # redirect to ...
-          render 'thankyou'
+          redirect_to '/thankyou'
         else
           email = stripe_checkout_session['customer_details']['email']
           redirect_to "/join?email=#{email}&code=#{invite_code}"
@@ -56,6 +53,9 @@ class SubscriptionsController < ApplicationController
         raise 'error'
       end
     end
+  end
+
+  def thankyou
   end
 
   def get_stripe_checkout_session
