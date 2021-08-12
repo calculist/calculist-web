@@ -85,6 +85,16 @@ class SubscriptionsController < ApplicationController
     end
   end
 
+  def manage_subscription
+    redirect_to '' unless current_user
+    session = sh.create_customer_portal_session(current_user.id)
+    if session.nil?
+      redirect_to '/subscribe'
+    else
+      redirect_to session.url
+    end
+  end
+
   private
 
   def current_stripe_customer

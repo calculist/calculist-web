@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get 'subscribe' => 'subscriptions#index'
   get 'subscribe/complete_checkout' => 'subscriptions#complete_checkout'
   get 'subscribe/checkout' => 'subscriptions#get_stripe_checkout_session'
+  get 'subscribe/manage' => 'subscriptions#manage_subscription', as: :manage_subscription
 
   get 'welcome' => 'list_pages#show', defaults: { handle: 'welcome' }, as: :welcome_list
   get 'preferences' => 'list_pages#show', defaults: { handle: 'preferences' }, as: :preferences

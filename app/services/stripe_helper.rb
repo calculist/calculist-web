@@ -35,7 +35,6 @@ class StripeHelper
   end
 
   def create_checkout_session(plan, customer_email = nil, client_reference_id = nil)
-
     Stripe::Checkout::Session.create(
         mode: 'subscription',
         payment_method_types: ['card'],
@@ -50,5 +49,14 @@ class StripeHelper
 
   def get_checkout_session(session_id)
     Stripe::Checkout::Session.retrieve(session_id)
+  end
+
+  def create_customer_portal_session(user_id)
+    customer = get_customer_for_user(user_id)
+    return nil if customer.nil?
+    Stripe::BillingPortal::Session.create({
+      customer: customer.id,
+      return_url: "#{ENV['APP_BASE_URL']}/settings",
+    })
   end
 end
