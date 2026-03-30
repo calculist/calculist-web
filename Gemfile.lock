@@ -93,7 +93,7 @@ GEM
     orm_adapter (0.5.0)
     puma (4.3.12)
       nio4r (~> 2.0)
-    rack (2.2.3)
+    rack (2.0.9.4)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.7.2)
@@ -198,6 +198,7 @@ DEPENDENCIES
   mysql2 (>= 0.3.18, < 0.5)
   non-stupid-digest-assets
   puma (~> 4.3)
+  rack (~> 2.0.0)
   rails (~> 5.0.7, >= 5.0.7.2)
   rspec-rails (~> 3.5)
   sass-rails (~> 5.0)
@@ -209,4 +210,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.16.5
+   1.17.3

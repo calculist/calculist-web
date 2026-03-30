@@ -20,7 +20,13 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
+# Disable the shared token cookie in tests — it uses `domain: :all`
+# which resolves to `.example.com` in Rack::Test and is invalid.
+ApplicationController.class_eval do
+  def set_shared_token; end
+end
 
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
