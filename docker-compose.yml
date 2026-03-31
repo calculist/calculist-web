@@ -2,23 +2,29 @@
 version: '3'
 services:
   db:
-    image: mysql
+    image: mariadb:10.11
     volumes:
-      - /var/mysql_volume:/var/lib/mysql
+      - calculist_mysql_data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=$CALCULIST_DATABASE_PASSWORD
-      - MYSQL_USER=$CALCULIST_DATABASE_USER
-      - MYSQL_PASSWORD=$CALCULIST_DATABASE_PASSWORD
-      - MYSQL_DATABASE=$CALCULIST_DATABASE
+      - MYSQL_ROOT_PASSWORD=${CALCULIST_DATABASE_PASSWORD:-calculist_dev_pass}
+      - MYSQL_DATABASE=${CALCULIST_DATABASE:-calculist_development}
     ports:
       - "3307:3306"
   web:
     build: .
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    command: >
+      bash -c "
+        for i in $$(seq 1 30); do
+          ruby -e \"require 'socket'; TCPSocket.new('db', 3306).close\" 2>/dev/null && break
+          echo 'Waiting for db...' && sleep 2
+        done &&
+        bundle exec rails db:create db:migrate 2>&1 &&
+        bundle exec rails s -p 3000 -b '0.0.0.0'
+      "
     volumes:
       - .:/calculist-web
     environment:
-      - RAILS_ENV
+      - RAILS_ENV=${RAILS_ENV:-development}
       - RAILS_SERVE_STATIC_FILES
       - SECRET_KEY_BASE
       - SHARED_SECRET
@@ -29,20 +35,18 @@ services:
       - CALCULIST_MAIN_URL
       - VIRTUAL_HOST
       - VIRTUAL_PORT
-      - LETSENCRYPT_HOST
-      - LETSENCRYPT_EMAIL
       - MAILGUN_USERNAME
       - MAILGUN_PASSWORD
       - STRIPE_PUBLISHABLE_KEY
       - STRIPE_SECRET_KEY
       - STRIPE_PERSONAL_PLAN_ID
       - STRIPE_PRO_PLAN_ID
+      - DB_HOST=db
+      - MYSQL_ROOT_PASSWORD=${CALCULIST_DATABASE_PASSWORD:-calculist_dev_pass}
     ports:
-      - "3000:3000"
+      - "${APP_PORT:-3001}:3000"
     depends_on:
       - db
-# https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion
-networks:
-  default:
-    external:
-      name: webproxy
+
+volumes:
+  calculist_mysql_data:

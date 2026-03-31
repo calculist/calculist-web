@@ -1,4 +1,4 @@
-class Item < ActiveRecord::Base
+class Item < ApplicationRecord
   validates :list_id, presence: true
   validates :list_update_id, presence: true
   validates :initial_list_update_id, presence: true

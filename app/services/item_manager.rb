@@ -122,7 +122,7 @@ class ItemManager
   end
 
   def create_items_from_tree(tree)
-    if list.items.pluck('count(*)')[0] > 0
+    if list.items.count > 0
       raise "list #{@list_id} already has items" # TODO be smarter and check for parent_guid on tree
     end
     item_data = parse_json(tree)
@@ -136,12 +136,12 @@ class ItemManager
     list_update_id_columns = [:initial_list_update_id, :list_update_id]
     time_stamp_columns = [:created_at, :updated_at]
 
-    time_stamp = Item::sanitize(DateTime.now)
+    time_stamp = Item.connection.quote(DateTime.now)
 
     inserts = item_data.map do |data|
       # TODO Add validations here. We are currently assuming that
       # these values have already been validated.
-      values = data_columns.map {|c| Item::sanitize(data[c]) }
+      values = data_columns.map {|c| Item.connection.quote(data[c]) }
       values += [list_update_id, list_update_id]
       values += [time_stamp, time_stamp]
       "(#{values.join(',')})"

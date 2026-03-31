@@ -126,7 +126,7 @@ private
             text: "update_count [:] #{list.update_count}",
             guid: "do_not_save#{inc += 1}"
           },{
-            text: "item_count [:] #{list.items.where(is_deleted: false).pluck('count(*)')[0]}",
+            text: "item_count [:] #{list.items.where(is_deleted: false).count}",
             guid: "do_not_save#{inc += 1}",
           },{
             text: "shared_with [=] count($items)",

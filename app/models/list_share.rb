@@ -1,4 +1,4 @@
-class ListShare < ActiveRecord::Base
+class ListShare < ApplicationRecord
   belongs_to :user
   belongs_to :list
 

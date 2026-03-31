@@ -11,7 +11,7 @@ before_action :configure_sign_up_params, only: [:create]
     elsif params[:invite_code] || params[:code]
       super
     else
-      redirect_to "#{ENV['CALCULIST_MAIN_URL']}/pricing"
+      redirect_to "#{ENV['CALCULIST_MAIN_URL']}/pricing", allow_other_host: true
     end
   end
 

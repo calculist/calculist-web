@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_shared_token
-    key = Rails.application.secrets.shared_secret
+    key = ENV['SHARED_SECRET']
     if key
       encryptor = ActiveSupport::MessageEncryptor.new(
         key[0...32],

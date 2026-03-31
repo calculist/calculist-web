@@ -19,12 +19,12 @@ class SubscriptionsController < ApplicationController
         render 'devise/registrations/stripe_checkout'
         return
       else
-        redirect_to "#{ENV['CALCULIST_MAIN_URL']}/pricing"
+        redirect_to "#{ENV['CALCULIST_MAIN_URL']}/pricing", allow_other_host: true
       end
     elsif params[:plan]
       redirect_to "/join?plan=#{params[:plan]}"
     else
-      redirect_to "#{ENV['CALCULIST_MAIN_URL']}/pricing"
+      redirect_to "#{ENV['CALCULIST_MAIN_URL']}/pricing", allow_other_host: true
     end
   end
 
@@ -91,7 +91,7 @@ class SubscriptionsController < ApplicationController
     if session.nil?
       redirect_to '/subscribe'
     else
-      redirect_to session.url
+      redirect_to session.url, allow_other_host: true
     end
   end
 

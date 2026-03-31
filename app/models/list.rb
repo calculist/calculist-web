@@ -1,4 +1,4 @@
-class List < ActiveRecord::Base
+class List < ApplicationRecord
   belongs_to :user
   has_many :items, dependent: :destroy
   has_many :list_shares, dependent: :destroy

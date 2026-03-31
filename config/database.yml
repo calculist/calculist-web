@@ -14,10 +14,8 @@ default: &default
   encoding: utf8
   pool: 5
   username: root
-  password: root
-  host: db
-  socket: /var/run/mysqld/mysqld.sock
-  # socket: /tmp/mysql.sock
+  password: <%= ENV.fetch('MYSQL_ROOT_PASSWORD', 'root') %>
+  host: <%= ENV.fetch('DB_HOST', 'db') %>
 
 development:
   <<: *default

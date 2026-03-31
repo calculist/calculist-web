@@ -1,5 +1,5 @@
 class StripeHelper
-  def initialize(secret_key: Rails.application.secrets.stripe_secret_key)
+  def initialize(secret_key: ENV['STRIPE_SECRET_KEY'])
     Stripe.api_key = secret_key
   end
 
