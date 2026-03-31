@@ -28,11 +28,8 @@ RSpec.describe 'Lists API', type: :request do
 
     it 'denies access for unauthorized user' do
       sign_in other_user
-      # render_403 has a bug — uses `message:` which isn't a valid render option,
-      # causing MissingTemplate. This documents the existing behavior.
-      expect {
-        get "/lists/#{list.id}"
-      }.to raise_error(ActionView::MissingTemplate)
+      get "/lists/#{list.id}"
+      expect(response).to have_http_status(:forbidden)
     end
 
     it 'allows access for shared user with read_only' do
@@ -72,9 +69,8 @@ RSpec.describe 'Lists API', type: :request do
 
     it 'denies write for unauthorized user' do
       sign_in other_user
-      expect {
-        put "/lists/#{list.id}", params: { title: 'Hacked' }
-      }.to raise_error(ActionView::MissingTemplate)
+      put "/lists/#{list.id}", params: { title: 'Hacked' }
+      expect(response).to have_http_status(:forbidden)
     end
 
     it 'allows write for read_write shared user' do
@@ -89,9 +85,8 @@ RSpec.describe 'Lists API', type: :request do
       ListShare.create!(list_id: list.id, user_id: other_user.id,
                           shared_by: user.id, access_type: 'read_only')
       sign_in other_user
-      expect {
-        put "/lists/#{list.id}", params: { title: 'Should Fail' }
-      }.to raise_error(ActionView::MissingTemplate)
+      put "/lists/#{list.id}", params: { title: 'Should Fail' }
+      expect(response).to have_http_status(:forbidden)
     end
 
     it 'increments update_count' do

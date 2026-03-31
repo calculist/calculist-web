@@ -3,15 +3,14 @@ class ListSharesController < ApplicationController
 
   def index
     @list = List.find(params[:list_id])
-    if can_share?
-      shares = ListShare.where(list_id: @list.id)
-      if params[:usernames]
-        usernames = JSON.parse(params[:usernames]) rescue params[:usernames]
-        user_ids = usernames_to_user_ids(usernames)
-        shares = shares.where(user_id: user_ids)
-      end
-      render json: format_shares(shares.includes(:user))
+    return render_403 unless can_share?
+    shares = ListShare.where(list_id: @list.id)
+    if params[:usernames]
+      usernames = JSON.parse(params[:usernames]) rescue params[:usernames]
+      user_ids = usernames_to_user_ids(usernames)
+      shares = shares.where(user_id: user_ids)
     end
+    render json: format_shares(shares.includes(:user))
   end
 
   def create

@@ -24,13 +24,8 @@ RSpec.describe 'List Shares', type: :request do
 
     it 'does not allow non-owner to list shares' do
       sign_in shared_user
-      # can_share? returns false so no render call is made,
-      # causing an error — this confirms authorization worked
-      expect {
-        get "/lists/#{list.id}/list_shares"
-      }.to raise_error { |error|
-        expect(error).to be_a(ActionView::MissingTemplate).or be_a(ActionController::UnknownFormat)
-      }
+      get "/lists/#{list.id}/list_shares"
+      expect(response).to have_http_status(:forbidden)
     end
   end
 

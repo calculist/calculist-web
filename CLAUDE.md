@@ -75,9 +75,6 @@ All secrets are accessed via `ENV[]` directly (not `Rails.application.secrets`).
 - Client sends delta changes via `PUT /lists/:id` with `changes` array
 - Server returns `last_save` for conflict detection
 
-**Known Issues:**
-- `render_403` in `ApplicationController` is buggy — uses `message:` which isn't a valid render option, causing `MissingTemplate` errors. The `destroy` action in `ListsController` works correctly because it uses `render status: :forbidden, json: {...}` instead.
-
 ### Frontend (TypeScript)
 
 **Build System:**

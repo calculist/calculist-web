@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   after_action :set_shared_token
 
   def render_403(message = 'forbidden')
-    render status: 403, message: message
+    render status: :forbidden, json: { error: message }
   end
 
   def render_404
