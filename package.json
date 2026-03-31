@@ -19,6 +19,10 @@
     "jest-environment-jsdom": "^30.3.0",
     "typescript": "^6.0.2"
   },
+  "overrides": {
+    "braces": "^3.0.3",
+    "micromatch": "^4.0.8"
+  },
   "dependencies": {
     "backbone": "^1.2.3",
     "clipboard": "^1.7.1",

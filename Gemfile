@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'stripe'
-gem 'rails', '~> 7.0.8'
+gem 'rails', '~> 7.2.3', '>= 7.2.3.1'
 gem 'mysql2', '~> 0.5'
 gem 'puma', '~> 6.0'
 gem 'sprockets-rails'
