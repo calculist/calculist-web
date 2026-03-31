@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import createComputationContextObject from './createComputationContextObject';
-import evalculist from '../vendor/evalculist';
+import evalculist from '../../vendor/evalculist';
 import findVar from './findVar';
 
 const computeItemValue = (function (_, createComputationContextObject, evalculist, findVar) {

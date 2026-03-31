@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "node esbuild.config.js",
+    "build:watch": "node esbuild.config.js --watch",
     "test": "jest --runInBand",
     "test:watch": "jest --runInBand --watch"
   },

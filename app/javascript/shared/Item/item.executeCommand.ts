@@ -1,21 +1,14 @@
 import _ from 'lodash';
-import executeCommand from './item.executeCommand';
-// TODO: resolve import for 'commands'
+import commands from '../commands/commands';
 import transaction from '../../client/services/transaction';
 import computeItemValue from './computeItemValue';
 import commandTypeahead from '../../client/ui/commandTypeahead';
 import itemOfSearch from './itemOfSearch';
 
-const item_executeCommand = (function (_, executeCommand) {
-  return _.rest(function (args) {
-    args.unshift(this);
-    return executeCommand.apply(null, args);
-  });
-})(_, executeCommand);
+// executeCommand — the global command executor
+const executeCommand = (function (_: any, commands: any, transaction: any, computeItemValue: any, commandTypeahead: any, itemOfSearch: any) {
 
-const executeCommand = (function (_, commands, transaction, computeItemValue, commandTypeahead, itemOfSearch) {
-
-  return function (contextItem, commandString) {
+  return function (contextItem: any, commandString: string) {
     var commandStringPieces = commandString.split(/([^\w\s]|\d)/);
     if (commandStringPieces[0] === '') commandStringPieces[0] = 'noop';
     commandStringPieces[0] = _.camelCase(commandStringPieces[0]);
@@ -33,7 +26,6 @@ const executeCommand = (function (_, commands, transaction, computeItemValue, co
       var char = commandArgumentsStringPieces.shift();
       while (commandArgumentsStringPieces.length) {
         firstArgumentString += char;
-        // FIXME Account for strings also.
         if (_.includes(['(','[','{'], char)) {
           ++enclosureDepth;
         } else if (_.includes([')',']','}'], char)) {
@@ -57,7 +49,7 @@ const executeCommand = (function (_, commands, transaction, computeItemValue, co
       '$results': itemOfSearch.getSearchResultsItems(),
     } : null;
     var computingForCommand = true;
-    var commandArguments = commandArgumentsString ? computeItemValue('[' + commandArgumentsString + ']', contextItem, additionalVariables, computingForCommand) : [];
+    var commandArguments: any = commandArgumentsString ? computeItemValue('[' + commandArgumentsString + ']', contextItem, additionalVariables, computingForCommand) : [];
     commandArguments.unshift(contextItem);
     var mode = contextItem.mode;
     transaction(function () {
@@ -68,4 +60,13 @@ const executeCommand = (function (_, commands, transaction, computeItemValue, co
 
 })(_, commands, transaction, computeItemValue, commandTypeahead, itemOfSearch);
 
-export { item_executeCommand, executeCommand };
+// item.executeCommand — the Item prototype method that delegates to executeCommand
+const item_executeCommand = (function (_: any, executeCommand: any) {
+  return _.rest(function (args: any[]) {
+    args.unshift(this);
+    return executeCommand.apply(null, args);
+  });
+})(_, executeCommand);
+
+export default executeCommand;
+export { item_executeCommand };

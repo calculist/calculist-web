@@ -1,4 +1,4 @@
-import confetti from '../vendor/confetti';
+import confetti from '../../vendor/confetti';
 import headerMessage from '../../client/ui/headerMessage';
 
 const commands_celebrate = (function (confetti, headerMessage) {

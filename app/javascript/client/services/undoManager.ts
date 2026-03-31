@@ -1,4 +1,4 @@
-import UndoManager from '../vendor/undomanager';
+import UndoManager from '../../vendor/undomanager';
 import _ from 'lodash';
 import eventHub from './eventHub';
 import getItemByGuid from '../../shared/Item/getItemByGuid';

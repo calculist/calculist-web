@@ -17,7 +17,7 @@ import Item from '../Item/Item';
 import itemOfFocus from '../Item/itemOfFocus';
 import zoomPage from '../../client/ui/zoomPage';
 
-(function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, itemOfFocus, zoomPage) {
+const commands_ = (function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, itemOfFocus, zoomPage) {
 
   var commands = {
     hideHeader: function (_this) {
@@ -662,17 +662,11 @@ import zoomPage from '../../client/ui/zoomPage';
     'zoomIn','zoomOut','moveUp','moveDown','toggleCollapse',
     'indent','outdent','expand','collapse',
   ];
-  _.each(itemMethods, function (methodName) {
+  _.each(itemMethods, function (methodName: string) {
     commands[methodName] = _.method(methodName);
   });
-  _.each(commands, function (fn, name) {
-    calculist.register('commands.' + name, [], _.constant(fn));
-  });
+
+  return commands;
 })(_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, itemOfFocus, zoomPage);
-
-calculist.register('commands.' + name, [], _.constant(fn));
-  });
-});
-
 
 export default commands_;

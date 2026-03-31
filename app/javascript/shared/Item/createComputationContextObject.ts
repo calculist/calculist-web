@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as ss from 'simple-statistics';
 import * as d3 from 'd3';
-import evalculist from '../vendor/evalculist';
+import evalculist from '../../vendor/evalculist';
 import isItem from './isItem';
 import keyToVarName from '../utility/keyToVarName';
 import getItemByGuid from './getItemByGuid';
