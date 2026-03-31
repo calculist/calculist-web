@@ -12,7 +12,7 @@ gem 'non-stupid-digest-assets'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.4', require: false
-gem 'devise', '~> 4.9'
+gem 'devise', '~> 5.0'
 
 # Ruby 3.1+ removed these from stdlib
 gem 'net-smtp', require: false
