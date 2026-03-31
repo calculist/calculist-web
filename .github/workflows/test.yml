@@ -55,6 +55,9 @@ jobs:
       - name: Set up database
         run: bundle exec rails db:create db:schema:load
 
+      - name: Build JavaScript
+        run: npm run build
+
       - name: Run Ruby tests
         run: bundle exec rspec
 
