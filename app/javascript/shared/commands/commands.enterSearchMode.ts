@@ -3,7 +3,6 @@ import $ from 'jquery';
 import eventHub from '../../client/services/eventHub';
 import zoomPage from '../../client/ui/zoomPage';
 import itemOfSearch from '../Item/itemOfSearch';
-import commands_enterSearchMode from './commands.enterSearchMode';
 
 const commands_enterSearchMode = (function (eventHub, zoomPage, itemOfSearch) {
   return function (_this, query) {

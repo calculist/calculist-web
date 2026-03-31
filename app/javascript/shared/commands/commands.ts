@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import $ from 'jquery';
+import Papa from 'papaparse';
 import transaction from '../../client/services/transaction';
 import computeItemValue from '../Item/computeItemValue';
 import cursorPosition from '../../client/ui/cursorPosition';
@@ -19,7 +20,7 @@ import zoomPage from '../../client/ui/zoomPage';
 
 const commands_ = (function (_, $, transaction, computeItemValue, cursorPosition, commandTypeahead, getNewGuid, copyToClipboard, downloadFile, isItem, userPreferences, undoManager, jsonToItemTree, importFile, urlFinder, Item, itemOfFocus, zoomPage) {
 
-  var commands = {
+  var commands: any = {
     hideHeader: function (_this) {
       $('#header').addClass('hidden');
     },
@@ -527,7 +528,7 @@ const commands_ = (function (_, $, transaction, computeItemValue, cursorPosition
     },
     shuffleItems: function(_this) {
       _this.items = _.shuffle(_this.items);
-      _.each(_this.items, function (item, i) {
+      _.each(_this.items, function (item, i: number) {
         item.sort_order = (i + 1) * 100;
       });
       _this.save();

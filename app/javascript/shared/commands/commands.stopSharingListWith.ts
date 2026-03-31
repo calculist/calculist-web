@@ -1,6 +1,5 @@
 import http from '../../client/http';
 import _ from 'lodash';
-import commands_stopSharingListWith from './commands.stopSharingListWith';
 
 const commands_stopSharingListWith = (function (http, _) {
   return _.rest(function (_this, usernames) {

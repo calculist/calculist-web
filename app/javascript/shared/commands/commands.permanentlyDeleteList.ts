@@ -5,7 +5,7 @@ const commands_permanentlyDeleteList = (function (http) {
   return function (_this, listTitle) {
     if (!window.LIST_ID /* desktop app */) return;
     listTitle || (listTitle = _this.valueOf());
-    var list = _.find(window.OTHER_LISTS, function (list) {
+    var list = _.find((window as any).OTHER_LISTS, function (list: any) {
       return list.title === listTitle;
     });
     if (list && list.handle === 'preferences') {

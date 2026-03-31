@@ -7,7 +7,7 @@ import transaction from '../../client/services/transaction';
 
   Item.prototype.expand = function (expandParents, skipRender) {
     var _this = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise<void>(function (resolve, reject) {
       try {
         if (_this.collapsed) {
           var expandList = function () {

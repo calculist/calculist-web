@@ -23,7 +23,7 @@ const zoomPage = (function (_, $, Promise, lmSessionStorage, getItemByGuid, undo
   var getPageClickHandler = function ($page, topItem) {
     return function (e) {
       if (e.target != $page[0]) return;
-      var lastItem = _.last(topItem.items);
+      var lastItem: any = _.last(topItem.items);
       if (!lastItem) {
         topItem.addChild('');
       } else {
@@ -71,7 +71,7 @@ const zoomPage = (function (_, $, Promise, lmSessionStorage, getItemByGuid, undo
     },
     getLastVisibleItem: function () {
       var topItem = this.getTopItem(),
-          lastItem = _.last(topItem.items) || topItem;
+          lastItem: any = _.last(topItem.items) || topItem;
       while (!lastItem.collapsed && lastItem.items.length) {
         lastItem = _.last(lastItem.items);
       }
@@ -154,7 +154,7 @@ const zoomPage = (function (_, $, Promise, lmSessionStorage, getItemByGuid, undo
     detach: function () {
       zooming = true;
       var pageData = stack.pop();
-      return new Promise(function (resolve) {
+      return new Promise<void>(function (resolve) {
         if (!pageData) return resolve();
         $page = pageData.$page;
         $standin = pageData.$standin;

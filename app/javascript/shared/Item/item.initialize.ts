@@ -7,7 +7,7 @@ import itemsByGuid from './itemsByGuid';
 
   var prepareItems = function (items, _this) {
     return _.map(_.compact(items), function(item) {
-      var newItemOptions = _.isPlainObject(item) ? _.clone(item) : item.toJSON();
+      var newItemOptions = _.isPlainObject(item) ? _.clone(item) : (item as any).toJSON();
       newItemOptions.parent = _this;
       newItemOptions.guid || (newItemOptions.guid = getNewGuid());
       newItemOptions.invisible = _this.invisible;

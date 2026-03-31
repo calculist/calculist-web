@@ -34,6 +34,8 @@ declare global {
   var LIST_TITLE: string;
 }
 
+declare var require: any;
+
 // Dynamically resolve executeCommand to avoid circular dependency issues
 let _executeCommand: any;
 function executeCommand(item: any, text: string) {

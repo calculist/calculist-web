@@ -3,6 +3,9 @@ import Item from '../../shared/Item/Item';
 import parseTextDoc from '../../shared/Item/parseTextDoc';
 import getNewGuid from '../../shared/utility/getNewGuid';
 
+declare var require: any;
+declare var __dirname: string;
+
 // Lazy initialization — userPreferences creates an Item, which requires
 // Item.prototype.initialize to be wired up. In ES modules, import order
 // means this module may execute before extendItemPrototype has run.

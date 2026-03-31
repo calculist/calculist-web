@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const searchQueryParser = (function (_) {
-  var sqp = {};
+  var sqp: any = {};
   sqp.termPattern = /-?(?:[^\s"']+|"[^"]*"|'[^']*')/g;
   sqp.getTerms = function (string) { return string.match(sqp.termPattern); };
   sqp.getTermProperties = function (term) {

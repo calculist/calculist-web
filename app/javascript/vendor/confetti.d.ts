@@ -3,7 +3,7 @@ declare const confetti: {
   speed: number;
   frameInterval: number;
   alpha: number;
-  start: (timeout?: number) => void;
+  start: (timeout?: number, maxCount?: number) => void;
   stop: () => void;
 };
 export default confetti;

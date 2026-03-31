@@ -4,7 +4,7 @@ const commands_gotoList = (function (_) {
   return function (_this, listTitle) {
     if (!window.LIST_ID /* desktop app */) return;
     listTitle || (listTitle = _this.valueOf());
-    var list = _.find(window.OTHER_LISTS, function (list) {
+    var list = _.find((window as any).OTHER_LISTS, function (list: any) {
       return list.title === listTitle || list.handle === listTitle;
     });
     if (list) {

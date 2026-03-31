@@ -9,12 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "outDir": "./app/assets/builds",
-    "rootDir": "./app/javascript",
-    "baseUrl": ".",
-    "paths": {
-      "@shared/*": ["app/javascript/shared/*"],
-      "@client/*": ["app/javascript/client/*"]
-    }
+    "rootDir": "./app/javascript"
   },
   "include": ["app/javascript/**/*"],
   "exclude": ["node_modules", "spec"]

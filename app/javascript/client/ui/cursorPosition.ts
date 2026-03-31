@@ -11,12 +11,12 @@ const cursorPosition = (function (_) {
     return (depth - 1) * DEPTH_UNIT + position;
   };
 
-  var cursorPositionMinusDepth = function (depth, position) {
+  var cursorPositionMinusDepth = function (depth: number, position?: number) {
     return (position == null ? cursorPosition : position) - (depth - 1) * DEPTH_UNIT;
   };
 
   return {
-    set: function (text, depth, offset) {
+    set: function (text: any, depth: any, offset?: any) {
       if (!_.isNumber(offset)) {
         offset = document.getSelection().anchorOffset;
       }

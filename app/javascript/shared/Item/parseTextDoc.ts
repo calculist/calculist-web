@@ -4,9 +4,9 @@ const parseTextDoc = (function (_) {
 
   var GUID_SEPARATOR = '|';
 
-  return function (textDoc, options) {
+  return function (textDoc: any, options?: any) {
     var withGuids = options ? options.withGuids : null;
-    var lines = _.compact(textDoc.split('\n'));
+    var lines = _.compact((textDoc as any).split('\n'));
     var flatDoc = [];
     var flatDocById = {};
     var flatListsByDepth = {};
@@ -17,12 +17,13 @@ const parseTextDoc = (function (_) {
       index = flatDoc.length - 1;
       previousItem = flatDoc[index - 1];
       var guid;
+      var lineStr: any = line;
       if (withGuids) {
-        line = line.split(GUID_SEPARATOR);
-        guid = line.shift();
-        line = line.join(GUID_SEPARATOR);
+        lineStr = lineStr.split(GUID_SEPARATOR);
+        guid = lineStr.shift();
+        lineStr = lineStr.join(GUID_SEPARATOR);
       }
-      chars = _.toArray(line);
+      chars = _.toArray(lineStr);
       item.depth = _.takeWhile(chars, function(char) {
         return char === ' ';
       }).length;

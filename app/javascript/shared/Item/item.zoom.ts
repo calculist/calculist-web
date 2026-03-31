@@ -28,7 +28,7 @@ import eventHub from '../../client/services/eventHub';
   Item.prototype.zoomOut = function() {
     if (lmSessionStorage.get('zoomGuid') === this.guid) {
       var _this = this;
-      return new Promise(function (resolve, reject) {
+      return new Promise<void>(function (resolve, reject) {
         zoomPage.detach().then(function () {
           if (_this.wasCollapsed) {
             _this.wasCollapsed = false;

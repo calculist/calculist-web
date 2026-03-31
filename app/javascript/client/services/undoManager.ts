@@ -52,7 +52,7 @@ const undoManager = (function (UndoManager, _, eventHub, getItemByGuid, lmDiff) 
           redoFocusGuid;
 
       if (delta) {
-        var applyDelta = function (delta, direction) {
+        var applyDelta = function (delta: any, direction?: any) {
           _.each(delta, function (val, key) {
             var item = getItemByGuid(key);
             if (item && _.isPlainObject(val)) item.applyDelta(val);

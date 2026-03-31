@@ -15,7 +15,7 @@ const transaction = (function (_, eventHub) {
         }
       };
 
-  var transaction = function () {
+  var transaction: any = function () {
     var fn = _.bind.apply(_, arguments),
         error;
     if (debouncedFn) concludeDebouncedTransaction();

@@ -88,14 +88,14 @@ const itemsToSVG = (function (_) {
     // V — Z
     'video','view','vkern',
   ];
-  attributes = attributes.reduce(function (attrs, attr) {
+  attributes = attributes.reduce(function (attrs: any, attr: any) {
     attrs[attr] = true;
     return attrs;
-  }, {});
-  tags = tags.reduce(function (_tags, tag) {
+  }, {} as any);
+  tags = tags.reduce(function (_tags: any, tag: any) {
     _tags[tag] = true;
     return _tags;
-  }, {});
+  }, {} as any);
 
   var isXAttr = function (attr) {
     return attr === 'x' || attr === 'x1' || attr === 'x2' || attr === 'cx';

@@ -45,7 +45,7 @@ const commandTypeahead = (function (_, eventHub) {
       'new list ""','goto list','go home','follow link',
       'share list with ""','stop sharing list','stop sharing list with ""'
     );
-    _.each(window.OTHER_LISTS, function (otherList) {
+    _.each((window as any).OTHER_LISTS, function (otherList: any) {
       availableCommands.push('goto list "' + otherList.title + '"');
       if (otherList.handle !== 'preferences') availableCommands.push('permanently delete list "' + otherList.title  + '"');
     });
@@ -87,7 +87,7 @@ const commandTypeahead = (function (_, eventHub) {
     var text = _.trim(e.target.textContent);
     if (text) {
       selectedCommandIndex = -1;
-      var options = _.union(_.takeRight(commandStack, 20), availableCommands);
+      var options: string[] = _.union(_.takeRight(commandStack, 20), availableCommands) as string[];
       if (_.includes(text, 'for each item,')) {
         _.remove(options, function (option) {
           return option === 'for each item,' || _.includes(option, 'for each item recursively,');

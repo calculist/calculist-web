@@ -5,7 +5,7 @@ const http = (function (Promise, _, $) {
 
   'use strict';
 
-  var http = {};
+  var http: any = {};
 
   http.request = function (method, url, params, options) {
     options || (options = {});

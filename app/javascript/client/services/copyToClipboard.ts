@@ -6,7 +6,7 @@ import eventHub from './eventHub';
 const copyToClipboard = (function (_, $, Promise, Clipboard, eventHub) {
   return function (text) {
     var trigger = $('<input type="button" value="click to copy">')[0];
-    var params = {};
+    var params: any = {};
     if (_.isElement(text)) {
       params.target = _.constant(text);
     } else {
@@ -14,7 +14,7 @@ const copyToClipboard = (function (_, $, Promise, Clipboard, eventHub) {
     }
     var cb = new Clipboard(trigger, params);
     _.defer(function () { trigger.click(); });
-    return new Promise(function (resolve, reject) {
+    return new Promise<void>(function (resolve, reject) {
       cb.on('success', function () {
         cb.destroy();
         trigger.remove();

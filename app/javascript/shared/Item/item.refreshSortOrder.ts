@@ -15,7 +15,7 @@ const item_refreshSortOrder = (function (_) {
         difference = below - above;
 
     if (difference <= 0.00001 || _.isNaN(difference)) {
-      _.each(siblings, function (sibling, i) {
+      _.each(siblings, function (sibling: any, i: number) {
         sibling.sort_order = (i + 1) * 100;
       });
       // console.log('reset sort order for ' + siblings.length + ' items.');

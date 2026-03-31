@@ -55,6 +55,9 @@ jobs:
       - name: Set up database
         run: bundle exec rails db:create db:schema:load
 
+      - name: TypeScript type check
+        run: npx tsc --noEmit
+
       - name: Build JavaScript
         run: npm run build
 

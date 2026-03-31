@@ -11,7 +11,7 @@ import itemOfFocus from './itemOfFocus';
 
   Item.prototype.insertTextAtCursor = function(insertingText) {
     if (!itemOfFocus.is(this)) return;
-    var selection = _.pick(document.getSelection(),
+    var selection: any = _.pick(document.getSelection(),
         'anchorOffset',
         // 'baseOffset',
         'extentOffset',

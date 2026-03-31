@@ -6,7 +6,7 @@ const item_collapse = (function (Promise, _, transaction) {
 
   return function(skipAnimation) {
     var _this = this;
-    return new Promise(function (resolve) {
+    return new Promise<void>(function (resolve) {
       var $list, height;
       if (_this.collapsed || _this.items.length === 0 || sessionStorage.zoomGuid === _this.guid) {
         return resolve();

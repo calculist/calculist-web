@@ -20,7 +20,7 @@ const slashElementsHelper = (function (parseUntilBalanced, emojiHelper, itemTags
     return csfi;
   };
   var arbitraryNumber = 100;
-  var parseCustomTerms = function (string, depth) {
+  var parseCustomTerms = function (string: any, depth?: any) {
     if (depth > arbitraryNumber) return string;
     if (!string) return string;
     if (!string.replace) {

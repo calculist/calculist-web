@@ -285,9 +285,9 @@ const createComputationContextObject = (function (_, ss, d3, evalculist, isItem,
   proto.flow = itemsFirst(function () {
     var fns = _.flatten(arguments);
     var flow = function () {
-      return _.reduce(fns, function (r, fn) {
+      return _.reduce(fns, function (r: any, fn: any) {
         return [fn.valueOf().apply(null, r)];
-      }, arguments)[0];
+      }, arguments as any)[0];
     };
     flow.toString = function () {
       return fns.reduce(function (s, fn) {
@@ -353,7 +353,7 @@ const createComputationContextObject = (function (_, ss, d3, evalculist, isItem,
         return c2.apply(this, arguments);
       }
     };
-    c2c.string = "_ " + op + " _";
+    (c2c as any).string = "_ " + op + " _";
     return c2c;
   };
 
@@ -403,7 +403,7 @@ const createComputationContextObject = (function (_, ss, d3, evalculist, isItem,
     not.toString = function () {
       return "!(" + fn.toString().trim() + ")";
     };
-    not.toStringWithInput = function (input) {
+    (not as any).toStringWithInput = function (input) {
       return '!(' +
         (
           fn.toStringWithInput ?
@@ -557,7 +557,7 @@ const createComputationContextObject = (function (_, ss, d3, evalculist, isItem,
 
   var svgToString = _.constant('[SVG]');
   proto.svg = itemsFirst(function (items) {
-    var svg = itemsToSVG(items);
+    var svg = (itemsToSVG as any)(items);
     return {
       toString: svgToString,
       toHTML: _.constant(svg),
@@ -683,10 +683,10 @@ const createComputationContextObject = (function (_, ss, d3, evalculist, isItem,
     var param = _.partial(acc, params);
     var data = itemsIfItem(param('data'));
     if (!data) return NaN;
-    var config = ['type','width','height','margin','draw'].reduce(function (config, attr) {
+    var config: any = ['type','width','height','margin','draw'].reduce(function (config, attr) {
       config[attr] = param(attr) || plotDefaults[attr];
       return config;
-    }, {});
+    }, {} as any);
     _.each(plotDefaults[config.type], function (defaults, key) {
       var properties = param(key);
       config[key] = _.mapValues(defaults, function (_default, k) {
@@ -902,15 +902,16 @@ const createComputationContextObject = (function (_, ss, d3, evalculist, isItem,
     return result;
   });
 
-  _.each(proto, function (fn, key) {
+  _.each(proto, function (fn: any, key) {
     var sn_key = _.snakeCase(key);
     proto[sn_key] = fn;
     if (_.isFunction(fn)) {
-      fn.fName || (fn.fName = sn_key);
-      fn.toStringWithInput || (fn.toStringWithInput = function (input) {
-        return fn.fName + '(' + input + ')';
+      var f: any = fn;
+      f.fName || (f.fName = sn_key);
+      f.toStringWithInput || (f.toStringWithInput = function (input: any) {
+        return f.fName + '(' + input + ')';
       });
-      fn.toString = fn.string ? _.constant(fn.string) : fnToString;
+      f.toString = f.string ? _.constant(f.string) : fnToString;
     }
   });
 

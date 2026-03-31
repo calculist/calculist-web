@@ -5,6 +5,8 @@ import itemOfFocus from './itemOfFocus';
 import zoomPage from '../../client/ui/zoomPage';
 import slashElementsHelper from '../../client/services/slashElementsHelper';
 
+declare var require: any;
+
 const item_showLinkButtons = (function (_, $, urlFinder, itemOfFocus, zoomPage, slashElementsHelper) {
 
   var externalLinkIcon = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVklEQVR4Xn3PgQkAMQhDUXfqTu7kTtkpd5RA8AInfArtQ2iRXFWT2QedAfttj2FsPIOE1eCOlEuoWWjgzYaB/IkeGOrxXhqB+uA9Bfcm0lAZuh+YIeAD+cAqSz4kCMUAAAAASUVORK5CYII=">';

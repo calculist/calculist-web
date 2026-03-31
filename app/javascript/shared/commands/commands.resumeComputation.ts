@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import computationIsPaused from '../../client/services/computationIsPaused';
-import commands_resumeComputation from './commands.resumeComputation';
 
 const commands_resumeComputation = (function (computationIsPaused) {
   return function () {

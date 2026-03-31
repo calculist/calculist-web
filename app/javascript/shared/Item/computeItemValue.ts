@@ -19,7 +19,7 @@ const computeItemValue = (function (_, createComputationContextObject, evalculis
     });
   };
 
-  return function (string, item, args, isForCommand) {
+  return function (string: any, item: any, args?: any, isForCommand?: any) {
 
     string = preProcessString(string);
     // string = string.replace('@content', '_toText($items)');

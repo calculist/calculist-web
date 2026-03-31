@@ -1,5 +1,7 @@
 import commandTypeahead from '../../client/ui/commandTypeahead';
 
+declare var require: any;
+
 // Lazy reference to executeCommand to avoid circular dependency
 let executeCommand: any;
 

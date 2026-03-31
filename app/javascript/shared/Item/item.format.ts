@@ -12,7 +12,7 @@ import slashElementsHelper from '../../client/services/slashElementsHelper';
     if (_.isNaN(val)) {
       val = userIsTyping() ? '' : ERROR_VAL;
     } else if (_.isFunction(val)) {
-      val = val.toHTML ? val.toHTML() : _.escape(val.toString()) || '[Function]';
+      val = (val as any).toHTML ? (val as any).toHTML() : _.escape(val.toString()) || '[Function]';
     } else if (_.isArray(val)) {
       val = '[Array] ' + val.length;
     } else if (val !== '' && !_.isNaN(+val)) {

@@ -6,7 +6,7 @@ import Item from '../../shared/Item/Item';
 import itemOfFocus from '../../shared/Item/itemOfFocus';
 
 const getAndApplyChangesFromServer = (function (_, http, getItemByGuid, Item, itemOfFocus) {
-  var lastSave = window.INITIAL_LAST_SAVE,
+  var lastSave = (window as any).INITIAL_LAST_SAVE,
       url = function (path) { return window.location.origin + path; },
       newItemFromData = function (data) {
         return new Item({
@@ -30,7 +30,7 @@ const getAndApplyChangesFromServer = (function (_, http, getItemByGuid, Item, it
         parent.insertAt(item, index);
       };
 
-  var resolvedPromise = new Promise(function (resolve) { resolve(); });
+  var resolvedPromise = new Promise<void>(function (resolve) { resolve(); });
 
   return function (alternateLastSave) {
     if (!window.LIST_ID) return resolvedPromise;
@@ -51,7 +51,7 @@ const getAndApplyChangesFromServer = (function (_, http, getItemByGuid, Item, it
           return !getItemByGuid(newItemData.guid);
         });
         needToReRender = newItems.length > 0;
-        var parentsByGuid = {}, previousLength = newItems.length + 1;
+        var parentsByGuid: any = {}, previousLength = newItems.length + 1;
         while (newItems.length && newItems.length < previousLength) {
           previousLength = newItems.length;
           newItems = _.filter(newItems, function (newItemData) {

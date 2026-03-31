@@ -38,7 +38,7 @@ import emojiHelper from '../../client/services/emojiHelper';
           this.guid = firstItem.guid;
           itemsByGuid[this.guid] = this;
         }
-        newChildren = firstItem.items.map((function(_this) {
+        var newChildren = firstItem.items.map((function(_this: any) {
           return function(item) {
             item.parent = _this;
             item.guid || (item.guid = getNewGuid());

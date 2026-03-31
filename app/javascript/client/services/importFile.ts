@@ -3,12 +3,12 @@ import $ from 'jquery';
 const importFile = (function ($, Promise) {
   return function () {
     return new Promise(function (resolve, reject) {
-      var input = $('input[type="file"]')[0];
+      var input = $('input[type="file"]')[0] as HTMLInputElement;
       var onchange = function(evnt) {
         var file = input.files[0];
         input.removeEventListener('change', onchange);
         if (!file) {
-          return resolve();
+          return resolve(undefined);
         }
         var reader = new FileReader();
         reader.onload = function(e) {

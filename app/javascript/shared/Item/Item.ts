@@ -8,9 +8,9 @@ const Item = (function (_, Backbone, $, getNewGuid, eventHub) {
 
   'use strict';
 
-  var Item, log,
+  var Item: any, log,
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+    __extends = function(child: any, parent: any) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor(this: any) { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new (ctor as any)(); child.__super__ = parent.prototype; return child; };
 
   log = _.bind(console['log'], console);
 
@@ -18,7 +18,7 @@ const Item = (function (_, Backbone, $, getNewGuid, eventHub) {
     __extends(Item, _super);
 
     function Item() {
-      return Item.__super__.constructor.apply(this, arguments);
+      return (Item as any).__super__.constructor.apply(this, arguments);
     }
 
     Item.prototype.$lastItem = function(key, attributeName) {
@@ -223,7 +223,7 @@ const Item = (function (_, Backbone, $, getNewGuid, eventHub) {
       options = this.toClonedJSON();
       options.guid = getNewGuid();
       options.parent = parent;
-      return new Item(options);
+      return new (Item as any)(options);
     };
 
     Item.prototype.toText = function(depth, options) {

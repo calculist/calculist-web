@@ -2,7 +2,7 @@ import eventHub from './eventHub';
 
 const computationIsPaused = (function (eventHub) {
   var isPaused = false;
-  var computationIsPaused = function () {
+  var computationIsPaused: any = function () {
     return isPaused;
   };
 

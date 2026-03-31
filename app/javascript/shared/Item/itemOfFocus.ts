@@ -5,7 +5,7 @@ import itemOfDrag from './itemOfDrag';
 const itemOfFocus = (function (eventHub, itemOfDrag) {
   var previousItemOfFocus;
   var itemOfFocus;
-  var api = {};
+  var api: any = {};
   api.change = function (item) {
     var dragItem = itemOfDrag.get();
     if (dragItem) item = dragItem;

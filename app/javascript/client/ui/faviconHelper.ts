@@ -12,7 +12,7 @@ const faviconHelper = (function (_, emojiHelper) {
     ctx.font = '28px serif';
     ctx.fillText(emoji, 0, 24);
 
-    var favicon = document.querySelector('link[rel=icon]');
+    var favicon = document.querySelector('link[rel=icon]') as HTMLLinkElement;
     if (favicon) { favicon.href = canvas.toDataURL(); }
   }
   return {
@@ -23,8 +23,8 @@ const faviconHelper = (function (_, emojiHelper) {
         setFaviconEmoji(emoji);
         document.title = newText.split(/(?:emoji\[)|\]/g)[2];
       } else {
-        var favicon = document.querySelector('link[rel=icon]');
-        favicon.href = '/favicon-32x32.png';
+        var favicon = document.querySelector('link[rel=icon]') as HTMLLinkElement;
+        if (favicon) favicon.href = '/favicon-32x32.png';
         document.title = newText;
       }
     }, 1000)

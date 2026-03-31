@@ -27,7 +27,7 @@ const itemTagsHelper = (function (syncAnimationFrame) {
       });
       return itemsByTagId[idTag];
     },
-    getReferencesForIdTag: function (idTag, contextItem) {
+    getReferencesForIdTag: function (idTag: any, contextItem?: any) {
       // TODO don't refer to window
       return getReferencesForTag('\\ref[' + idTag + ']', contextItem || window.topItem);
     },

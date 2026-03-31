@@ -5,5 +5,7 @@ declare class UndoManager {
   clear(): void;
   hasUndo(): boolean;
   hasRedo(): boolean;
+  getIndex(): number;
+  setLimit(limit: number): void;
 }
 export default UndoManager;
