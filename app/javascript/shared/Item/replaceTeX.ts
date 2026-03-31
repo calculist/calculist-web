@@ -1,3 +1,5 @@
+import _ from 'lodash';
+import $ from 'jquery';
 import katex from 'katex';
 
 const replaceTeX = (function (katex) {

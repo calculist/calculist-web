@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import _ from 'lodash';
 import keydownToString from '../utility/keydownToString';
 import transaction from '../../client/services/transaction';

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import _ from 'lodash';
 import http from '../http';
 import getItemByGuid from '../../shared/Item/getItemByGuid';

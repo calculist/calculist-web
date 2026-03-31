@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import _ from 'lodash';
 import searchQueryParser from '../../client/services/searchQueryParser';
 import eventHub from '../../client/services/eventHub';

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import _ from 'lodash';
 
 const item_applyLocalStyle = (function (_) {

@@ -3,6 +3,15 @@
  * Replaces the Sprockets application.js manifest + calculist.init() in init.js.
  */
 
+// Set up CSRF token for all jQuery AJAX requests (replaces jquery_ujs)
+import $ from 'jquery';
+$.ajaxSetup({
+  beforeSend: function(xhr: any) {
+    var token = $('meta[name="csrf-token"]').attr('content');
+    if (token) xhr.setRequestHeader('X-CSRF-Token', token);
+  }
+});
+
 // Import all Item prototype extensions (must run before using Item)
 import './shared/run/extendItemPrototype';
 

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import _ from 'lodash';
 import eventHub from '../../client/services/eventHub';
 import executeCommand from './item.executeCommand';

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import http from '../../client/http';
 
 const commands_permanentlyDeleteList = (function (http) {

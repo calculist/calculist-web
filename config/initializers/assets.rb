@@ -1,11 +1,11 @@
 # Be sure to restart your server when you modify this file.
 
 # Version of your assets, change this if you want to expire all your assets.
-Rails.application.config.assets.version = '1.0'
+Rails.application.config.assets.version = '2.0'
 
-# Add additional assets to the asset load path
-# Rails.application.config.assets.paths << Emoji.images_path
+# Remove app/assets/javascripts from the asset path — JS is now handled by esbuild.
+# Only keep app/assets/builds (esbuild output), stylesheets, images, and vendor assets.
+Rails.application.config.assets.paths.delete(Rails.root.join('app/assets/javascripts').to_s)
 
 # Precompile additional assets.
-# application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-Rails.application.config.assets.precompile += ['vendor.js', 'homepage.js', 'worker.js', '*.svg', '*.eot', '*.woff', '*.woff2', '*.ttf']
+Rails.application.config.assets.precompile += ['*.svg', '*.eot', '*.woff', '*.woff2', '*.ttf']

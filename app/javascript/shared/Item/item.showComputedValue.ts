@@ -1,3 +1,5 @@
+import _ from 'lodash';
+import $ from 'jquery';
 import Item from './Item';
 import itemOfFocus from './itemOfFocus';
 

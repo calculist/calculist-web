@@ -1,4 +1,4 @@
-calculist.register('parseUntilBalanced', [], function () {
+const parseUntilBalanced = (function () {
   // "ab (c [d {e}]) f (g)" returns "(c [d {e}])"
   return function (text) {
     var opens = function (char) {
@@ -55,7 +55,7 @@ calculist.register('parseUntilBalanced', [], function () {
     if (stack.length) return '';
     return balancedText;
   };
-});
+})();
 
 
 export default parseUntilBalanced;

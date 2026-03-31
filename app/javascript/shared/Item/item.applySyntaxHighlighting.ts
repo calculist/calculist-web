@@ -1,3 +1,4 @@
+import $ from 'jquery';
 const item_applySyntaxHighlighting = (function () {
 
   var specialItems = {

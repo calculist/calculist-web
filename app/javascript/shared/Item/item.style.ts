@@ -1,3 +1,5 @@
+import _ from 'lodash';
+import $ from 'jquery';
 import Item from './Item';
 import zoomPage from '../../client/ui/zoomPage';
 import itemOfFocus from './itemOfFocus';

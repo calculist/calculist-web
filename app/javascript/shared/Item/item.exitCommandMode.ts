@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import eventHub from '../../client/services/eventHub';
 
 const item_exitCommandMode = (function (eventHub) {

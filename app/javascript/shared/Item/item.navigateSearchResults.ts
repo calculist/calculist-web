@@ -1,3 +1,4 @@
+import $ from 'jquery';
 const item_navigateSearchResults = (function () {
 
   return function(indexChange) {

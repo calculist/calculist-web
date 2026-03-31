@@ -1,18 +1,25 @@
 import _ from 'lodash';
-import jsondiffpatch from 'jsondiffpatch';
+import * as jsondiffpatch from 'jsondiffpatch';
 import getItemByGuid from '../Item/getItemByGuid';
 
 const lmDiff = (function (_, Promise, Worker, jsondiffpatch, getItemByGuid) {
 
-  var worker = new Worker(WORKER_FILE_PATH);
+  // Lazy worker — WORKER_FILE_PATH is set by inline script in ERB view
+  // and may not be available at module import time
+  var worker: any;
+  var getWorker = function() {
+    if (!worker) worker = new Worker((window as any).WORKER_FILE_PATH);
+    return worker;
+  };
 
   return {
-    plainDiff: function (a, b) {
-      return new Promise(function (resolve, reject) {
-        worker.onmessage = function (e) {
+    plainDiff: function (a: any, b: any) {
+      return new Promise(function (resolve: any, reject: any) {
+        var w = getWorker();
+        w.onmessage = function (e: any) {
           resolve(e.data);
         };
-        worker.postMessage([a, b]);
+        w.postMessage([a, b]);
       });
     },
     flatItemsByGuidDiff: function (flatItemsByGuid_Before, flatItemsByGuid_After) {

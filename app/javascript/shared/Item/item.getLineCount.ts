@@ -1,3 +1,4 @@
+import $ from 'jquery';
 const item_getLineCount = (function () {
 
   return function () {

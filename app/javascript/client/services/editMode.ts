@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import userAgentHelper from './userAgentHelper';
 import eventHub from './eventHub';
 

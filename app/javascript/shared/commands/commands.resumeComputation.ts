@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import computationIsPaused from '../../client/services/computationIsPaused';
 import commands_resumeComputation from './commands.resumeComputation';
 

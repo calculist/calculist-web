@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import Item from './Item';
 import cursorPosition from '../../client/ui/cursorPosition';
 import isReadOnly from '../../client/services/isReadOnly';
@@ -21,6 +22,7 @@ import editMode from '../../client/services/editMode';
   };
 
   var setCursorPosition = function (node, charIndex) {
+    if (!node) return;
     var range = document.createRange();
     var sel = window.getSelection();
     range.setStart(node, charIndex);

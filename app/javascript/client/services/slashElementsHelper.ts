@@ -1,8 +1,9 @@
+import _ from 'lodash';
 import parseUntilBalanced from '../../shared/utility/parseUntilBalanced';
 import emojiHelper from './emojiHelper';
 import itemTagsHelper from './itemTagsHelper';
 import urlFinder from './urlFinder';
-// TODO: resolve import for 'desktopHelper'
+import desktopHelper from './desktopHelper';
 
 const slashElementsHelper = (function (parseUntilBalanced, emojiHelper, itemTagsHelper, urlFinder, desktopHelper) {
   var findItem = function (item, pattern) {

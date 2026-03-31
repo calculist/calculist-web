@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import itemOfDrag from './itemOfDrag';
 
 const item_handleMousemove = (function (itemOfDrag) {

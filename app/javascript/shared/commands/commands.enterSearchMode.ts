@@ -1,3 +1,5 @@
+import _ from 'lodash';
+import $ from 'jquery';
 import eventHub from '../../client/services/eventHub';
 import zoomPage from '../../client/ui/zoomPage';
 import itemOfSearch from '../Item/itemOfSearch';
