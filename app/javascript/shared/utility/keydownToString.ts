@@ -2,9 +2,9 @@ import _ from 'lodash';
 
 const keydownToString = (function (_) {
 
-  var specialKeys = ['ctrl','alt','shift'];
+  var specialKeys: string[] = ['ctrl','alt','shift'];
 
-  var otherKeys = {
+  var otherKeys: Record<number, string | false> = {
     8: 'delete',
     9: 'tab',
     13: 'enter',
@@ -29,8 +29,8 @@ const keydownToString = (function (_) {
     221: ']',
   };
 
-  return function (e) {
-    var keyNames = [];
+  return function (e: KeyboardEvent & { which: number }): string {
+    var keyNames: (string | false)[] = [];
     if (e.metaKey) {
       keyNames.push('cmd');
     }

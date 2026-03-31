@@ -1,9 +1,8 @@
 import Item from './Item';
+import type { IItem } from '../types';
 
-const isItem = (function (Item) {
-  return function (obj) {
-    return obj && obj.constructor === Item;
-  };
-})(Item);
+function isItem(obj: any): obj is IItem {
+  return obj && obj.constructor === Item;
+}
 
 export default isItem;

@@ -1,8 +1,9 @@
 import transaction from '../../client/services/transaction';
 import $ from 'jquery';
+import type { IItem, ItemOfDragAPI } from '../types';
 
 const itemOfDrag = (function (transaction, $) {
-  var itemOfDrag, dropTarget, dropDirection, $mainContainer, $standin;
+  var itemOfDrag: IItem | null, dropTarget: IItem | null, dropDirection: 'above' | 'below' | null, $mainContainer: JQuery, $standin: JQuery | null;
 
   var removeClassesAndStandin = function () {
     $mainContainer || ($mainContainer = $('#main-container'));

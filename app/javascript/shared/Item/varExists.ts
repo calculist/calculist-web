@@ -2,8 +2,8 @@ import _ from 'lodash';
 import eventHub from '../../client/services/eventHub';
 
 const varExists = (function (_, eventHub) {
-  var itemCountByKey = {};
-  eventHub.on('keychange', function (prev, nw) {
+  var itemCountByKey: Record<string, number> = {};
+  eventHub.on('keychange', function (prev: string, nw: string) {
     if (prev) {
       prev = prev.replace(/\s/g, '_');
       itemCountByKey[prev] = itemCountByKey[prev] - 1;
@@ -14,7 +14,7 @@ const varExists = (function (_, eventHub) {
     }
   });
 
-  return function (varName) {
+  return function (varName: string): number | undefined {
     return itemCountByKey[varName];
   };
 })(_, eventHub);

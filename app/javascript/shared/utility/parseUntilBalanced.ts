@@ -1,11 +1,11 @@
 const parseUntilBalanced = (function () {
   // "ab (c [d {e}]) f (g)" returns "(c [d {e}])"
-  return function (text) {
-    var opens = function (char) {
+  return function (text: string): string {
+    var opens = function (char: string): boolean {
       return char === '"' || char === "'" ||
         char === '(' || char === '[' || char === '{';
     };
-    var closes = function (openingChar, char) {
+    var closes = function (openingChar: string, char: string): boolean {
       switch (openingChar) {
         case '"':
           return char === '"';
@@ -22,7 +22,7 @@ const parseUntilBalanced = (function () {
       }
     };
     var i = 0;
-    var stack = [];
+    var stack: string[] = [];
     var escaping = false;
     var balancedText = '';
     while (i < text.length) {

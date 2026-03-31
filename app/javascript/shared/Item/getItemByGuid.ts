@@ -1,9 +1,8 @@
 import itemsByGuid from './itemsByGuid';
+import type { IItem } from '../types';
 
-const getItemByGuid = (function (itemsByGuid) {
-  return function (guid) {
-    return itemsByGuid[guid];
-  };
-})(itemsByGuid);
+function getItemByGuid(guid: string): IItem | undefined {
+  return itemsByGuid[guid];
+}
 
 export default getItemByGuid;

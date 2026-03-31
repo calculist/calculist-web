@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import parseUntilBalanced from '../utility/parseUntilBalanced';
+import type { ParsedItemText } from '../types';
 
 const parseItemText = (function (_, parseUntilBalanced) {
 
@@ -7,12 +8,12 @@ const parseItemText = (function (_, parseUntilBalanced) {
 
   var TEMPORARY_PLACEHOLDER = 'DSFGSpRGBoSAERSFDGSDrFGDFGSDFwGWESRTBGFzAE';
 
-  var separators = [
+  var separators: string[] = [
     '\\(','\\=','\\:',
     // DEPRECATED: These separators will be removed in future versions.
     '[=>]','[=]','[:]',
   ];
-  var splitters = {
+  var splitters: Record<string, RegExp> = {
     '\\(': /(\\\()/,
     '\\=': /(\\\=)/,
     '\\:': /(\\\:)/,
@@ -22,7 +23,7 @@ const parseItemText = (function (_, parseUntilBalanced) {
     '[=>]': /(\[=\>\])/,
   };
 
-  var parseEmbed = function (text) {
+  var parseEmbed = function (text: string): ParsedItemText | undefined {
     var chunks = text.split("\\\^=[");
     if (chunks.length < 2) return;
     // hello \^=[1 + 1] hello \^=[2 + 2]
@@ -50,7 +51,7 @@ const parseItemText = (function (_, parseUntilBalanced) {
     }
   };
 
-  var parseWithSeparator = function (text, separator) {
+  var parseWithSeparator = function (text: string, separator: string): ParsedItemText | undefined {
     var pieces = text.replace('\\' + separator, TEMPORARY_PLACEHOLDER).split(splitters[separator]);
     if (_.isString(pieces[2])) {
       return {
@@ -62,8 +63,8 @@ const parseItemText = (function (_, parseUntilBalanced) {
     }
   };
 
-  return function (text) {
-    var object = null,
+  return function (text: string): ParsedItemText {
+    var object: ParsedItemText | undefined = undefined,
         i = -1;
     while (++i < separators.length && !object) {
       object = parseWithSeparator(text, separators[i]);

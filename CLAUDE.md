@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Calculist is an outliner/note-taking app with computation capabilities. The web app runs at app.calculist.io. This is a Rails 7.0 application (Ruby 3.2) with a rich JavaScript frontend using a custom module system and the Sprockets asset pipeline.
+Calculist is an outliner/note-taking app with computation capabilities. The web app runs at app.calculist.io. This is a Rails 7.0 application (Ruby 3.2) with a TypeScript frontend bundled by esbuild.
 
 ## Development Commands
 
@@ -48,7 +48,7 @@ All secrets are accessed via `ENV[]` directly (not `Rails.application.secrets`).
 **Stack:**
 - Ruby 3.2, Rails 7.0, Puma 6, MariaDB/MySQL
 - Devise for authentication (with confirmable, custom login field)
-- Sprockets 4 asset pipeline (no Webpacker/import maps)
+- jsbundling-rails with esbuild for JavaScript, Sprockets 4 for other assets
 - Docker (ruby:3.2-bookworm + mariadb:10.11)
 
 **Data Model:**
@@ -78,37 +78,35 @@ All secrets are accessed via `ENV[]` directly (not `Rails.application.secrets`).
 **Known Issues:**
 - `render_403` in `ApplicationController` is buggy — uses `message:` which isn't a valid render option, causing `MissingTemplate` errors. The `destroy` action in `ListsController` works correctly because it uses `render status: :forbidden, json: {...}` instead.
 
-### Frontend (JavaScript)
+### Frontend (TypeScript)
 
-**Module System:**
-Uses `acyclic` for dependency injection. Modules register via:
-```javascript
-calculist.register('ModuleName', ['dep1', 'dep2'], function(dep1, dep2) {
-  // module code
-  return exportedValue;
-});
-```
+**Build System:**
+- TypeScript source in `app/javascript/`, bundled by esbuild (`esbuild.config.js`)
+- Output to `app/assets/builds/` for Sprockets to serve
+- `tsconfig.json` with `strict: false`, target ES2020, ESNext modules
+- Type checking via `npx tsc --noEmit`
 
-Entry point initialized with `calculist.init([...deps], callback)`.
-
-**Asset Pipeline Structure (`app/assets/javascripts/`):**
-- `calculist.js` - Module system initialization
-- `shared/Item/` - Core Item class (extends Backbone.View) split across many files
+**Source Structure (`app/javascript/`):**
+- `application.ts` - Entry point
+- `shared/Item/` - Core Item class split across many files
 - `shared/commands/` - Command implementations (search, navigation, etc.)
 - `shared/utility/` - Helper functions
+- `shared/run/` - Runtime helpers
 - `client/services/` - Browser-specific services (sync, undo, preferences)
 - `client/ui/` - UI components (save button, footer menu)
-- `client/init.js` - Application bootstrap
+- `client/init.ts` - Application bootstrap
+- `client/http.ts` - HTTP client
+- `vendor/` - Vendored JS with `.d.ts` type declarations (evalculist, confetti, undomanager)
 
 **Item Class:**
 The `Item` class is the core component. Key behaviors are split across files:
-- `Item.js` - Base class with tree navigation methods
-- `item.initialize.js` - Constructor logic
-- `item.render.js` - DOM rendering
-- `item.events.js` - Event handlers
-- `item.handleKeydown.js` - Keyboard shortcuts
-- `item.executeCommand.js` - Command mode
-- `item.save.js` - Persistence
+- `Item.ts` - Base class with tree navigation methods
+- `item.initialize.ts` - Constructor logic
+- `item.render.ts` - DOM rendering
+- `item.events.ts` - Event handlers
+- `item.handleKeydown.ts` - Keyboard shortcuts
+- `item.executeCommand.ts` - Command mode
+- `item.save.ts` - Persistence
 
 **Item Text Format:**
 Items support computed values with syntax: `name [=] expression` or `name [:] value`
@@ -121,29 +119,47 @@ Items support computed values with syntax: `name [=] expression` or `name [:] va
 - `window.LIST_DATA` - Initial list data from server
 - `sessionStorage.focusGuid` / `sessionStorage.zoomGuid` - Navigation state
 
-### Vendor Dependencies (`vendor/assets/javascripts/`)
+### Dependencies
 
-- `acyclic` - Custom dependency injection
+NPM packages (see `package.json`):
 - `backbone` - Item views extend Backbone.View
 - `lodash` - Utility functions
 - `d3` - Data visualization
 - `katex` - LaTeX rendering
 - `papaparse` - CSV parsing
-- `evalculist` - Expression evaluator
 - `jsondiffpatch` - Change detection for sync
+- `jquery` - DOM manipulation
+
+Vendored in `app/javascript/vendor/` (with `.d.ts` declarations):
+- `evalculist` - Expression evaluator
+- `confetti` - Confetti animation
+- `undomanager` - Undo/redo stack
 
 ## Testing
 
-176 RSpec specs covering models, services, and request specs. Run via Docker:
+**Ruby (RSpec):** Models, services, and request specs. Run via Docker:
 
 ```bash
 docker-compose -f docker-compose.test.yml up -d db
 docker-compose -f docker-compose.test.yml run --rm test
 ```
 
-CI runs automatically on push/PR to master via GitHub Actions (`.github/workflows/test.yml`).
+**JavaScript (Jest):** 9 test files in `spec/javascripts/` covering Item operations, computation, parsing, serialization. Run locally:
 
-**Test infrastructure notes:**
+```bash
+npm test              # run all JS tests
+npm run test:watch    # watch mode
+```
+
+Jest config in `jest.config.js`. Uses `esbuild-jest` transformer and `jsdom` environment. Browser dependencies (jQuery, Backbone, etc.) and client services are mocked via `spec/javascripts/__mocks__/`. Test helper at `spec/javascripts/helpers/calculistTestHelper.ts` provides `createCalculist()` and `createItemTree()`.
+
+**CI** runs automatically on push/PR to master (`.github/workflows/test.yml`):
+1. TypeScript type check (`tsc --noEmit`)
+2. esbuild build (`npm run build`)
+3. RSpec tests (`bundle exec rspec`)
+4. Jest tests (`npm test`)
+
+**Ruby test infrastructure notes:**
 - `spec/support/test_helpers.rb` provides `create_user`, `create_list`, `create_item`, `create_tree` helpers
 - `spec/rails_helper.rb` stubs `set_shared_token` to avoid `domain: :all` cookie issues with Rack::Test
 - `spec/services/shared_token_spec.rb` tests the `MessageEncryptor` code path directly (bypassing the stub)

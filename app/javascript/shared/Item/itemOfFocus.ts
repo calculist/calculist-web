@@ -1,11 +1,12 @@
 import $ from 'jquery';
 import eventHub from '../../client/services/eventHub';
 import itemOfDrag from './itemOfDrag';
+import type { IItem, ItemOfFocusAPI } from '../types';
 
 const itemOfFocus = (function (eventHub, itemOfDrag) {
-  var previousItemOfFocus;
-  var itemOfFocus;
-  var api: any = {};
+  var previousItemOfFocus: IItem | undefined;
+  var itemOfFocus: IItem | undefined;
+  var api: ItemOfFocusAPI = {} as ItemOfFocusAPI;
   api.change = function (item) {
     var dragItem = itemOfDrag.get();
     if (dragItem) item = dragItem;

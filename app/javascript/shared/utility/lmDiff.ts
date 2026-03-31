@@ -22,12 +22,12 @@ const lmDiff = (function (_, Promise, Worker, jsondiffpatch, getItemByGuid) {
         w.postMessage([a, b]);
       });
     },
-    flatItemsByGuidDiff: function (flatItemsByGuid_Before, flatItemsByGuid_After) {
+    flatItemsByGuidDiff: function (flatItemsByGuid_Before: any, flatItemsByGuid_After: any) {
       var diff = jsondiffpatch.diff(flatItemsByGuid_Before, flatItemsByGuid_After);
-      return _.map(diff, function (changedAttrs, guid) {
+      return _.map(diff, function (changedAttrs: any, guid: string) {
         // TODO fix the bug where item can sometimes be undefined
         var item = getItemByGuid(guid);
-        var json = item.toFlatJSON_v2();
+        var json: Record<string, any> = item.toFlatJSON_v2();
         if (_.isArray(changedAttrs)) {
           if (changedAttrs.length === 3) {
             json.is_deleted = true;
@@ -36,7 +36,7 @@ const lmDiff = (function (_, Promise, Worker, jsondiffpatch, getItemByGuid) {
           }
         } else if (item.onServer) {
           var attrs = json;
-          json = _.reduce(changedAttrs, function (_json, change, attrName) {
+          json = _.reduce(changedAttrs, function (_json: Record<string, any>, change: any, attrName: string) {
             _json[attrName] = attrs[attrName];
             return _json;
           }, {guid: attrs.guid});

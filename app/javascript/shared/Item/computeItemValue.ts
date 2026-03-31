@@ -2,12 +2,13 @@ import _ from 'lodash';
 import createComputationContextObject from './createComputationContextObject';
 import evalculist from '../../vendor/evalculist';
 import findVar from './findVar';
+import type { IItem } from '../types';
 
 const computeItemValue = (function (_, createComputationContextObject, evalculist, findVar) {
 
   'use strict';
 
-  var preProcessString = function (string) {
+  var preProcessString = function (string: string): string {
     return string.replace(/\^item/g, function() {
       return '$$item';
     }).replace(/\*item/g, function () {
@@ -19,7 +20,7 @@ const computeItemValue = (function (_, createComputationContextObject, evalculis
     });
   };
 
-  return function (string: any, item: any, args?: any, isForCommand?: any) {
+  return function (string: string, item: IItem, args?: Record<string, any>, isForCommand?: boolean): any {
 
     string = preProcessString(string);
     // string = string.replace('@content', '_toText($items)');
