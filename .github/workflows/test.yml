@@ -43,8 +43,20 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
       - name: Set up database
         run: bundle exec rails db:create db:schema:load
 
-      - name: Run tests
+      - name: Run Ruby tests
         run: bundle exec rspec
+
+      - name: Run JavaScript tests
+        run: npm test

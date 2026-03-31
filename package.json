@@ -1,0 +1,21 @@
+{
+  "name": "calculist-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "jest --runInBand",
+    "test:watch": "jest --runInBand --watch"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/spec/javascripts/**/*.test.js"
+    ],
+    "moduleNameMapper": {
+      "^lodash$": "<rootDir>/vendor/assets/javascripts/lodash/lodash"
+    }
+  }
+}
