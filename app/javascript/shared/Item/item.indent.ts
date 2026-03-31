@@ -1,0 +1,28 @@
+import zoomPage from '../../client/ui/zoomPage';
+
+const item_indent = (function (zoomPage) {
+
+  return function () {
+    var newParent, _ref;
+    newParent = this.parent.getUpperSibling(this);
+    if (!(newParent && zoomPage.isInPage(newParent))) {
+      return;
+    }
+    this.blurContainingList();
+    this.parent.removeChild(this);
+    this.parent = newParent;
+    this.parent.items.push(this);
+    this.refreshDepth();
+    this.save();
+    if (this.parent.collapsed) {
+      this.parent.toggleCollapse();
+    } else {
+      this.parent.renderChildren();
+    }
+    this.refreshSortOrder();
+    this.focus();
+  };
+
+})(zoomPage);
+
+export default item_indent;

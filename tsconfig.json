@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "outDir": "./app/assets/builds",
+    "rootDir": "./app/javascript",
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["app/javascript/shared/*"],
+      "@client/*": ["app/javascript/client/*"]
+    }
+  },
+  "include": ["app/javascript/**/*"],
+  "exclude": ["node_modules", "spec"]
+}

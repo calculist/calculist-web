@@ -1,0 +1,21 @@
+import lmSessionStorage from '../../client/services/lmSessionStorage';
+
+const item_isWithinZoom = (function (lmSessionStorage) {
+
+  return function () {
+    var zoomGuid = lmSessionStorage.get('zoomGuid');
+    if (!zoomGuid || zoomGuid === this.guid) {
+      return true;
+    } else {
+      var nextParent = this.parent;
+      while (nextParent) {
+        if (nextParent.guid === zoomGuid) return true;
+        nextParent = nextParent.parent;
+      }
+      return false;
+    }
+  };
+
+})(lmSessionStorage);
+
+export default item_isWithinZoom;
