@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import createComputationContextObject from './createComputationContextObject';
-import evalculist from '../../vendor/evalculist';
+import evalculist from 'evalculist';
 import findVar from './findVar';
 import type { IItem } from '../types';
 
