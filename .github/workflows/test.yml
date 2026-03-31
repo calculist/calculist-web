@@ -1,0 +1,50 @@
+name: Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: mariadb:10.11
+        env:
+          MYSQL_ROOT_PASSWORD: testpassword
+          MYSQL_DATABASE: calculist_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mariadb-admin ping -ptestpassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      RAILS_ENV: test
+      DB_HOST: 127.0.0.1
+      MYSQL_ROOT_PASSWORD: testpassword
+      SECRET_KEY_BASE: test_secret_key_base_1234567890abcdef1234567890abcdef1234567890abcdef
+      SHARED_SECRET: test_shared_secret_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install MySQL client library
+        run: sudo apt-get install -y libmariadb-dev
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Set up database
+        run: bundle exec rails db:create db:schema:load
+
+      - name: Run tests
+        run: bundle exec rspec
