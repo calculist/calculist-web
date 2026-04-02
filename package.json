@@ -31,7 +31,7 @@
     "jquery": "^3.7.1",
     "jsondiffpatch": "^0.7.3",
     "katex": "^0.16.44",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "mark.js": "^8.11.1",
     "papaparse": "^5.5.3",
     "simple-statistics": "^7.8.9"
